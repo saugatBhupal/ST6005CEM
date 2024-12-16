@@ -5,6 +5,7 @@ import { Colors } from '../../constants/Colors'
 import OutlinedButton from '../buttons/OutlinedButton'
 import TransparentButton from '../buttons/TransparentButton'
 import MenubarSpacer from '../spacer/MenubarSpacer'
+import { useNavigate } from 'react-router-dom'
 
 const Wrapper = styled.div`
     width : 100vw;
@@ -42,6 +43,7 @@ const Action = styled.div`
     justify-content : space-between;
 `
 function MenubarDefault() {
+    const navigate = useNavigate();
   return (
     <Wrapper>
         <Container>
@@ -65,8 +67,8 @@ function MenubarDefault() {
                 </ul>
             </MenuItems>
             <Action>
-                <TransparentButton placeholder = "Sign in" onClick = {()=>alert("hello")}/>
-                <OutlinedButton placeholder = "Sign up" onClick = {()=>alert("hello")}/>
+                <TransparentButton placeholder = "Sign in" onClick = {()=>navigate('/signin')}/>
+                <OutlinedButton placeholder = "Sign up" onClick = {()=>navigate('/signup')}/>
             </Action>
         </Container>
     </Wrapper>

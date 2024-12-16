@@ -10,7 +10,9 @@ const Container = styled.div`
     width : 200px;
     justify-content : space-between;
 `
-const LogoImg = styled.div``
+const LogoImg = styled.div`
+    background-color : transparent;
+`
 const LogoText = styled.div`
     color : ${Colors.mainBlue};
     font-size : 24px;
