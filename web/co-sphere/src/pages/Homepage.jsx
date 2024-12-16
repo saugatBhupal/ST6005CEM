@@ -5,14 +5,15 @@ import { Colors } from '../constants/Colors'
 import MenubarSpacer from '../components/spacer/MenubarSpacer'
 import OutlinedButton from '../components/buttons/OutlinedButton'
 import FilledButton from '../components/buttons/FilledButton'
+import HomePageBanner from '../assets/images/home-page-banner.png'
 
 const Wrapper = styled.div`
 `
 const Container = styled.div`
     position : relative;
-    display : flex;
-    flex-direction : column;
-    justify-content : space-between;
+    /* display : flex; */
+    /* flex-direction : column; */
+    /* justify-content : space-between; */
 `
 const Center = styled.div`
     max-width : 650px;
@@ -41,18 +42,29 @@ const Buttons = styled.div`
     }
 `
 const Bottom = styled.div`
-    width : 100%;
-    position : fixed;
-    bottom : 0px;
-    display : flex;
-    justify-content : space-evenly;
-`
+    width: 100vw;
+    position: fixed;
+    bottom: 0px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: stretch; 
+    background-color : transparent;
+`;
+
 const Rectangle = styled.div`
-    height : 450px;
-    width : 320px;
+    width: 80%; 
+    margin : auto;
     bottom : 0px;
-    background-color : red;
-`
+    display: flex;
+    flex-direction: column; 
+    justify-content: flex-end; 
+    align-items : center;
+    img {
+        width: 100%; 
+        height: auto; 
+        object-fit: cover; 
+    }
+`;
 function Homepage() {
   return (
     <Wrapper>
@@ -71,16 +83,7 @@ function Homepage() {
             </Center>
             <Bottom>
                 <Rectangle>
-
-                </Rectangle>
-                <Rectangle>
-
-                </Rectangle>
-                <Rectangle>
-
-                </Rectangle>
-                <Rectangle>
-
+                    <img src={HomePageBanner} alt="" />
                 </Rectangle>
             </Bottom>
         </Container>
