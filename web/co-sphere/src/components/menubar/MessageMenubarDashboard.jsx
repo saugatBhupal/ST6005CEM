@@ -21,7 +21,10 @@ const Container = styled.div`
   margin: 0px 50px;
 `;
 const Button = styled.div`
-  width: 150px;
+  width: 100px;
+  button {
+    height: 40px !important;
+  }
   background-color: transparent;
 `;
 function MessageMenubarDashboard() {
@@ -32,7 +35,7 @@ function MessageMenubarDashboard() {
         mauris, luctus in nisl at.
         <Button>
           <FilledButton
-            placeholder="Browse Now"
+            placeholder="Browse"
             onClick={() => {
               alert("hello");
             }}

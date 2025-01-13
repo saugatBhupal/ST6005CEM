@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import FilledButton from "../../buttons/FilledButton";
@@ -27,29 +28,8 @@ const Container = styled.div`
 
 const Menu = styled.div`
   background-color: white;
-  flex-grow: 1; /* Ensures Menu takes up remaining space */
-  li {
-    list-style: none;
-    font-size: 16px;
-    font-weight: 400;
-    color: ${Colors.menuUnselected};
-    width: 90%;
-    margin: 10px auto;
-    min-height: 50px;
-    display: flex;
-    align-items: center;
-    border-radius: 12px;
-    cursor: pointer;
-    stroke: ${Colors.menuUnselected};
-    &:hover {
-      color: ${Colors.justBlack};
-      background-color: ${Colors.menuSelected};
-      stroke: ${Colors.justBlack};
-    }
-    svg {
-      margin: 0 20px 0 10px;
-    }
-  }
+  flex-grow: 1;
+
   ul {
     margin-top: 40px;
     padding: 0;
@@ -60,13 +40,40 @@ const Menu = styled.div`
     }
   }
 `;
+const MenuItem = styled.li`
+  list-style: none;
+  font-size: 16px;
+  font-weight: 400;
+  color: ${({ selected }) =>
+    selected ? `${Colors.justBlack}` : `${Colors.menuUnselected}`};
+  background-color: ${({ selected }) =>
+    selected ? `${Colors.menuSelected}` : `auto`};
+  stroke: ${({ selected }) =>
+    selected ? `${Colors.justBlack}` : `${Colors.menuUnselected}`};
+  width: 90%;
+  margin: 10px auto;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+  cursor: pointer;
+  &:hover {
+    color: ${Colors.justBlack};
+    background-color: ${Colors.menuSelected};
+    stroke: ${Colors.justBlack};
+  }
+  svg {
+    margin: 0 20px 0 10px;
+  }
+`;
 const End = styled.div`
   width: 60%;
   margin: auto;
   margin-top: auto;
   height: fit-content;
 `;
-function SideMenuBarDesktop() {
+function SideMenuBarDesktop(props) {
+  const navigate = useNavigate();
   return (
     <Wrapper>
       <Logo>
@@ -74,7 +81,7 @@ function SideMenuBarDesktop() {
       </Logo>
       <Container>
         <Menu>
-          <li>
+          <MenuItem selected={props.current === "home"}>
             <svg
               width="23"
               height="23"
@@ -84,15 +91,15 @@ function SideMenuBarDesktop() {
             >
               <path
                 d="M11.5 6.25V16.75M6.25 11.5H16.75M8.35 22H14.65C19.9 22 22 19.9 22 14.65V8.35C22 3.1 19.9 1 14.65 1H8.35C3.1 1 1 3.1 1 8.35V14.65C1 19.9 3.1 22 8.35 22ZM9.4 16.75H13.6C15.3325 16.75 16.75 15.3325 16.75 13.6V9.4C16.75 7.6675 15.3325 6.25 13.6 6.25H9.4C7.6675 6.25 6.25 7.6675 6.25 9.4V13.6C6.25 15.3325 7.6675 16.75 9.4 16.75Z"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
-            <a>Home</a>
-          </li>
+            <a href="/dashboard">Home</a>
+          </MenuItem>
           <ul>
-            <li>
+            <MenuItem selected={props.current === "jobs"}>
               <svg
                 width="23"
                 height="23"
@@ -102,14 +109,14 @@ function SideMenuBarDesktop() {
               >
                 <path
                   d="M11.5 6.25V16.75M6.25 11.5H16.75M8.35 22H14.65C19.9 22 22 19.9 22 14.65V8.35C22 3.1 19.9 1 14.65 1H8.35C3.1 1 1 3.1 1 8.35V14.65C1 19.9 3.1 22 8.35 22ZM9.4 16.75H13.6C15.3325 16.75 16.75 15.3325 16.75 13.6V9.4C16.75 7.6675 15.3325 6.25 13.6 6.25H9.4C7.6675 6.25 6.25 7.6675 6.25 9.4V13.6C6.25 15.3325 7.6675 16.75 9.4 16.75Z"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               <a>Browse Jobs</a>
-            </li>
-            <li>
+            </MenuItem>
+            <MenuItem selected={props.current === "create"}>
               <svg
                 width="23"
                 height="23"
@@ -119,14 +126,14 @@ function SideMenuBarDesktop() {
               >
                 <path
                   d="M11.5 6.25V16.75M6.25 11.5H16.75M8.35 22H14.65C19.9 22 22 19.9 22 14.65V8.35C22 3.1 19.9 1 14.65 1H8.35C3.1 1 1 3.1 1 8.35V14.65C1 19.9 3.1 22 8.35 22ZM9.4 16.75H13.6C15.3325 16.75 16.75 15.3325 16.75 13.6V9.4C16.75 7.6675 15.3325 6.25 13.6 6.25H9.4C7.6675 6.25 6.25 7.6675 6.25 9.4V13.6C6.25 15.3325 7.6675 16.75 9.4 16.75Z"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               <a>Create </a>
-            </li>
-            <li>
+            </MenuItem>
+            <MenuItem selected={props.current === "tasks"}>
               <svg
                 width="23"
                 height="23"
@@ -136,14 +143,14 @@ function SideMenuBarDesktop() {
               >
                 <path
                   d="M11.5 6.25V16.75M6.25 11.5H16.75M8.35 22H14.65C19.9 22 22 19.9 22 14.65V8.35C22 3.1 19.9 1 14.65 1H8.35C3.1 1 1 3.1 1 8.35V14.65C1 19.9 3.1 22 8.35 22ZM9.4 16.75H13.6C15.3325 16.75 16.75 15.3325 16.75 13.6V9.4C16.75 7.6675 15.3325 6.25 13.6 6.25H9.4C7.6675 6.25 6.25 7.6675 6.25 9.4V13.6C6.25 15.3325 7.6675 16.75 9.4 16.75Z"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               <a>Tasks</a>
-            </li>
-            <li>
+            </MenuItem>
+            <MenuItem selected={props.current === "assigned to me"}>
               <svg
                 width="24"
                 height="17"
@@ -156,12 +163,12 @@ function SideMenuBarDesktop() {
                   x2="0.25"
                   y2="17"
                   stroke="#9199AF"
-                  stroke-width="0.5"
+                  strokeWidth="0.5"
                 />
               </svg>
               <a>Assigned To Me</a>
-            </li>
-            <li>
+            </MenuItem>
+            <MenuItem selected={props.current === "assigned by me"}>
               <svg
                 width="24"
                 height="17"
@@ -174,13 +181,13 @@ function SideMenuBarDesktop() {
                   x2="0.25"
                   y2="17"
                   stroke="#9199AF"
-                  stroke-width="0.5"
+                  strokeWidth="0.5"
                 />
               </svg>
 
               <a>Assigned By Me</a>
-            </li>
-            <li>
+            </MenuItem>
+            <MenuItem selected={props.current === "jobs"}>
               <svg
                 width="23"
                 height="23"
@@ -190,14 +197,14 @@ function SideMenuBarDesktop() {
               >
                 <path
                   d="M11.5 6.25V16.75M6.25 11.5H16.75M8.35 22H14.65C19.9 22 22 19.9 22 14.65V8.35C22 3.1 19.9 1 14.65 1H8.35C3.1 1 1 3.1 1 8.35V14.65C1 19.9 3.1 22 8.35 22ZM9.4 16.75H13.6C15.3325 16.75 16.75 15.3325 16.75 13.6V9.4C16.75 7.6675 15.3325 6.25 13.6 6.25H9.4C7.6675 6.25 6.25 7.6675 6.25 9.4V13.6C6.25 15.3325 7.6675 16.75 9.4 16.75Z"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               <a>Jobs</a>
-            </li>
-            <li>
+            </MenuItem>
+            <MenuItem selected={props.current === "created by me"}>
               <svg
                 width="24"
                 height="17"
@@ -210,12 +217,12 @@ function SideMenuBarDesktop() {
                   x2="0.25"
                   y2="17"
                   stroke="#9199AF"
-                  stroke-width="0.5"
+                  strokeWidth="0.5"
                 />
               </svg>
               <a>Created By Me</a>
-            </li>
-            <li>
+            </MenuItem>
+            <MenuItem selected={props.current === "my applications"}>
               <svg
                 width="24"
                 height="17"
@@ -228,16 +235,21 @@ function SideMenuBarDesktop() {
                   x2="0.25"
                   y2="17"
                   stroke="#9199AF"
-                  stroke-width="0.5"
+                  strokeWidth="0.5"
                 />
               </svg>
 
               <a>My Applications</a>
-            </li>
+            </MenuItem>
           </ul>
         </Menu>
         <End>
-          <FilledButton placeholder="Sign out" />
+          <FilledButton
+            placeholder="Sign out"
+            onClick={() => {
+              navigate("/");
+            }}
+          />
         </End>
       </Container>
     </Wrapper>

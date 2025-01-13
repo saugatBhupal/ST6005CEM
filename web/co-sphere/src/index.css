@@ -4,4 +4,11 @@
   font-family: Albert Sans;
   font-weight: 300;
   max-width: 100vw;
+  ::-webkit-scrollbar {
+    display: none !important;
+  }
+}
+a {
+  text-decoration: none;
+  color: inherit;
 }

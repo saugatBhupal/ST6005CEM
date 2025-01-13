@@ -33,7 +33,7 @@ const DropDown = styled.div`
   top: 60px;
   z-index: 1;
   height: fit-content;
-  background-color: ${Colors.backgroundWhite};
+  background-color: ${Colors.justWhite};
   /* border: 1px solid ${Colors.greyOutline}; */
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   ul {
@@ -52,7 +52,7 @@ const DropDown = styled.div`
       transition-duration: 0.2s;
       cursor: pointer;
       &:hover {
-        background-color: ${Colors.greyOutline};
+        background-color: ${Colors.menuSelected};
       }
     }
   }
@@ -61,6 +61,7 @@ const DropDown = styled.div`
 const Label = styled.div`
   font-size: 12px;
   color: ${Colors.subtitleBlack};
+  background-color: ${Colors.justWhite};
   position: absolute;
   top: -8px;
   left: 20px;
@@ -110,9 +111,9 @@ function CustomDropDown(props) {
                 <path
                   d="M4 9L12 17L20 9"
                   stroke={Colors.greyOutline}
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </DropDownArrow>

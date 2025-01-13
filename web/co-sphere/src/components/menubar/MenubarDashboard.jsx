@@ -6,6 +6,7 @@ import ProfileWidgetMenubar from "../widget/ProfileWidget/ProfileWidgetMenubar";
 import MessageMenubarDashboard from "./MessageMenubarDashboard";
 
 const Wrapper = styled.div`
+  z-index: 99 !important;
   height: 70px;
   width: inherit;
   background-color: ${Colors.justWhite};
@@ -21,7 +22,7 @@ const Container = styled.div`
 const Right = styled.div`
   background-color: transparent;
   display: flex;
-  width: 250px;
+  width: 220px;
   justify-content: space-between;
   margin-right: 60px;
 `;
@@ -31,18 +32,40 @@ const MessageIcon = styled.div`
   cursor: pointer;
   svg {
     stroke: #43b643;
+    height: 22px;
+    width: 22px;
   }
 `;
 const NotificationIcon = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
+  svg {
+    height: 24px;
+    width: 24px;
+  }
   &:hover {
     svg {
     }
   }
   svg {
-    fill: #d6b830;
+    fill: ${Colors.mainBlue};
+  }
+`;
+const BrowseIcon = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  svg {
+    height: 24px;
+    width: 24px;
+  }
+  &:hover {
+    svg {
+    }
+  }
+  svg {
+    fill: ${Colors.mainBlue};
   }
 `;
 export default function MenubarDashboard() {
@@ -53,24 +76,20 @@ export default function MenubarDashboard() {
         <Right>
           <MessageIcon>
             <svg
-              width="26"
-              height="26"
               viewBox="0 0 26 26"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M6.99943 13.1128V13M12.9989 13.1128V13M18.9983 13.1128V13M24.9977 13C24.9977 14.725 24.6338 16.3651 23.9785 17.8474L25 24.9989L18.8719 23.4667C17.1359 24.4431 15.1324 25 12.9989 25C6.37207 25 1 19.6274 1 13C1 6.37258 6.37207 1 12.9989 1C19.6257 1 24.9977 6.37258 24.9977 13Z"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </MessageIcon>
           <NotificationIcon>
             <svg
-              width="24"
-              height="30"
               viewBox="0 0 24 30"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"

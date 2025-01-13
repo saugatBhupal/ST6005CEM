@@ -40,6 +40,7 @@ const Label = styled.label`
   left: 20px;
   font-size: 16px;
   color: #4c4c4ca8;
+  background-color: ${Colors.justWhite};
   font-size: 16px;
   pointer-events: none;
   transition: all 0.3s ease;

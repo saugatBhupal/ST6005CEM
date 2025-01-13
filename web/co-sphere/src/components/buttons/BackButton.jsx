@@ -18,7 +18,7 @@ const Wrapper = styled.div`
     svg {
       height: 40px;
       color: ${Colors.mainBlue};
-      stroke-width: 1.5px;
+      strokewidth: 1.5px;
       transition-duration: 0.2s;
       &:hover {
         transform: translateY(-2px);
@@ -44,8 +44,8 @@ function BackButton(props) {
             <path
               d="M7.625 11.1667L12 7M12 7L16.375 11.1667M12 7L12 17"
               stroke="black"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </div>
