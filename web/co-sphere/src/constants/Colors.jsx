@@ -11,4 +11,5 @@ export class Colors {
   static greyOutlineShadow = "#E9E9E9";
   static menuUnselected = "#9199AF";
   static menuSelected = "#F0F1F3";
+  static lightMainBlue = "#1A6EC220";
 }

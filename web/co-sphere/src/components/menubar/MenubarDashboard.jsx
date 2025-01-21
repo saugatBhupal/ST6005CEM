@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../constants/Colors";
+import MessageIcon from "../icon/MessageIcon";
+import NotificationIcon from "../icon/NotificationIcon";
 import SearchInputMenubar from "../input/search/SearchInputMenubar";
-import ProfileWidgetMenubar from "../widget/ProfileWidget/ProfileWidgetMenubar";
+import ProfileWidgetMenubar from "../widget/profile/ProfileWidgetMenubar";
 import MessageMenubarDashboard from "./MessageMenubarDashboard";
 
 const Wrapper = styled.div`
@@ -26,32 +28,7 @@ const Right = styled.div`
   justify-content: space-between;
   margin-right: 60px;
 `;
-const MessageIcon = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  svg {
-    stroke: #43b643;
-    height: 22px;
-    width: 22px;
-  }
-`;
-const NotificationIcon = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  svg {
-    height: 24px;
-    width: 24px;
-  }
-  &:hover {
-    svg {
-    }
-  }
-  svg {
-    fill: ${Colors.mainBlue};
-  }
-`;
+
 const BrowseIcon = styled.div`
   display: flex;
   align-items: center;
@@ -74,20 +51,7 @@ export default function MenubarDashboard() {
       <Container>
         <SearchInputMenubar />
         <Right>
-          <MessageIcon>
-            <svg
-              viewBox="0 0 26 26"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M6.99943 13.1128V13M12.9989 13.1128V13M18.9983 13.1128V13M24.9977 13C24.9977 14.725 24.6338 16.3651 23.9785 17.8474L25 24.9989L18.8719 23.4667C17.1359 24.4431 15.1324 25 12.9989 25C6.37207 25 1 19.6274 1 13C1 6.37258 6.37207 1 12.9989 1C19.6257 1 24.9977 6.37258 24.9977 13Z"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </MessageIcon>
+          <MessageIcon />
           <NotificationIcon>
             <svg
               viewBox="0 0 24 30"

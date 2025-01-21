@@ -7,15 +7,19 @@ const Wrapper = styled.div`
   font-weight: 500;
   font-size: 12px;
   background-color: ${(props) =>
-    props.type === "Pending"
+    props.type === "Pending" || props.type === "Delayed"
       ? "#DFAB7620"
-      : props.type === "Active"
+      : props.type === "Active" ||
+        props.type === "Junior" ||
+        props.type === "On-Time"
       ? "#76DFAE20"
       : "#e0e0e0"};
   color: ${(props) =>
-    props.type === "Pending"
+    props.type === "Pending" || props.type === "Delayed"
       ? "#E3984E"
-      : props.type === "Active"
+      : props.type === "Active" ||
+        props.type === "Junior" ||
+        props.type === "On-Time"
       ? "#0D6722"
       : "#000000"};
   display: flex;
@@ -25,6 +29,7 @@ const Wrapper = styled.div`
 `;
 
 function TypeChip({ type }) {
+  console.log(type);
   return <Wrapper type={type}>{type}</Wrapper>;
 }
 

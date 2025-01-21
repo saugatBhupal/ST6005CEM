@@ -93,6 +93,7 @@ const Column = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `;
+
 function ApplicationsCreatedByMeWidget() {
   return (
     <Wrapper>

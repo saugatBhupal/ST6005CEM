@@ -9,6 +9,7 @@ const Wrapper = styled.div`
   background-color: ${Colors.justWhite};
   border-bottom: 1px solid ${Colors.greyOutlineShadow};
   border-left: 1px solid ${Colors.greyOutlineShadow};
+  margin-top: -1px !important;
 `;
 const Container = styled.div`
   display: flex;

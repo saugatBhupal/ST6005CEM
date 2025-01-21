@@ -52,7 +52,7 @@ const MenuItem = styled.li`
     selected ? `${Colors.justBlack}` : `${Colors.menuUnselected}`};
   width: 90%;
   margin: 10px auto;
-  min-height: 50px;
+  min-height: 40px;
   display: flex;
   align-items: center;
   border-radius: 12px;

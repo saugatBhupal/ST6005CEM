@@ -6,8 +6,8 @@ import MenubarSpacerDashboard from "../../components/spacer/MenubarSpacerDashboa
 import BasicWidgetTitleBlock from "../../components/textBlocks/BasicWidgetTitleBlock";
 import ApplicationsCreatedByMeWidget from "../../components/widget/application/ApplicationsCreatedByMeWidget";
 import MyApplicationWidget from "../../components/widget/application/MyApplicationWidget";
-import StatsListWidget from "../../components/widget/dashboard/StatsListWidget";
-import StatsWidget from "../../components/widget/dashboard/StatsWidget";
+import StatsListWidget from "../../components/widget/stats/StatsListWidget";
+import StatsWidget from "../../components/widget/stats/StatsWidget";
 import TasksAssignedToMeWidget from "../../components/widget/task/TasksAssignedToMeWidget";
 import { Colors } from "../../constants/Colors";
 
@@ -24,6 +24,8 @@ const Flex = styled.div`
   margin-top: 20px;
   display: flex;
   height: 100%;
+  width: fit-content;
+  /* margin: auto; */
 `;
 const Right = styled.div`
   width: 500px;
@@ -89,6 +91,7 @@ function DashboardPage() {
               <TasksAssignedToMeWidget />
               <TasksAssignedToMeWidget />
               <TasksAssignedToMeWidget />
+              <Gap />
             </Right>
           </Flex>
         </Body>

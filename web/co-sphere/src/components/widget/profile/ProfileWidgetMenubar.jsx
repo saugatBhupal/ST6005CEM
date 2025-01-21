@@ -28,7 +28,7 @@ function ProfileWidgetMenubar() {
   return (
     <Wrapper>
       <Container>
-        <ProfileIcon />
+        <ProfileIcon height={"45px"} />
         <Right>
           <b>John Cena</b>
           <a>Settings</a>
