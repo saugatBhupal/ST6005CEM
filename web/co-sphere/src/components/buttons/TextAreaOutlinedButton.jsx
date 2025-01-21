@@ -5,7 +5,8 @@ import { Colors } from "../../constants/Colors";
 const Wrapper = styled.div``;
 const Button = styled.button`
   /* width: 110px; */
-  padding: 8px 15px;
+  height: 40px;
+  width: 80px;
   border: 1.5px solid ${Colors.greyOutline};
   color: ${Colors.subtitleBlack};
   background-color: transparent;

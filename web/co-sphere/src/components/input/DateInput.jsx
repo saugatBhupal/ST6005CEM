@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Colors } from '../../constants/Colors';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Colors } from "../../constants/Colors";
 
 const Wrapper = styled.div`
   position: relative;
@@ -19,9 +19,9 @@ const Input = styled.input`
   transition: all 0.3s ease;
   background: transparent;
   color: ${Colors.justBlack};
-  &::placeholder{
-      color : transparent;
-    }
+  &::placeholder {
+    color: transparent;
+  }
 
   &:focus + label,
   &:not(:placeholder-shown) + label {
@@ -30,11 +30,10 @@ const Input = styled.input`
     font-size: 12px;
     color: ${Colors.subtitleBlack};
     padding: 0 5px;
-    
   }
-  &:focus{
-    &::placeholder{
-      color : ${Colors.subtitleBlack};
+  &:focus {
+    &::placeholder {
+      color: ${Colors.subtitleBlack};
     }
   }
 `;
@@ -49,20 +48,22 @@ const Label = styled.label`
   transition: all 0.3s ease;
 `;
 
-function DateOfBirthInput({ placeholder }) {
-  const [value, setValue] = useState('');
+function DateInput({ placeholder }) {
+  const [value, setValue] = useState("");
 
   const handleInputChange = (e) => {
-    let input = e.target.value.replace(/\D/g, ''); 
-    if (input.length > 8) input = input.slice(0, 8); 
+    let input = e.target.value.replace(/\D/g, "");
+    if (input.length > 8) input = input.slice(0, 8);
 
-    let formattedValue = '';
+    let formattedValue = "";
     if (input.length <= 2) {
       formattedValue = input;
     } else if (input.length <= 4) {
       formattedValue = `${input.slice(0, 2)}-${input.slice(2)}`;
     } else {
-      formattedValue = `${input.slice(0, 2)}-${input.slice(2, 4)}-${input.slice(4)}`;
+      formattedValue = `${input.slice(0, 2)}-${input.slice(2, 4)}-${input.slice(
+        4
+      )}`;
     }
 
     setValue(formattedValue);
@@ -82,4 +83,4 @@ function DateOfBirthInput({ placeholder }) {
   );
 }
 
-export default DateOfBirthInput;
+export default DateInput;

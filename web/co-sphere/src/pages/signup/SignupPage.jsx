@@ -4,7 +4,7 @@ import styled from "styled-components";
 import BackButton from "../../components/buttons/BackButton";
 import FilledButton from "../../components/buttons/FilledButton";
 import InterestChip from "../../components/input/chip/InterestChip";
-import DateOfBirthInput from "../../components/input/DateOfBirthInput";
+import DateInput from "../../components/input/DateInput";
 import CustomDropDown from "../../components/input/dropdown/CustomDropDown";
 import InputbarWithAnimatedPlaceholder from "../../components/input/InputbarWithAnimatedPlaceholder";
 import OTPInput from "../../components/input/otp/OtpInputBoxes";
@@ -86,7 +86,7 @@ function BasicDetailsWidget(pageNumber, setPageNumber) {
         <InputbarWithAnimatedPlaceholder placeholder="Email Address" />
         <InputbarWithAnimatedPlaceholder placeholder="Full Name" />
         <PhoneNumberInput placeholder="Phone" />
-        <DateOfBirthInput placeholder={"Date Of Birth"} />
+        <DateInput placeholder={"Date Of Birth"} />
         <FilledButton
           placeholder={"Continue"}
           onClick={() => {

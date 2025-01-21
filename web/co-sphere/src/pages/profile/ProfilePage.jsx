@@ -137,7 +137,7 @@ const Padding = styled.div`
   max-height: 600px;
 `;
 const EditController = styled.div`
-  min-height: 250px;
+  min-height: 200px;
   min-width: 250px;
   max-height: 500px;
   max-width: 600px;
