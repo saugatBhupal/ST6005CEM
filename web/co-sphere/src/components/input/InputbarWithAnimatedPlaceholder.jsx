@@ -55,7 +55,9 @@ function InputbarWithAnimatedPlaceholder(props) {
         placeholder=" "
         id="input-bar"
         {...(props.value && { value: props.value })}
-        onChange={() => {}}
+        onChange={(e) => {
+          props.onChange && props.onChange(e.target.value);
+        }}
       />
       <Label htmlFor="input-bar">{props.placeholder}</Label>
     </Wrapper>

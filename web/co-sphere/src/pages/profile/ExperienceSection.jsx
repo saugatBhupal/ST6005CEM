@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import TextAreaWithActions from "../../components/input/textarea/TextAreaWithActions";
+import ActionChip from "../../components/widget/chip/ActionChip";
 import ExperienceCard from "../../components/widget/experience/ExperienceCard";
 import { Colors } from "../../constants/Colors";
 
@@ -23,7 +24,11 @@ const Column = styled.div`
   display: flex;
   flex-direction: column;
 `;
-function ExperienceSection() {
+const Center = styled.div`
+  width: fit-content;
+  margin: 10px auto;
+`;
+function ExperienceSection({ setOverlay, setOverlayWidget }) {
   const isUser = true;
   return (
     <Wrapper>
@@ -49,10 +54,15 @@ function ExperienceSection() {
         <ExperienceCard />
         <ExperienceCard />
         <ExperienceCard />
-        <ExperienceCard />
-        <ExperienceCard />
-        <ExperienceCard />
-        <ExperienceCard />
+        <Center>
+          <ActionChip
+            title={"Add More"}
+            onClick={() => {
+              setOverlay(true);
+              setOverlayWidget();
+            }}
+          />
+        </Center>
       </Column>
     </Wrapper>
   );

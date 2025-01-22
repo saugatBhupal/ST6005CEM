@@ -35,7 +35,6 @@ function EditSkills() {
           //   value="Enter Skill to add"
           type="text"
           onChange={() => {
-            alert("");
           }}
         />
 

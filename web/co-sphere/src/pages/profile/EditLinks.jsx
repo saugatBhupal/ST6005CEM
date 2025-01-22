@@ -33,39 +33,22 @@ function EditLinks() {
           placeholder="Name"
           value="John Cena"
           type="text"
-          onChange={() => {
-            alert("");
-          }}
+          onChange={() => {}}
         />
         <InputBarWithAnimatedPlaceholder
           placeholder="LinkedIn"
           value="www.linkedin.com"
           type="text"
-          onChange={() => {
-            alert("");
-          }}
+          onChange={() => {}}
         />
-        <InputBarWithAnimatedPlaceholder
-          placeholder="Website"
-          type="text"
-          onChange={() => {
-            alert("");
-          }}
-        />
+        <InputBarWithAnimatedPlaceholder placeholder="Website" type="text" />
         <InputBarWithAnimatedPlaceholder
           placeholder="Instagram"
           type="text"
-          onChange={() => {
-            alert("");
-          }}
+          onChange={() => {}}
         />
         <Button>
-          <FilledButton
-            placeholder={"Save"}
-            onClick={() => {
-              alert("Saved");
-            }}
-          />
+          <FilledButton placeholder={"Save"} onClick={() => {}} />
         </Button>
       </Container>
     </Wrapper>

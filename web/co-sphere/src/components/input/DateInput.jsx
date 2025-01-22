@@ -4,7 +4,7 @@ import { Colors } from "../../constants/Colors";
 
 const Wrapper = styled.div`
   position: relative;
-  width: 388px;
+  max-width: 388px;
 `;
 
 const Input = styled.input`
@@ -44,6 +44,7 @@ const Label = styled.label`
   left: 20px;
   font-size: 16px;
   color: #4c4c4ca8;
+  background-color: ${Colors.justWhite};
   pointer-events: none;
   transition: all 0.3s ease;
 `;

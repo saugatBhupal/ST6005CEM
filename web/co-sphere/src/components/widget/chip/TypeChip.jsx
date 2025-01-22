@@ -29,7 +29,6 @@ const Wrapper = styled.div`
 `;
 
 function TypeChip({ type }) {
-  console.log(type);
   return <Wrapper type={type}>{type}</Wrapper>;
 }
 

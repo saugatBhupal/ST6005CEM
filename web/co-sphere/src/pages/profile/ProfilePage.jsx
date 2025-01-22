@@ -8,6 +8,8 @@ import SettingIcon from "../../components/icon/SettingIcon";
 import ActionChip from "../../components/widget/chip/ActionChip";
 import SkillChip from "../../components/widget/chip/SkillChip";
 import SuccesssChip from "../../components/widget/chip/SuccesssChip";
+import EditEducation from "../../components/widget/education/EditEducation";
+import EditExperience from "../../components/widget/experience/EditExperience";
 import { Colors } from "../../constants/Colors";
 import LoggedInUserLayout from "../common/LoggedInUserLayout";
 import AboutSection from "./AboutSection";
@@ -139,11 +141,12 @@ const Padding = styled.div`
 const EditController = styled.div`
   min-height: 200px;
   min-width: 250px;
-  max-height: 500px;
+  max-height: 600px;
   max-width: 600px;
   margin: auto;
   border-radius: 12px;
   background-color: white;
+  overflow-y: scroll;
 `;
 function ProfilePage() {
   const [currentTab, setCurrentTab] = useState("about");
@@ -165,7 +168,16 @@ function ProfilePage() {
                     e.stopPropagation();
                   }}
                 >
-                  {overlayWidget && overlayWidget}
+                  {console.log(overlayWidget)}
+                  {overlayWidget && overlayWidget === "EditLinks" ? (
+                    <EditLinks />
+                  ) : overlayWidget === "EditSkills" ? (
+                    <EditSkills />
+                  ) : overlayWidget === "EditExperience" ? (
+                    <EditExperience />
+                  ) : (
+                    <EditEducation />
+                  )}
                 </EditController>
               </Overlay>
             )}
@@ -201,7 +213,7 @@ function ProfilePage() {
                       </li>
                       <li
                         onClick={() => {
-                          setOverlayWidget(EditLinks);
+                          setOverlayWidget("EditLinks");
                           setOverlay(!overlay);
                         }}
                       >
@@ -224,7 +236,7 @@ function ProfilePage() {
                       <ActionChip
                         title={"Add More"}
                         onClick={() => {
-                          setOverlayWidget(EditSkills);
+                          setOverlayWidget("EditSkills");
                           setOverlay(!overlay);
                         }}
                       />
@@ -281,9 +293,19 @@ function ProfilePage() {
                       {currentTab && currentTab === "about" ? (
                         <AboutSection />
                       ) : currentTab === "experience" ? (
-                        <ExperienceSection />
+                        <ExperienceSection
+                          setOverlay={setOverlay}
+                          setOverlayWidget={() => {
+                            setOverlayWidget("EditExperience");
+                          }}
+                        />
                       ) : currentTab === "education" ? (
-                        <EducationSection />
+                        <EducationSection
+                          setOverlay={setOverlay}
+                          setOverlayWidget={() => {
+                            setOverlayWidget("EditEducation");
+                          }}
+                        />
                       ) : currentTab === "history" ? (
                         <HistorySection />
                       ) : currentTab === "reviews" ? (
