@@ -28,7 +28,10 @@ function LoggedInUserLayout({ body }) {
       <Container>
         <MenubarDashboard />
         <MenubarSpacerDashboard />
-        <Body>{body}</Body>
+        <Body>
+          <br />
+          {body}
+        </Body>
       </Container>
     </Wrapper>
   );

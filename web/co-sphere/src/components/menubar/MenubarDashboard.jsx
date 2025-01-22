@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../constants/Colors";
 import MessageIcon from "../icon/MessageIcon";
@@ -46,12 +47,17 @@ const BrowseIcon = styled.div`
   }
 `;
 export default function MenubarDashboard() {
+  const navigate = useNavigate();
   return (
     <Wrapper>
       <Container>
         <SearchInputMenubar />
         <Right>
-          <MessageIcon />
+          <MessageIcon
+            onClick={() => {
+              navigate("/chat");
+            }}
+          />
           <NotificationIcon>
             <svg
               viewBox="0 0 24 30"
