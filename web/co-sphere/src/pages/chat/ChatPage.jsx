@@ -17,6 +17,7 @@ const Left = styled.div`
 `;
 const Right = styled.div`
   flex: 1;
+  width: auto;
 `;
 function ChatPage() {
   return (

@@ -14,6 +14,8 @@ const Wrapper = styled.div`
 `;
 const Logo = styled.div`
   height: 70px;
+  width: 100%;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-around;

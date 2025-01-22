@@ -12,4 +12,6 @@ export class Colors {
   static menuUnselected = "#9199AF";
   static menuSelected = "#F0F1F3";
   static lightMainBlue = "#1A6EC220";
+  static chatBackground = "#F9FBFC";
+  static messageSenderBackground = "#3680cb40";
 }

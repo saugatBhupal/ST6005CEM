@@ -8,7 +8,6 @@ const Wrapper = styled.div`
   width: 100%;
   background-color: ${Colors.justWhite};
   border-bottom: 1px solid ${Colors.greyOutlineShadow};
-  border-left: 1px solid ${Colors.greyOutlineShadow};
   margin-top: -1px !important;
 `;
 const Container = styled.div`

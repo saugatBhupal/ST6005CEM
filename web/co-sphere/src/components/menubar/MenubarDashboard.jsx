@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   width: inherit;
   background-color: ${Colors.justWhite};
   border-bottom: 1px solid ${Colors.greyOutlineShadow};
+  border-left: 1px solid ${Colors.greyOutlineShadow};
   position: fixed;
 `;
 const Container = styled.div`
