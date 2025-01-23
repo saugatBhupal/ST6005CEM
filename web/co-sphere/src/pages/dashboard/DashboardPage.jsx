@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import MenubarDashboard from "../../components/menubar/MenubarDashboard";
 import SideMenuBarDesktop from "../../components/menubar/sideMenuBar/SideMenuBarDesktop";
+import NotificationWidget from "../../components/notification/NotificationWidget";
 import MenubarSpacerDashboard from "../../components/spacer/MenubarSpacerDashboard";
 import BasicWidgetTitleBlock from "../../components/textBlocks/BasicWidgetTitleBlock";
 import ApplicationsCreatedByMeWidget from "../../components/widget/application/ApplicationsCreatedByMeWidget";
@@ -24,7 +25,9 @@ const Flex = styled.div`
   margin-top: 20px;
   display: flex;
   height: 100%;
-  width: fit-content;
+  width: 100%;
+  justify-content: space-around;
+  margin: initial 50px;
   /* margin: auto; */
 `;
 const Right = styled.div`
@@ -35,6 +38,15 @@ const Right = styled.div`
 const MyApplications = styled.div``;
 const Left = styled.div`
   height: 100%;
+  overflow-y: scroll;
+`;
+const Notification = styled.div`
+  height: 100%;
+  min-width: 350px;
+  max-width: 450px;
+  width: 100%;
+  margin: 30px;
+  margin-top: 40px;
   overflow-y: scroll;
 `;
 const Body = styled.div`
@@ -93,6 +105,9 @@ function DashboardPage() {
               <TasksAssignedToMeWidget />
               <Gap />
             </Right>
+            <Notification>
+              <NotificationWidget />
+            </Notification>
           </Flex>
         </Body>
       </Container>
