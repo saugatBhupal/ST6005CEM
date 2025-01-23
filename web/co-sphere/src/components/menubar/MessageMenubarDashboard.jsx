@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   width: 100%;
   background-color: ${Colors.justWhite};
   border-bottom: 1px solid ${Colors.greyOutlineShadow};
-  margin-top: -1px !important;
+  margin-top: 0px !important;
 `;
 const Container = styled.div`
   display: flex;
