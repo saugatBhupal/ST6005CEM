@@ -101,6 +101,23 @@ function SideMenuBarDesktop(props) {
             <a href="/dashboard">Home</a>
           </MenuItem>
           <ul>
+            <MenuItem selected={props.current === "profile"}>
+              <svg
+                width="23"
+                height="23"
+                viewBox="0 0 23 23"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.5 6.25V16.75M6.25 11.5H16.75M8.35 22H14.65C19.9 22 22 19.9 22 14.65V8.35C22 3.1 19.9 1 14.65 1H8.35C3.1 1 1 3.1 1 8.35V14.65C1 19.9 3.1 22 8.35 22ZM9.4 16.75H13.6C15.3325 16.75 16.75 15.3325 16.75 13.6V9.4C16.75 7.6675 15.3325 6.25 13.6 6.25H9.4C7.6675 6.25 6.25 7.6675 6.25 9.4V13.6C6.25 15.3325 7.6675 16.75 9.4 16.75Z"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <a href="/profile">Profile</a>
+            </MenuItem>
             <MenuItem selected={props.current === "jobs"}>
               <svg
                 width="23"

@@ -57,7 +57,9 @@ const MessageSection = styled.div`
   padding-right: 40px;
   padding-left: 10px;
 `;
-
+const Gap = styled.div`
+  padding: 10px;
+`;
 function ChatRoomSection() {
   return (
     <Wrapper>
@@ -98,6 +100,7 @@ function ChatRoomSection() {
             message={"Hello nice to meet you my friend? Whats up my bro!"}
             isUser={false}
           />
+          <Gap> </Gap>
         </Center>
         <Bottom>
           <MessageSection>

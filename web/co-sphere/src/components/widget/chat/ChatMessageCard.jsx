@@ -23,7 +23,8 @@ const Flex = styled.div`
 const Message = styled.div`
   padding: 20px;
   border-radius: 18px;
-  margin-left: 10px;
+  margin-left: ${({ isUser }) => (isUser ? `0px;` : `10px`)};
+  margin-right: ${({ isUser }) => (isUser ? `10px;` : `0px`)};
   background-color: ${({ isUser }) =>
     isUser ? `${Colors.mainBlue};` : `${Colors.messageSenderBackground};`};
   color: ${({ isUser }) => (isUser ? `${Colors.justWhite};` : `initial`)};
