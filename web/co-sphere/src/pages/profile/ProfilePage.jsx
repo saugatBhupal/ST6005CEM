@@ -11,6 +11,7 @@ import SuccesssChip from "../../components/widget/chip/SuccesssChip";
 import EditEducation from "../../components/widget/education/EditEducation";
 import EditExperience from "../../components/widget/experience/EditExperience";
 import { Colors } from "../../constants/Colors";
+import { FontSize } from "../../constants/FontSize";
 import LoggedInUserLayout from "../common/LoggedInUserLayout";
 import AboutSection from "./AboutSection";
 import EditLinks from "./EditLinks";
@@ -59,12 +60,13 @@ const Profile = styled.div`
   text-align: center;
   a {
     color: ${Colors.justBlack};
-    font-size: 18px;
+    font-size: ${FontSize.medium};
     font-weight: 400;
   }
 `;
 const Address = styled.div`
   color: ${Colors.subtitleBlack};
+  font-size: ${FontSize.medium};
 `;
 
 const ActionsFlex = styled.div`
@@ -72,11 +74,11 @@ const ActionsFlex = styled.div`
   ul {
     padding-left: 0px !important;
     display: flex;
-    font-size: 14px;
+    font-size: ${FontSize.extraSmall};
     justify-content: space-between;
   }
   li {
-    font-weight: 500;
+    font-weight: 400;
     color: ${Colors.subtitleBlack};
     list-style: none;
     height: 45px;
@@ -119,10 +121,10 @@ const TabContainer = styled.div`
 const Li = styled.li`
   cursor: pointer;
   list-style: none;
-  font-size: 16px;
+  font-size: ${FontSize.medium};
   color: ${({ current }) =>
     current ? `${Colors.mainBlue}` : `${Colors.subtitleBlack}`};
-  font-weight: ${({ current }) => (current ? `500` : `300`)};
+  font-weight: ${({ current }) => (current ? `400` : `300`)};
 `;
 const ContentContainer = styled.div`
   max-width: 500px;
@@ -155,6 +157,7 @@ function ProfilePage() {
   return (
     <>
       <LoggedInUserLayout
+        page={"profile"}
         body={
           <>
             {overlay && (

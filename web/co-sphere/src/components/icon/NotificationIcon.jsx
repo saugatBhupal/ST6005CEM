@@ -7,8 +7,8 @@ const Icon = styled.div`
   align-items: center;
   cursor: pointer;
   svg {
-    height: 24px;
-    width: 24px;
+    height: 22px;
+    width: 22px;
   }
   &:hover {
     svg {

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import EsewaLogo from "../../../assets/images/logo/esewa-logo.png";
 import { Colors } from "../../../constants/Colors";
+import { FontSize } from "../../../constants/FontSize";
 import TypeChip from "../chip/TypeChip";
 
 const Wrapper = styled.div`
@@ -18,27 +19,27 @@ const Wrapper = styled.div`
   }
 `;
 const Container = styled.div`
-  height: 120px;
+  height: 100px;
 `;
 const Top = styled.div`
   div {
     align-items: initial;
   }
   a {
-    font-size: 12px;
+    font-size: ${FontSize.extraSmall};
     color: ${Colors.subtitleBlack};
   }
   img {
-    height: 61px;
+    height: 50px;
     border-radius: 8px;
-    margin-right: 5px;
+    margin-right: 8px;
   }
 `;
 const Specifications = styled.div`
   ul {
     list-style: none;
     display: flex;
-    font-size: 12px;
+    font-size: ${FontSize.extraSmall};
     padding: 0px;
   }
   li {
@@ -48,7 +49,7 @@ const Specifications = styled.div`
   }
 `;
 const Location = styled.div`
-  font-size: 12px;
+  font-size: ${FontSize.extraSmall};
   svg {
     margin-right: 6px;
   }

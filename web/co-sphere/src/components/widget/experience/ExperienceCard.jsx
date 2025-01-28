@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
+import { FontSize } from "../../../constants/FontSize";
 import ProfileIcon from "../../icon/ProfileIcon";
 import TypeChip from "../chip/TypeChip";
 
@@ -28,12 +29,12 @@ const Flex = styled.div`
   display: flex;
 `;
 const Title = styled.div`
-  font-size: 14px;
+  font-size: ${FontSize.small};
   font-weight: 500;
   color: ${Colors.mainBlue};
 `;
 const SubTitle = styled.div`
-  font-size: 14px;
+  font-size: ${FontSize.small};
   font-weight: 300;
   color: ${Colors.subtitleBlack};
 `;
@@ -50,7 +51,7 @@ function ExperienceCard() {
     <Wrapper>
       <Flex>
         <Left>
-          <ProfileIcon height={"85px"} />
+          <ProfileIcon height={"70px"} />
         </Left>
         <Center>
           <Column>

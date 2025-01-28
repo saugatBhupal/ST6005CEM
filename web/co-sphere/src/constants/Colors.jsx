@@ -14,4 +14,6 @@ export class Colors {
   static lightMainBlue = "#1A6EC220";
   static chatBackground = "#F9FBFC";
   static messageSenderBackground = "#3680cb40";
+  static lightSelected = "#F8F8F8";
+  static deepOrange = "#E3984E";
 }

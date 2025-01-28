@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
+import { FontSize } from "../../../constants/FontSize";
 
 const Wrapper = styled.div`
   width: 400px;
@@ -27,7 +28,7 @@ const SearchIcon = styled.div`
   svg {
     background-color: ${Colors.justWhite};
     transition-duration: 0.4s;
-    height: 30px;
+    height: 25px;
     stroke: ${Colors.greyOutline};
   }
 `;
@@ -35,9 +36,9 @@ const SearchIcon = styled.div`
 const InputBox = styled.input`
   background-color: transparent;
   border: none;
-  height: 70px;
+  height: 60px;
   width: 100%;
-  font-size: 16px;
+  font-size: ${FontSize.small};
   font-weight: 200;
   color: ${Colors.subtitleBlack};
   padding-left: 50px;

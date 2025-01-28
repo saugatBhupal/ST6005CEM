@@ -18,7 +18,7 @@ const Container = styled.div`
 const Top = styled.div`
   border-left: 0.5px solid ${Colors.greyOutlineShadow};
   border-bottom: 0.5px solid ${Colors.greyOutlineShadow};
-  height: 42px;
+  height: 32px;
   display: flex;
   justify-content: space-between;
   padding: 15px 40px;
@@ -30,7 +30,7 @@ const Center = styled.div`
   flex-grow: 1;
   background-color: ${Colors.chatBackground};
   padding: 20px;
-  max-height: calc(100% - 120px - 80px);
+  max-height: calc(100% - 120px - 60px);
   overflow-y: scroll;
   display: flex;
   flex-direction: column-reverse;
@@ -38,7 +38,7 @@ const Center = styled.div`
 `;
 
 const Bottom = styled.div`
-  height: 80px;
+  height: 60px;
   background-color: ${Colors.justWhite};
   border-left: 0.5px solid ${Colors.greyOutlineShadow};
   border-top: 0.5px solid ${Colors.greyOutlineShadow};

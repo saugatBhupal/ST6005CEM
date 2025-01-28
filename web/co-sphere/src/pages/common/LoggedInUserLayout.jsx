@@ -11,8 +11,8 @@ const Wrapper = styled.div`
   background-color: ${Colors.backgroundWhite};
 `;
 const Container = styled.div`
-  margin-left: 300px;
-  width: calc(100vw - 300px);
+  margin-left: 250px;
+  width: calc(100vw - 250px);
 `;
 
 const Body = styled.div`
@@ -21,15 +21,15 @@ const Body = styled.div`
   width: inherit;
 `;
 
-function LoggedInUserLayout({ body }) {
+function LoggedInUserLayout({ body, page }) {
   return (
     <Wrapper>
-      <SideMenuBarDesktop current={"home"} />
+      <SideMenuBarDesktop current={page ? page : "home"} />
       <Container>
         <MenubarDashboard />
         <MenubarSpacerDashboard />
         <Body>
-          <br />
+          {/* <br /> */}
           {body}
         </Body>
       </Container>

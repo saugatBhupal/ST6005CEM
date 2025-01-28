@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../constants/Colors";
+import { FontSize } from "../../constants/FontSize";
 import FilledButton from "../buttons/FilledButton";
 
 const Wrapper = styled.div`
-  height: 60px;
+  height: 50px;
   width: 100%;
   background-color: ${Colors.justWhite};
   border-bottom: 1px solid ${Colors.greyOutlineShadow};
@@ -16,14 +17,16 @@ const Container = styled.div`
   align-items: center;
   background-color: ${Colors.justWhite};
   justify-content: space-between;
-  font-size: 16px;
+  font-size: ${FontSize.small};
   font-weight: 200;
   margin: 0px 50px;
 `;
 const Button = styled.div`
   width: 100px;
   button {
-    height: 40px !important;
+    height: 35px !important;
+    width: 80px;
+    font-size: ${FontSize.small};
   }
   background-color: transparent;
 `;

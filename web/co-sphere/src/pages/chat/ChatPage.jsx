@@ -6,7 +6,7 @@ import ChatRoomSection from "./ChatRoomSection";
 
 const Wrapper = styled.div`
   width: 100%;
-  height: calc(100vh - 110px);
+  height: calc(100vh - 100px);
 `;
 const Container = styled.div`
   height: 100%;

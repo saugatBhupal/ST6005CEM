@@ -2,17 +2,18 @@ import React from "react";
 import styled from "styled-components";
 import TextAreaWithActions from "../../components/input/textarea/TextAreaWithActions";
 import { Colors } from "../../constants/Colors";
+import { FontSize } from "../../constants/FontSize";
 
 const Wrapper = styled.div``;
 const Title = styled.div`
-  font-size: 16px;
+  font-size: ${FontSize.small};
   font-weight: 500;
-  color: ${Colors.subtitleBlack};
+  color: ${Colors.justBlack};
   margin-bottom: 10px;
 `;
 const Description = styled.div`
-  font-size: 16px;
   color: ${Colors.subtitleBlack};
+  font-size: ${FontSize.small};
   margin: 10px auto;
 `;
 const Flex = styled.div`

@@ -4,14 +4,15 @@ import BadgeIcon from "../../../assets/images/badges/badge-1.png";
 import BadgeIcon2 from "../../../assets/images/badges/badge-2.png";
 import BadgeIcon3 from "../../../assets/images/badges/badge-3.png";
 import { Colors } from "../../../constants/Colors";
+import { FontSize } from "../../../constants/FontSize";
 import VerticalProgressBar from "../progressbar/VerticalProgresssbar";
 
 const Wrapper = styled.div``;
 const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 190px);
-  grid-template-rows: repeat(2, 160px);
-  gap: 15px;
+  grid-template-rows: repeat(2, 120px);
+  gap: 10px;
   margin: 20px;
   margin-top: 0;
 `;
@@ -28,14 +29,14 @@ const Box = styled.div`
   align-items: center;
 `;
 const Title = styled.div`
-  font-size: 16px;
+  font-size: ${FontSize.medium};
 `;
 const Content = styled.div`
   img {
     height: 45px;
   }
   span {
-    font-size: 36px;
+    font-size: 30px;
     font-weight: 400;
     text-align: center;
     color: ${Colors.greyOutline};

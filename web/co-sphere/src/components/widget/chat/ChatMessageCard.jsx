@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
+import { FontSize } from "../../../constants/FontSize";
 import ProfileIcon from "../../icon/ProfileIcon";
 
 const Wrapper = styled.div`
@@ -21,8 +22,9 @@ const Flex = styled.div`
   flex-direction: ${({ isUser }) => (isUser ? `row-reverse` : `initial`)};
 `;
 const Message = styled.div`
-  padding: 20px;
+  padding: 15px 18px;
   border-radius: 18px;
+  font-size: ${FontSize.small};
   margin-left: ${({ isUser }) => (isUser ? `0px;` : `10px`)};
   margin-right: ${({ isUser }) => (isUser ? `10px;` : `0px`)};
   background-color: ${({ isUser }) =>
@@ -31,7 +33,7 @@ const Message = styled.div`
 `;
 const Time = styled.div`
   font-weight: 300;
-  font-size: 12px;
+  font-size: ${FontSize.extraSmall};
   color: ${Colors.subtitleBlack};
   align-self: flex-end;
   margin-top: 2px;

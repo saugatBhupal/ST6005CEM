@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import EsewaLogo from "../../../assets/images/logo/esewa-logo.png";
 import { Colors } from "../../../constants/Colors";
+import { FontSize } from "../../../constants/FontSize";
 
 const Wrapper = styled.div`
   background-color: ${Colors.justWhite};
@@ -26,11 +27,10 @@ const Top = styled.div`
     justify-content: left;
   }
   a {
-    font-size: 12px;
+    font-size: ${FontSize.tiny};
     color: ${Colors.subtitleBlack};
   }
   img {
-    height: 51px;
     border-radius: 50%;
     margin-right: 5px;
   }
@@ -45,7 +45,7 @@ const Stats = styled.div`
     list-style: none;
     display: flex;
     justify-content: space-evenly;
-    font-size: 12px;
+    font-size: ${FontSize.extraSmall};
     padding: 15px 0px;
     padding-bottom: 0px;
   }
@@ -63,7 +63,7 @@ const Stats = styled.div`
 `;
 const Stat = styled.div`
   b {
-    font-size: 18px;
+    font-size: ${FontSize.medium};
     color: ${Colors.justBlack};
     font-weight: 400;
   }
@@ -86,6 +86,11 @@ const Flex = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-size: ${FontSize.medium};
+  img {
+    height: 32px;
+    margin-right: 8px;
+  }
 `;
 const Column = styled.div`
   height: 100%;
@@ -101,8 +106,8 @@ function ApplicationsCreatedByMeWidget() {
         <Column>
           <Dot>
             <svg
-              width="30"
-              height="30"
+              width="20"
+              height="20"
               viewBox="0 0 20 6"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"

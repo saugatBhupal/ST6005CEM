@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
+import { FontSize } from "../../../constants/FontSize";
 import TextAreaFilledButton from "../../buttons/TextAreaFilledButton";
 import TextAreaOutlinedButton from "../../buttons/TextAreaOutlinedButton";
 
@@ -22,7 +23,7 @@ const StyledInput = styled.textarea`
   outline: none;
   min-height: 150px;
   height: inherit;
-  font-size: 16px;
+  font-size: ${FontSize.small};
   font-weight: 300;
   color: ${Colors.subtitleBlack};
   text-align: justify;
@@ -34,7 +35,7 @@ const StyledInput = styled.textarea`
 
 const CharacterCount = styled.div`
   text-align: right;
-  font-size: 14px;
+  font-size: ${FontSize.small};
   padding: 5px 10px;
   color: ${Colors.subtitleBlack};
 `;

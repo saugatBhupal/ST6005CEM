@@ -1,0 +1,14 @@
+{
+  "name": "co-sphere-api",
+  "version": "1.0.0",
+  "description": "Api for co-sphere",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Saugat Singh",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

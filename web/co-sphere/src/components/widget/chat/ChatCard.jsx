@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
+import { FontSize } from "../../../constants/FontSize";
 import ProfileIcon from "../../icon/ProfileIcon";
 
 const Wrapper = styled.div`
-  height: 95px;
+  height: 85px;
   width: 100%;
   border: 0.5px solid ${Colors.greyOutlineShadow};
   cursor: pointer;
@@ -23,24 +24,26 @@ const Container = styled.div`
 
 const Flex = styled.div`
   padding: 15px;
+  padding-top: 12px;
   padding-bottom: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 const Message = styled.div`
-  padding: 0px 15px;
-  font-size: 16px;
+  padding: 0px 25px;
+  font-size: ${FontSize.medium};
   color: ${Colors.subtitleBlack};
   font-weight: 200;
 `;
 const Name = styled.div`
   font-weight: 400;
   margin-left: 5px;
-  font-size: 18px;
+  font-size: ${FontSize.medium};
 `;
 const Time = styled.div`
   color: ${Colors.subtitleBlack};
+  font-size: ${FontSize.small};
   font-weight: 200;
 `;
 
@@ -50,7 +53,7 @@ function ChatCard({ seen }) {
       <Container seen={seen}>
         <Flex>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <ProfileIcon height={"40px"} />
+            <ProfileIcon height={"30px"} />
             <Name>Lexi Anderson</Name>
           </div>
           <Time> 1h</Time>

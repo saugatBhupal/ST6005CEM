@@ -2,12 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import LogoImage from "../../assets/images/logo/logo.svg";
 import { Colors } from "../../constants/Colors";
+import { FontSize } from "../../constants/FontSize";
 
 const Wrapper = styled.div``;
 const Container = styled.div`
   display: flex;
   align-items: center;
-  width: 150px;
+  width: 140px;
   justify-content: space-between;
 `;
 const LogoImg = styled.div`
@@ -15,7 +16,7 @@ const LogoImg = styled.div`
 `;
 const LogoText = styled.div`
   color: ${Colors.mainBlue};
-  font-size: 20px;
+  font-size: ${FontSize.large};
   font-weight: 500;
 `;
 function LogoMenu() {
@@ -23,7 +24,7 @@ function LogoMenu() {
     <Wrapper>
       <Container>
         <LogoImg>
-          <img src={LogoImage} alt="logo" height={"45px"} />
+          <img src={LogoImage} alt="logo" height={"35px"} />
         </LogoImg>
         <LogoText>Co-Sphere</LogoText>
       </Container>

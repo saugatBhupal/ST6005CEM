@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import MenubarDashboard from "../../components/menubar/MenubarDashboard";
 import SideMenuBarDesktop from "../../components/menubar/sideMenuBar/SideMenuBarDesktop";
-import NotificationWidget from "../../components/notification/NotificationWidget";
 import MenubarSpacerDashboard from "../../components/spacer/MenubarSpacerDashboard";
 import BasicWidgetTitleBlock from "../../components/textBlocks/BasicWidgetTitleBlock";
 import ApplicationsCreatedByMeWidget from "../../components/widget/application/ApplicationsCreatedByMeWidget";
 import MyApplicationWidget from "../../components/widget/application/MyApplicationWidget";
+import NotificationWidget from "../../components/widget/notification/NotificationWidget";
 import StatsListWidget from "../../components/widget/stats/StatsListWidget";
 import StatsWidget from "../../components/widget/stats/StatsWidget";
 import TasksAssignedToMeWidget from "../../components/widget/task/TasksAssignedToMeWidget";
@@ -18,8 +18,8 @@ const Wrapper = styled.div`
   background-color: ${Colors.backgroundWhite};
 `;
 const Container = styled.div`
-  margin-left: 300px;
-  width: calc(100vw - 300px);
+  margin-left: 250px;
+  width: calc(100vw - 250px);
 `;
 const Flex = styled.div`
   margin-top: 20px;
@@ -31,7 +31,7 @@ const Flex = styled.div`
   /* margin: auto; */
 `;
 const Right = styled.div`
-  width: 500px;
+  width: 450px;
   height: 100%;
   overflow-y: scroll;
 `;
@@ -42,9 +42,9 @@ const Left = styled.div`
 `;
 const Notification = styled.div`
   height: 100%;
-  min-width: 350px;
+  min-width: 300px;
   max-width: 450px;
-  width: 100%;
+  flex-grow: 1;
   margin: 30px;
   margin-top: 40px;
   overflow-y: scroll;

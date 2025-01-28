@@ -2,18 +2,18 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
-import FilledButton from "../../buttons/FilledButton";
+import { FontSize } from "../../../constants/FontSize";
 import LogoMenu from "../../logo/LogoMenu";
 
 const Wrapper = styled.div`
   height: 100vh;
-  width: 300px;
+  width: 250px;
   background-color: ${Colors.justWhite};
   border-right: 1px solid ${Colors.greyOutlineShadow};
   position: fixed;
 `;
 const Logo = styled.div`
-  height: 70px;
+  height: 60px;
   width: 100%;
   z-index: 1;
   display: flex;
@@ -24,7 +24,7 @@ const Logo = styled.div`
 `;
 const Container = styled.div`
   display: flex;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 60px);
   flex-direction: column;
 `;
 
@@ -44,7 +44,7 @@ const Menu = styled.div`
 `;
 const MenuItem = styled.li`
   list-style: none;
-  font-size: 16px;
+  font-size: ${FontSize.small};
   font-weight: 400;
   color: ${({ selected }) =>
     selected ? `${Colors.justBlack}` : `${Colors.menuUnselected}`};
@@ -69,11 +69,31 @@ const MenuItem = styled.li`
   }
 `;
 const End = styled.div`
-  width: 60%;
+  width: 100%;
   margin: auto;
   margin-top: auto;
   height: fit-content;
 `;
+const EndContainer = styled.div`
+  height: 50px;
+  width: 100%;
+  border-top: 0.5px solid ${Colors.greyOutlineShadow};
+  background-color: ${Colors.lightSelected};
+  font-size: ${FontSize.small};
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: ${Colors.menuSelected};
+  }
+  div {
+    width: fit-content;
+    margin: auto;
+    color: ${Colors.deepOrange};
+    font-weight: 400;
+  }
+`;
+
 function SideMenuBarDesktop(props) {
   const navigate = useNavigate();
   return (
@@ -263,12 +283,9 @@ function SideMenuBarDesktop(props) {
           </ul>
         </Menu>
         <End>
-          <FilledButton
-            placeholder="Sign out"
-            onClick={() => {
-              navigate("/");
-            }}
-          />
+          <EndContainer>
+            <div>Sign Out</div>
+          </EndContainer>
         </End>
       </Container>
     </Wrapper>

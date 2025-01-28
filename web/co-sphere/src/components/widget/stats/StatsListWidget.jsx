@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
+import { FontSize } from "../../../constants/FontSize";
 
 const Wrapper = styled.div`
   background-color: ${Colors.justWhite};
@@ -28,8 +29,9 @@ const Bottom = styled.div`
   }
 `;
 const Flex = styled.div`
+  font-size: ${FontSize.small};
   display: flex;
-  padding: 20px;
+  padding: 15px;
   justify-content: space-between;
   span {
     color: ${Colors.greyOutline};

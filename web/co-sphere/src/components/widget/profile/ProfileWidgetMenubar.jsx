@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
+import { FontSize } from "../../../constants/FontSize";
 import ProfileIcon from "../../icon/ProfileIcon";
 
 const Wrapper = styled.div`
@@ -10,17 +11,17 @@ const Wrapper = styled.div`
 const Container = styled.div`
   display: flex;
   align-items: center;
-  width: 120px;
+  width: 115px;
   justify-content: space-between;
 `;
 const Right = styled.div`
   display: flex;
   flex-direction: column;
   b {
-    font-size: 14px;
+    font-size: ${FontSize.small};
   }
   a {
-    font-size: 12px;
+    font-size: ${FontSize.extraSmall};
     color: ${Colors.greyOutline};
   }
 `;
@@ -28,7 +29,7 @@ function ProfileWidgetMenubar() {
   return (
     <Wrapper>
       <Container>
-        <ProfileIcon height={"45px"} />
+        <ProfileIcon height={"35px"} />
         <Right>
           <b>John Cena</b>
           <a>Settings</a>
