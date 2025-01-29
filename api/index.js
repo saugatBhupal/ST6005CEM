@@ -15,6 +15,12 @@ app.use(cookieParser());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 connectDB();
 
 if (process.env.NODE_ENV === "development") {
@@ -22,7 +28,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 //================== Routes =================
-const userRoute = require("./routes/userRoute");
+const userRoute = require("./routes/authRoute");
 
 //===========================================
 

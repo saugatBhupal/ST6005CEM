@@ -4,7 +4,6 @@ const bcrypt = require("bcryptjs");
 async function generateDefaultPassword() {
   var password = crypto.randomBytes(10).toString("hex");
   password = await encrypt(password);
-  console.log("pass", password);
   return password;
 }
 
@@ -24,9 +23,15 @@ function generateOtpExpiry() {
   date.setMinutes(date.getMinutes() + 5);
   return date;
 }
+
+async function comparePasswords(enteredPassword, actualPassword) {
+  console.log(enteredPassword, actualPassword);
+  return await bcrypt.compare(enteredPassword, actualPassword);
+}
 module.exports = {
   generateDefaultPassword,
   encrypt,
   generateOtp,
   generateOtpExpiry,
+  comparePasswords,
 };

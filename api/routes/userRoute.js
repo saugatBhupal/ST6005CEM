@@ -1,16 +1,8 @@
 const express = require("express");
-const {
-  register,
-  verifyOtp,
-  createPassword,
-  resendOtp,
-  resetPassword,
-} = require("../controllers/authController");
+const { updateProfileImage } = require("../controllers/userController");
+
 const router = express.Router();
 
-router.post("/register", register);
-router.post("/verify-otp", verifyOtp);
-router.post("/create-password", createPassword);
-router.post("/resend-otp", resendOtp);
-router.post("/reset-password", resetPassword);
+router.post("/profile-image", updateProfileImage);
+
 module.exports = router;

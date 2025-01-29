@@ -2,12 +2,14 @@ const asyncHandler = require("../middlewares/async");
 const Interest = require("../models/skill");
 const User = require("../models/user");
 const emailTemplates = require("../utils/emailTemplate");
+const { getSignedJwtToken } = require("../utils/jwtUtils");
 const sendMail = require("../utils/mailUtil");
 const {
   generateDefaultPassword,
   generateOtp,
   generateOtpExpiry,
   encrypt,
+  comparePasswords,
 } = require("../utils/utils");
 
 exports.register = asyncHandler(async (req, res, next) => {
@@ -133,7 +135,7 @@ exports.resendOtp = asyncHandler(async (req, res, next) => {
 
     try {
       const emailTemplate = emailTemplates.verificationEmailMessage(
-        req.body.fullname,
+        user.fullname,
         otp
       );
 
@@ -209,5 +211,30 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Password has been reset",
+  });
+});
+exports.login = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({
+    $or: [
+      { _id: req.body.userID },
+      { email: req.body.email },
+      { phone: req.body.phone },
+    ],
+  });
+  if (!user) {
+    return res.status(400).send({ message: "User doesnt exist" });
+  }
+  if (!(await comparePasswords(req.body.password, user.password))) {
+    return res.status(401).send({ message: "Unauthorized" });
+  }
+  res.status(200).json({
+    success: true,
+    message: "Login successful",
+    data: {
+      _id: user._id,
+      fullname: user.fullname,
+      email: user.email,
+      jwt: getSignedJwtToken(user._id),
+    },
   });
 });
