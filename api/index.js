@@ -22,12 +22,12 @@ if (process.env.NODE_ENV === "development") {
 }
 
 //================== Routes =================
-const auth = require("./routes/userRoute");
+const userRoute = require("./routes/userRoute");
 
 //===========================================
 
 //===================Mount Routers===========
-app.use("/api/v1/auth", auth);
+app.use("/api/v1/auth", userRoute);
 //===========================================
 
 const PORT = process.env.PORT || 5000;

@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-const { type } = require("os");
-const address = require("./address");
-const interest = require("./interest");
 
 const userSchema = new mongoose.Schema({
   fullname: {
@@ -76,20 +72,18 @@ const userSchema = new mongoose.Schema({
     required: false,
     default: null,
   },
-  interest: [
+  interests: [
     {
       type: mongoose.Schema.ObjectId,
-      ref: "Interest",
+      ref: "Skill",
     },
   ],
-});
-
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("modified")) {
-    next();
-  }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  skills: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Skill",
+    },
+  ],
 });
 
 userSchema.methods.getSignedJwtToken = function () {
