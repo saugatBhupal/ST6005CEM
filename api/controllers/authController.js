@@ -50,6 +50,9 @@ exports.register = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "User created successfully",
+    data: {
+      email: req.email,
+    },
   });
 });
 
