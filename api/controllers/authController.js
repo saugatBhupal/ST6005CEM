@@ -12,6 +12,8 @@ const {
   comparePasswords,
 } = require("../utils/utils");
 
+/*Do not return email in response*/
+
 exports.register = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     $or: [{ email: req.body.email }, { phone: req.body.phone }],
@@ -67,7 +69,7 @@ exports.verifyOtp = asyncHandler(async (req, res, next) => {
   if (!user) {
     return res.status(400).send({ message: "User doesnt exist" });
   }
-  if (req.body.type === "verify-user") {
+  if (req.body.type === "verifyUser") {
     if (!(req.body.otp === user.verificationOtp)) {
       return res.status(401).send({ message: "Otp is incorrect" });
     }
@@ -75,7 +77,7 @@ exports.verifyOtp = asyncHandler(async (req, res, next) => {
       return res.status(400).send({ message: "OTP has expired" });
     }
     user.verificationOtp = null;
-  } else if (req.body.type === "reset-password") {
+  } else if (req.body.type === "resetPassword") {
     if (!(req.body.otp === user.resetPasswordOtp)) {
       return res.status(401).send({ message: "Otp is incorrect" });
     }
