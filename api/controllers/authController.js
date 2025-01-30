@@ -234,6 +234,7 @@ exports.login = asyncHandler(async (req, res, next) => {
       _id: user._id,
       fullname: user.fullname,
       email: user.email,
+      profileImage: user.profileImage,
       jwt: getSignedJwtToken(user._id),
     },
   });

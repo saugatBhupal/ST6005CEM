@@ -4,7 +4,9 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const app = express();
+const cloudinary = require("cloudinary");
 const connectDB = require("./config/db");
+const multiparty = require("connect-multiparty");
 
 dotenv.config({
   path: "./config/config.env",
@@ -14,7 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(multiparty());
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -28,12 +30,13 @@ if (process.env.NODE_ENV === "development") {
 }
 
 //================== Routes =================
-const userRoute = require("./routes/authRoute");
-
+const authRoute = require("./routes/authRoute");
+const userRoute = require("./routes/userRoute");
 //===========================================
 
 //===================Mount Routers===========
-app.use("/api/v1/auth", userRoute);
+app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/user", userRoute);
 //===========================================
 
 const PORT = process.env.PORT || 5000;
