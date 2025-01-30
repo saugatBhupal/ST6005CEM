@@ -12,7 +12,6 @@ const {
   comparePasswords,
 } = require("../utils/utils");
 
-/*Do not return email in response*/
 
 exports.register = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
@@ -52,9 +51,6 @@ exports.register = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "User created successfully",
-    data: {
-      email: req.email,
-    },
   });
 });
 
@@ -218,6 +214,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     message: "Password has been reset",
   });
 });
+
 exports.login = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     $or: [

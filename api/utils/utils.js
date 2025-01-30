@@ -14,8 +14,8 @@ async function encrypt(content) {
 }
 
 function generateOtp() {
-  var otp = crypto.randomBytes(3).toString("hex");
-  return otp;
+  const otp = crypto.randomInt(100000, 1000000);
+  return otp.toString();
 }
 
 function generateOtpExpiry() {
