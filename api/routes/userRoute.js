@@ -8,6 +8,7 @@ const {
   getExperience,
   addSkill,
   updateIntro,
+  updateDetails,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -20,5 +21,6 @@ router.post("/add-experience", addExperience);
 router.get("/get-experience/:userID",getExperience);
 router.post("/add-skill/:userID",addSkill);
 router.put('/update-intro/:userID', updateIntro)
+router.put('/update-details/:userID', updateDetails)
 
 module.exports = router;
