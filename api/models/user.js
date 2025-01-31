@@ -104,6 +104,30 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+  experience: [
+    {
+      position: {
+        type: String,
+        required: true,
+      },
+      organization: {
+        type: String,
+        required: true,
+      },
+      status: {
+        type: String,
+        required: true,
+      },
+      from: {
+        type: Date,
+        required: true,
+      },
+      to: {
+        type: Date,
+        required: true,
+      },
+    },
+  ],
 });
 
 userSchema.methods.getSignedJwtToken = function () {

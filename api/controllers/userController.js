@@ -38,6 +38,7 @@ exports.updateProfileImage = asyncHandler(async (req, res, next) => {
     }
   });
 });
+
 exports.addInterests = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     $or: [
@@ -96,6 +97,7 @@ exports.addEducation = asyncHandler(async (req, res, next) => {
     data: educationInfo,
   })
 });
+
 exports.getEducation = asyncHandler(async(req, res, next) =>{
   const user = await User.findOne({
     $or: [
@@ -108,4 +110,46 @@ exports.getEducation = asyncHandler(async(req, res, next) =>{
     return res.status(400).send({message: "User does not exist"});
   }
   return res.status(200).json({ data: user.education });
+});
+
+exports.addExperience = asyncHandler(async(req, res, next) => {
+  const user = await User.findOne({
+    $or: [
+      {_id: req.body.userID},
+      {email: req.body.email},
+      {phone: req.body.phone},
+    ],
+  });
+  if(!user){
+    return res.status(400).send({message: "User does not exist"});
+  }
+  const experienceInfo = {
+    position: req.body.position,
+    organization: req.body.organization,
+    status: req.body.status,
+    from: req.body.from,
+    to: req.body.to
+  };
+  user.experience.push(experienceInfo);
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Experience added",
+    data: experienceInfo,
+  })
+});
+
+exports.getExperience = asyncHandler(async(req, res, next) =>{
+  const user = await User.findOne({
+    $or: [
+      {_id: req.params.userID},
+      {_id: req.body.email},
+      {_id: req.body.phone},
+    ],
+  });
+  if(!user){
+    return res.status(400).send({message: "User does not exist"});
+  }
+  return res.status(200).json({ data: user.experience });
 });
