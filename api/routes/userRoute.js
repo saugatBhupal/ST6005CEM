@@ -9,10 +9,12 @@ const {
   addSkill,
   updateIntro,
   updateDetails,
+  getUserByID,
 } = require("../controllers/userController");
 
 const router = express.Router();
 
+router.get("/:userID", getUserByID)
 router.post("/profile-image", updateProfileImage);
 router.post("/add-interests", addInterests);
 router.post("/add-education", addEducation);

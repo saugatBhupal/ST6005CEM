@@ -4,6 +4,18 @@ const User = require("../models/user");
 const Skill = require("../models/skill")
 const { saveMediaAndReturnUrl } = require("../utils/imageUtils");
 
+exports.getUserByID = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({ _id: req.params.userID });
+  if (!user) {
+    return res.status(404).send({ message: "User not found" });
+  }
+  res.status(200).json({
+    success: true,
+    message: `User`,
+    data: user
+  });
+});
+
 exports.updateProfileImage = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     $or: [
