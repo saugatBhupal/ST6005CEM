@@ -84,6 +84,26 @@ const userSchema = new mongoose.Schema({
       ref: "Skill",
     },
   ],
+  education: [
+    {
+      organization: {
+        type: String,
+        required: true,
+      },
+      degree: {
+        type: String,
+        required: true,
+      },
+      from: {
+        type: Date,
+        required: true,
+      },
+      to: {
+        type: Date,
+        required: true,
+      },
+    },
+  ],
 });
 
 userSchema.methods.getSignedJwtToken = function () {
