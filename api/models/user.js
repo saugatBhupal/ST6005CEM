@@ -72,6 +72,16 @@ const userSchema = new mongoose.Schema({
     required: false,
     default: null,
   },
+  about: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  overview: {
+    type: String,
+    required: false,
+    default: null,
+  },
   interests: [
     {
       type: mongoose.Schema.ObjectId,

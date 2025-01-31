@@ -7,6 +7,7 @@ const {
   addExperience,
   getExperience,
   addSkill,
+  updateIntro,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -18,5 +19,6 @@ router.get("/get-education/:userID",getEducation);
 router.post("/add-experience", addExperience);
 router.get("/get-experience/:userID",getExperience);
 router.post("/add-skill/:userID",addSkill);
+router.put('/update-intro/:userID', updateIntro)
 
 module.exports = router;

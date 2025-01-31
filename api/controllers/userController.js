@@ -189,3 +189,32 @@ exports.addSkill = asyncHandler(async (req, res, next) => {
     data: user.skills,
   });
 });
+
+exports.updateIntro = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({
+    $or: [
+      { _id: req.params.userID },
+      { email: req.body.email },
+      { phone: req.body.phone },
+    ],
+  });
+  if (!user) {
+    return res.status(400).send({ message: "User does not exist" });
+  }
+  if (req.body.about !== undefined) {
+    user.about = req.body.about;
+  }
+  if (req.body.overview !== undefined) {
+    user.overview = req.body.overview;
+  }
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Profile updated successfully",
+    data: {
+      about: user.about,
+      overview: user.overview,
+    },
+  });
+});
