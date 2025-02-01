@@ -3,16 +3,33 @@ const user = require("../models/user");
 const User = require("../models/user");
 const Skill = require("../models/skill")
 const { saveMediaAndReturnUrl } = require("../utils/imageUtils");
+const UserResponseDto = require("../dto/userResonseDto");
 
 exports.getUserByID = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ _id: req.params.userID });
   if (!user) {
     return res.status(404).send({ message: "User not found" });
   }
+  const userResponseDto = new UserResponseDto({
+    _id: user._id,
+    fullname: user.fullname,
+    profileImage: user.profileImage,
+    email: user.email,
+    phone: user.phone,
+    dob: user.dob,
+    verified: user.verified,
+    country: user.country,
+    province: user.province,
+    city: user.city,
+    about: user.about,
+    overview: user.overview,
+    interests: user.interests,
+    skills: user.skills.map(skill => skill.name),
+  })
   res.status(200).json({
     success: true,
     message: `User`,
-    data: user
+    data: userResponseDto
   });
 });
 
@@ -179,10 +196,10 @@ exports.addSkill = asyncHandler(async (req, res, next) => {
   if (!user) {
     return res.status(400).send({ message: "User does not exist" });
   }
-  let skill = await Skill.findOne({ name: req.body.skillName });
+  let skill = await Skill.findOne({ name: req.body.name });
   if (!skill) {
     skill = new Skill({
-      name: req.body.skillName,
+      name: req.body.name,
     });
     await skill.save();
   }
