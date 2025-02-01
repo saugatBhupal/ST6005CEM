@@ -12,7 +12,6 @@ const {
   comparePasswords,
 } = require("../utils/utils");
 
-
 exports.register = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     $or: [{ email: req.body.email }, { phone: req.body.phone }],
@@ -25,7 +24,6 @@ exports.register = asyncHandler(async (req, res, next) => {
   const otp = generateOtp();
   req.body.verificationOtp = otp;
   req.body.verificationOtpExpire = generateOtpExpiry();
-
   try {
     const emailTemplate = emailTemplates.verificationEmailMessage(
       req.body.fullname,

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../constants/Colors";
+import { handleValidation } from "../../utils/validators/HandleValidation";
+
 const Wrapper = styled.div`
   position: relative;
   width: 388px;
@@ -12,6 +14,7 @@ const Icon = styled.div`
     height: 20px;
   }
 `;
+
 const Input = styled.input`
   width: 100%;
   height: 55px;
@@ -23,7 +26,10 @@ const Input = styled.input`
   box-sizing: border-box;
   transition: all 0.3s ease;
   background: transparent;
-
+  border-color: ${({ validationMessage }) =>
+    validationMessage == null || validationMessage === ""
+      ? `${Colors.greyOutline}`
+      : `#d3675a`};
   &:focus + label,
   &:not(:placeholder-shown) + label {
     top: -8px;
@@ -32,6 +38,13 @@ const Input = styled.input`
     color: ${Colors.subtitleBlack};
     padding: 0 5px;
   }
+`;
+
+const Hidden = styled.div`
+  color: #d3675a;
+  text-align: left;
+  padding: 2px 20px;
+  font-size: 12px;
 `;
 
 const Label = styled.label`
@@ -47,6 +60,16 @@ const Label = styled.label`
 `;
 
 function InputbarWithAnimatedPlaceholder(props) {
+  const [validationMessage, setValidationMessage] = useState("");
+  const [input, setInput] = useState("");
+
+  const getValdiationMessage = (value) => {
+    setInput(value);
+    let message = handleValidation(value, props.validationType);
+    setValidationMessage(message);
+    props.isValid(validationMessage === null);
+  };
+
   return (
     <Wrapper>
       <Icon>{/* <img src={Logo} alt="" /> */}</Icon>
@@ -54,12 +77,15 @@ function InputbarWithAnimatedPlaceholder(props) {
         type={props.type ? props.type : "text"}
         placeholder=" "
         id="input-bar"
-        {...(props.value && { value: props.value })}
+        value={input}
         onChange={(e) => {
           props.onChange && props.onChange(e.target.value);
+          getValdiationMessage(e.target.value);
         }}
+        validationMessage={validationMessage}
       />
       <Label htmlFor="input-bar">{props.placeholder}</Label>
+      <Hidden>{validationMessage && <>{validationMessage}</>}</Hidden>
     </Wrapper>
   );
 }

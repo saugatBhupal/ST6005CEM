@@ -76,6 +76,7 @@ function SignupPage() {
 }
 
 function BasicDetailsWidget(pageNumber, setPageNumber) {
+  var valid = false;
   return (
     <>
       <Title>Getting Started</Title>
@@ -83,14 +84,24 @@ function BasicDetailsWidget(pageNumber, setPageNumber) {
         <SubTitle>Let's get you signed up</SubTitle>
       </Flex>
       <Form>
-        <InputbarWithAnimatedPlaceholder placeholder="Email Address" />
-        <InputbarWithAnimatedPlaceholder placeholder="Full Name" />
-        <PhoneNumberInput placeholder="Phone" />
-        <DateInput placeholder={"Date Of Birth"} />
+        <InputbarWithAnimatedPlaceholder
+          placeholder="Email Address"
+          validationType="email"
+          onChange={(value) => {}}
+          isValid={(value) => {
+            valid = value;
+          }}
+        />
+        <InputbarWithAnimatedPlaceholder
+          placeholder="Full Name"
+          validationType="fullname"
+        />
+        <PhoneNumberInput placeholder="Phone" validationType={"phone"} />
+        <DateInput placeholder={"Date Of Birth"} validationType={"dob"} />
         <FilledButton
           placeholder={"Continue"}
           onClick={() => {
-            setPageNumber(pageNumber + 1);
+            valid ? setPageNumber(pageNumber + 1) : setPageNumber(pageNumber);
           }}
         />
         <SignupTextBlock />

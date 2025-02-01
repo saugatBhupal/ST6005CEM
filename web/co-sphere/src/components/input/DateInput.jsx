@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../constants/Colors";
+import { handleValidation } from "../../utils/validators/HandleValidation";
 
 const Wrapper = styled.div`
   position: relative;
@@ -19,6 +20,10 @@ const Input = styled.input`
   transition: all 0.3s ease;
   background: transparent;
   color: ${Colors.justBlack};
+  border-color: ${({ validationMessage }) =>
+    validationMessage == null || validationMessage === ""
+      ? `${Colors.greyOutline}`
+      : `#d3675a`};
   &::placeholder {
     color: transparent;
   }
@@ -37,7 +42,12 @@ const Input = styled.input`
     }
   }
 `;
-
+const Hidden = styled.div`
+  color: #d3675a;
+  text-align: left;
+  padding: 2px 20px;
+  font-size: 12px;
+`;
 const Label = styled.label`
   position: absolute;
   top: 18px;
@@ -49,8 +59,9 @@ const Label = styled.label`
   transition: all 0.3s ease;
 `;
 
-function DateInput({ placeholder }) {
+function DateInput({ placeholder, validationType }) {
   const [value, setValue] = useState("");
+  const [validationMessage, setValidationMessage] = useState("");
 
   const handleInputChange = (e) => {
     let input = e.target.value.replace(/\D/g, "");
@@ -66,8 +77,9 @@ function DateInput({ placeholder }) {
         4
       )}`;
     }
-
     setValue(formattedValue);
+    let message = handleValidation(formattedValue, validationType);
+    setValidationMessage(message);
   };
 
   return (
@@ -75,11 +87,15 @@ function DateInput({ placeholder }) {
       <Input
         type="text"
         value={value}
-        onChange={handleInputChange}
+        onChange={(e) => {
+          handleInputChange(e);
+        }}
         placeholder="DD-MM-YYYY"
         maxLength={10}
+        validationMessage={validationMessage}
       />
       <Label>{placeholder}</Label>
+      <Hidden>{validationMessage && <>{validationMessage}</>}</Hidden>
     </Wrapper>
   );
 }

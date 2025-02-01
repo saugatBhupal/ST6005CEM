@@ -1,9 +1,10 @@
 const asyncHandler = require("../middlewares/async");
 const user = require("../models/user");
 const User = require("../models/user");
-const Skill = require("../models/skill")
+const Skill = require("../models/skill");
 const { saveMediaAndReturnUrl } = require("../utils/imageUtils");
 const UserResponseDto = require("../dto/userResonseDto");
+const { getSkillByID } = require("./skillController");
 
 exports.getUserByID = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ _id: req.params.userID });
@@ -24,12 +25,12 @@ exports.getUserByID = asyncHandler(async (req, res, next) => {
     about: user.about,
     overview: user.overview,
     interests: user.interests,
-    skills: user.skills.map(skill => skill.name),
-  })
+    skills: user.skills.map((id) => getSkillByID(id)),
+  });
   res.status(200).json({
     success: true,
     message: `User`,
-    data: userResponseDto
+    data: userResponseDto,
   });
 });
 
@@ -65,7 +66,7 @@ exports.updateProfileImage = asyncHandler(async (req, res, next) => {
     message: `ProfilePicture Updated`,
     data: {
       profileImage: user.profileImage,
-    }
+    },
   });
 });
 
@@ -105,13 +106,13 @@ exports.addInterests = asyncHandler(async (req, res, next) => {
 exports.addEducation = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     $or: [
-      {_id: req.body.userID},
-      {email: req.body.email},
-      {phone: req.body.phone},
+      { _id: req.body.userID },
+      { email: req.body.email },
+      { phone: req.body.phone },
     ],
   });
-  if(!user){
-    return res.status(400).send({message: "User does not exist"});
+  if (!user) {
+    return res.status(400).send({ message: "User does not exist" });
   }
   const educationInfo = {
     organization: req.body.organization,
@@ -126,40 +127,40 @@ exports.addEducation = asyncHandler(async (req, res, next) => {
     success: true,
     message: "Education added",
     data: educationInfo,
-  })
+  });
 });
 
-exports.getEducation = asyncHandler(async(req, res, next) =>{
+exports.getEducation = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     $or: [
-      {_id: req.params.userID},
-      {_id: req.body.email},
-      {_id: req.body.phone},
+      { _id: req.params.userID },
+      { _id: req.body.email },
+      { _id: req.body.phone },
     ],
   });
-  if(!user){
-    return res.status(400).send({message: "User does not exist"});
+  if (!user) {
+    return res.status(400).send({ message: "User does not exist" });
   }
   return res.status(200).json({ data: user.education });
 });
 
-exports.addExperience = asyncHandler(async(req, res, next) => {
+exports.addExperience = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     $or: [
-      {_id: req.body.userID},
-      {email: req.body.email},
-      {phone: req.body.phone},
+      { _id: req.body.userID },
+      { email: req.body.email },
+      { phone: req.body.phone },
     ],
   });
-  if(!user){
-    return res.status(400).send({message: "User does not exist"});
+  if (!user) {
+    return res.status(400).send({ message: "User does not exist" });
   }
   const experienceInfo = {
     position: req.body.position,
     organization: req.body.organization,
     status: req.body.status,
     from: req.body.from,
-    to: req.body.to
+    to: req.body.to,
   };
   user.experience.push(experienceInfo);
   await user.save();
@@ -168,19 +169,19 @@ exports.addExperience = asyncHandler(async(req, res, next) => {
     success: true,
     message: "Experience added",
     data: experienceInfo,
-  })
+  });
 });
 
-exports.getExperience = asyncHandler(async(req, res, next) =>{
+exports.getExperience = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     $or: [
-      {_id: req.params.userID},
-      {_id: req.body.email},
-      {_id: req.body.phone},
+      { _id: req.params.userID },
+      { _id: req.body.email },
+      { _id: req.body.phone },
     ],
   });
-  if(!user){
-    return res.status(400).send({message: "User does not exist"});
+  if (!user) {
+    return res.status(400).send({ message: "User does not exist" });
   }
   return res.status(200).json({ data: user.experience });
 });
@@ -259,16 +260,16 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
   if (!user) {
     return res.status(400).send({ message: "User does not exist" });
   }
-  if(req.body.fullname != undefined){
+  if (req.body.fullname != undefined) {
     user.fullname = req.body.fullname;
   }
-  if(req.body.dob != undefined){
+  if (req.body.dob != undefined) {
     user.dob = req.body.dob;
   }
-  if(req.body.phone != undefined){
+  if (req.body.phone != undefined) {
     user.phone = req.body.phone;
   }
-  if(req.body.email != undefined){
+  if (req.body.email != undefined) {
     user.email = req.body.email;
   }
   await user.save();
