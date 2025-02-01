@@ -11,6 +11,10 @@ exports.getUserByID = asyncHandler(async (req, res, next) => {
   if (!user) {
     return res.status(404).send({ message: "User not found" });
   }
+  let skills = [];
+  if (user.skills && user.skills.length > 0) {
+    skills = await Promise.all(user.skills.map((id) => getSkillByID(id)));
+  }
   const userResponseDto = new UserResponseDto({
     _id: user._id,
     fullname: user.fullname,
@@ -25,7 +29,7 @@ exports.getUserByID = asyncHandler(async (req, res, next) => {
     about: user.about,
     overview: user.overview,
     interests: user.interests,
-    skills: user.skills.map((id) => getSkillByID(id)),
+    skills: skills,
   });
   res.status(200).json({
     success: true,
