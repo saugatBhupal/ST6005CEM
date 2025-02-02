@@ -17,7 +17,10 @@ exports.register = asyncHandler(async (req, res, next) => {
     $or: [{ email: req.body.email }, { phone: req.body.phone }],
   });
   if (user) {
-    return res.status(400).send({ message: "User already exists" });
+    console.log(user);
+    return res.status(400).send({
+      message: "User with this email already exists. Try logging in instead.",
+    });
   }
 
   req.body.password = await generateDefaultPassword();
@@ -44,7 +47,15 @@ exports.register = asyncHandler(async (req, res, next) => {
     });
   }
 
-  await User.create(req.body);
+  try {
+    await User.create(req.body);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).send({
+      message:
+        "Error creating account. Make sure all the fields are filled and try again.",
+    });
+  }
 
   res.status(200).json({
     success: true,
