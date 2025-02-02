@@ -67,7 +67,7 @@ function InputbarWithAnimatedPlaceholder(props) {
     setInput(value);
     let message = handleValidation(value, props.validationType);
     setValidationMessage(message);
-    props.isValid(validationMessage === null);
+    props.isValid(message == null);
   };
 
   return (

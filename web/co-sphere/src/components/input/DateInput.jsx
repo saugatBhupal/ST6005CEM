@@ -59,7 +59,7 @@ const Label = styled.label`
   transition: all 0.3s ease;
 `;
 
-function DateInput({ placeholder, validationType }) {
+function DateInput({ placeholder, validationType, isValid }) {
   const [value, setValue] = useState("");
   const [validationMessage, setValidationMessage] = useState("");
 
@@ -80,6 +80,7 @@ function DateInput({ placeholder, validationType }) {
     setValue(formattedValue);
     let message = handleValidation(formattedValue, validationType);
     setValidationMessage(message);
+    isValid(message == null);
   };
 
   return (

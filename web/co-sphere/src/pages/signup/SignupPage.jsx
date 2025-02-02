@@ -63,20 +63,65 @@ const Flex = styled.div`
 function SignupPage() {
   const [pageNumber, setPageNumber] = useState(0);
   const navigate = useNavigate();
+  const [validationForm, setValidationForm] = useState({
+    email: false,
+    fullname: false,
+    phone: false,
+    dob: false,
+  });
+  const [formData, setFormData] = useState({
+    email: "",
+    fullName: "",
+    phone: "",
+    dob: "",
+    country: "",
+    province: "",
+    city: "",
+    otp: "",
+    password: "",
+    confirmPassword: "",
+    interests: [],
+  });
+  const updateFormData = (field, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
+  const updateValidationFormData = (field, value) => {
+    setValidationForm((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
   return (
     <Wrapper>
       <MenubarDefault />
       <MenubarSpacer />
       <Container>
-        <Center>{getPage(pageNumber, setPageNumber, navigate)}</Center>
+        <Center>
+          {getPage(
+            pageNumber,
+            setPageNumber,
+            navigate,
+            updateFormData,
+            updateValidationFormData,
+            validationForm
+          )}
+        </Center>
         {/* <Center>{addressWidget(pageNumber, setPageNumber)}</Center> */}
       </Container>
     </Wrapper>
   );
 }
 
-function BasicDetailsWidget(pageNumber, setPageNumber) {
-  var valid = false;
+function BasicDetailsWidget(
+  pageNumber,
+  setPageNumber,
+  updateFormData,
+  updateValidationFormData,
+  validationForm
+) {
   return (
     <>
       <Title>Getting Started</Title>
@@ -87,21 +132,61 @@ function BasicDetailsWidget(pageNumber, setPageNumber) {
         <InputbarWithAnimatedPlaceholder
           placeholder="Email Address"
           validationType="email"
-          onChange={(value) => {}}
+          onChange={(value) => {
+            updateFormData("email", value);
+          }}
           isValid={(value) => {
-            valid = value;
+            value
+              ? updateValidationFormData("email", true)
+              : updateValidationFormData("email", false);
           }}
         />
         <InputbarWithAnimatedPlaceholder
           placeholder="Full Name"
           validationType="fullname"
+          onChange={(value) => {
+            updateFormData("fullname", value);
+          }}
+          isValid={(value) => {
+            value
+              ? updateValidationFormData("fullname", true)
+              : updateValidationFormData("fullname", false);
+          }}
         />
-        <PhoneNumberInput placeholder="Phone" validationType={"phone"} />
-        <DateInput placeholder={"Date Of Birth"} validationType={"dob"} />
+        <PhoneNumberInput
+          placeholder="Phone"
+          validationType={"phone"}
+          onChange={(value) => {
+            updateFormData("phone", value);
+          }}
+          isValid={(value) => {
+            value
+              ? updateValidationFormData("phone", true)
+              : updateValidationFormData("phone", false);
+          }}
+        />
+        <DateInput
+          placeholder={"Date Of Birth"}
+          validationType={"dob"}
+          onChange={(value) => {
+            updateFormData("dob", value);
+          }}
+          isValid={(value) => {
+            value
+              ? updateValidationFormData("dob", true)
+              : updateValidationFormData("dob", false);
+          }}
+        />
+
         <FilledButton
           placeholder={"Continue"}
           onClick={() => {
-            valid ? setPageNumber(pageNumber + 1) : setPageNumber(pageNumber);
+            validationForm.email &
+            validationForm.dob &
+            validationForm.fullname &
+            validationForm.phone
+              ? setPageNumber(pageNumber + 1)
+              : setPageNumber(pageNumber);
           }}
         />
         <SignupTextBlock />
@@ -271,18 +356,36 @@ function InterestsWidget(pageNumber, setPageNumber, navigate) {
   );
 }
 
-function getPage(pageNumber, setPageNumber, navigate) {
+function getPage(
+  pageNumber,
+  setPageNumber,
+  navigate,
+  updateFormData,
+  updateValidationFormData,
+  validationForm
+) {
   switch (pageNumber) {
     case 0:
-      return BasicDetailsWidget(pageNumber, setPageNumber);
+      return BasicDetailsWidget(
+        pageNumber,
+        setPageNumber,
+        updateFormData,
+        updateValidationFormData,
+        validationForm
+      );
     case 1:
-      return AddressWidget(pageNumber, setPageNumber);
+      return AddressWidget(pageNumber, setPageNumber, updateFormData);
     case 2:
-      return OtpWidget(pageNumber, setPageNumber);
+      return OtpWidget(pageNumber, setPageNumber, updateFormData);
     case 3:
-      return PasswordWidget(pageNumber, setPageNumber);
+      return PasswordWidget(pageNumber, setPageNumber, updateFormData);
     case 4:
-      return InterestsWidget(pageNumber, setPageNumber, navigate);
+      return InterestsWidget(
+        pageNumber,
+        setPageNumber,
+        navigate,
+        updateFormData
+      );
     default:
       return <>"Error"</>;
   }
