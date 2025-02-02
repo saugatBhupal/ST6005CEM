@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 const Container = styled.div`
-  padding: 20px 10px;
+  padding: 20px 20px;
   font-size: ${FontSize.medium};
   color: ${Colors.subtitleBlack};
 `;
@@ -37,7 +37,7 @@ const Right = styled.div`
   width: 100%;
 `;
 const Time = styled.div`
-  font-size: ${FontSize.small};
+  font-size: ${FontSize.extraSmall};
   color: ${Colors.subtitleBlack};
   display: flex;
   justify-content: space-between;
@@ -53,7 +53,7 @@ function MessageNotification() {
           </Left>
           <Right>
             <Row>
-              <b>Leslie Alexander </b> messaged you
+              <b>Leslie Alexander </b> recommended you
             </Row>
             <Time>
               Friday 3:12 PM

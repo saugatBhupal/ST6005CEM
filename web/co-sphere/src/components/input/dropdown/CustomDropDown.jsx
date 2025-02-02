@@ -94,9 +94,16 @@ const Hidden = styled.div`
 function CustomDropDown(props) {
   const [isToggled, setIsToggled] = useState(false);
   const [selectedItem, setSelectedItem] = useState();
+
+  const handleSelectItem = (value) => {
+    value && setSelectedItem(value);
+  };
   useEffect(() => {
-    props.isValid && props.isValid(selectedItem != null);
-  });
+    props.value &&
+      props.value !== selectedItem &&
+      handleSelectItem(props.value);
+    props.isValid && props.isValid(selectedItem !== null);
+  }, [setSelectedItem]);
   return (
     <Wrapper>
       <Container>

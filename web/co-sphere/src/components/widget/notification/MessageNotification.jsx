@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
 import ProfileIcon from "../../icon/ProfileIcon";
-import SkillChip from "../chip/SkillChip";
 
 const Wrapper = styled.div`
   border-bottom: 1px solid ${Colors.greyOutlineShadow};
@@ -53,7 +52,7 @@ const MessageContainer = styled.div`
   margin-top: 10px;
   margin-left: calc(40px);
 `;
-function JobNotification() {
+function MessageNotification() {
   return (
     <Wrapper>
       <Container>
@@ -72,18 +71,12 @@ function JobNotification() {
           </Right>
         </Flex>
         <MessageContainer>
-          Need a Java Developer for a small E-Commerce Project.
-          <Flex style={{ gap: "10px", flexWrap: "wrap", marginTop: "5px" }}>
-            <SkillChip title={"Java"} />
-            <SkillChip title={"Spring"} />
-            <SkillChip title={"MySql"} />
-            <SkillChip title={"React Js"} />
-            <SkillChip title={"Hibernate"} />
-          </Flex>
+          Really love the ideas that you provided. Hope to talk to you soon
+          again.
         </MessageContainer>
       </Container>
     </Wrapper>
   );
 }
 
-export default JobNotification;
+export default MessageNotification;
