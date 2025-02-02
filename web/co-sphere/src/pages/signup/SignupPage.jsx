@@ -14,6 +14,11 @@ import MenubarSpacer from "../../components/spacer/MenubarSpacer";
 import ResendOtpTextBlock from "../../components/textBlocks/ResendOtpTextBlock";
 import SignupTextBlock from "../../components/textBlocks/SignupTextBlock";
 import { Colors } from "../../constants/Colors";
+import { FontSize } from "../../constants/FontSize";
+import {
+  getAllCountries,
+  getStatesOfCountry,
+} from "../../utils/address/AddressUtils";
 
 const Wrapper = styled.div``;
 const Container = styled.div``;
@@ -22,6 +27,10 @@ const Center = styled.div`
   margin: auto;
   margin-top: 20px;
   text-align: center;
+  span {
+    font-size: ${FontSize.extraSmall};
+    color: ${Colors.errorRed};
+  }
 `;
 const Title = styled.div`
   color: ${Colors.mainBlue};
@@ -62,6 +71,7 @@ const Flex = styled.div`
 `;
 function SignupPage() {
   const [pageNumber, setPageNumber] = useState(0);
+  const [isValid, setIsValid] = useState(true);
   const navigate = useNavigate();
   const [validationForm, setValidationForm] = useState({
     email: false,
@@ -70,16 +80,16 @@ function SignupPage() {
     dob: false,
   });
   const [formData, setFormData] = useState({
-    email: "",
-    fullName: "",
-    phone: "",
-    dob: "",
-    country: "",
-    province: "",
-    city: "",
-    otp: "",
-    password: "",
-    confirmPassword: "",
+    email: null,
+    fullName: null,
+    phone: null,
+    dob: null,
+    country: null,
+    province: null,
+    city: null,
+    otp: null,
+    password: null,
+    confirmPassword: null,
     interests: [],
   });
   const updateFormData = (field, value) => {
@@ -105,9 +115,14 @@ function SignupPage() {
             setPageNumber,
             navigate,
             updateFormData,
+            formData,
             updateValidationFormData,
-            validationForm
+            validationForm,
+            setIsValid
           )}
+          <span>
+            {!isValid && "Please check if the form has been filled correctly."}
+          </span>
         </Center>
         {/* <Center>{addressWidget(pageNumber, setPageNumber)}</Center> */}
       </Container>
@@ -119,8 +134,10 @@ function BasicDetailsWidget(
   pageNumber,
   setPageNumber,
   updateFormData,
+  formData,
   updateValidationFormData,
-  validationForm
+  validationForm,
+  setIsValid
 ) {
   return (
     <>
@@ -132,6 +149,7 @@ function BasicDetailsWidget(
         <InputbarWithAnimatedPlaceholder
           placeholder="Email Address"
           validationType="email"
+          value={formData.email ? formData.email : null}
           onChange={(value) => {
             updateFormData("email", value);
           }}
@@ -144,6 +162,7 @@ function BasicDetailsWidget(
         <InputbarWithAnimatedPlaceholder
           placeholder="Full Name"
           validationType="fullname"
+          value={formData.fullname ? formData.fullname : null}
           onChange={(value) => {
             updateFormData("fullname", value);
           }}
@@ -156,6 +175,7 @@ function BasicDetailsWidget(
         <PhoneNumberInput
           placeholder="Phone"
           validationType={"phone"}
+          value={formData.phone ? formData.phone : null}
           onChange={(value) => {
             updateFormData("phone", value);
           }}
@@ -168,6 +188,7 @@ function BasicDetailsWidget(
         <DateInput
           placeholder={"Date Of Birth"}
           validationType={"dob"}
+          value={formData.dob ? formData.dob : null}
           onChange={(value) => {
             updateFormData("dob", value);
           }}
@@ -185,8 +206,14 @@ function BasicDetailsWidget(
             validationForm.dob &
             validationForm.fullname &
             validationForm.phone
-              ? setPageNumber(pageNumber + 1)
-              : setPageNumber(pageNumber);
+              ? (() => {
+                  setPageNumber(pageNumber + 1);
+                  setIsValid(true);
+                })()
+              : (() => {
+                  setPageNumber(pageNumber + 1);
+                  setIsValid(false);
+                })();
           }}
         />
         <SignupTextBlock />
@@ -195,7 +222,15 @@ function BasicDetailsWidget(
   );
 }
 
-function AddressWidget(pageNumber, setPageNumber) {
+function AddressWidget(
+  pageNumber,
+  setPageNumber,
+  updateFormData,
+  formData,
+  updateValidationFormData,
+  validationForm,
+  setIsValid
+) {
   return (
     <>
       <Flex>
@@ -213,28 +248,38 @@ function AddressWidget(pageNumber, setPageNumber) {
       </SubTitle>
       <Form>
         <CustomDropDown
-          items={["Nepal", "China", "India"]}
+          items={getAllCountries()}
           label="Country"
           placeholder="Pick a country"
+          onChange={(value) => {
+            updateFormData("country", value);
+          }}
         />
         <CustomDropDown
           label="Province"
           placeholder="Pick a country"
-          items={[
-            "Province 1",
-            "Mashsh Pradesh",
-            "Bagmati",
-            "Gandaki",
-            "Lumbini",
-            "Karnali",
-            "Sudurpaschim",
-          ]}
+          items={getStatesOfCountry(formData.country)}
+          onChange={(value) => {
+            updateFormData("province", value);
+          }}
+          isValid={(value) => {
+            console.log(value);
+          }}
         />
-        <CustomDropDown
-          items={["Nepal", "China", "India"]}
-          placeholder="Pick a city"
-          label="City"
+        <InputbarWithAnimatedPlaceholder
+          placeholder="City"
+          validationType="fullname"
+          value={formData.city ? formData.city : null}
+          onChange={(value) => {
+            updateFormData("city", value);
+          }}
+          isValid={(value) => {
+            value
+              ? updateValidationFormData("city", true)
+              : updateValidationFormData("city", false);
+          }}
         />
+
         <FilledButton
           placeholder={"Continue"}
           onClick={() => {
@@ -361,8 +406,10 @@ function getPage(
   setPageNumber,
   navigate,
   updateFormData,
+  formData,
   updateValidationFormData,
-  validationForm
+  validationForm,
+  setIsValid
 ) {
   switch (pageNumber) {
     case 0:
@@ -370,11 +417,21 @@ function getPage(
         pageNumber,
         setPageNumber,
         updateFormData,
+        formData,
         updateValidationFormData,
-        validationForm
+        validationForm,
+        setIsValid
       );
     case 1:
-      return AddressWidget(pageNumber, setPageNumber, updateFormData);
+      return AddressWidget(
+        pageNumber,
+        setPageNumber,
+        updateFormData,
+        formData,
+        updateValidationFormData,
+        validationForm,
+        setIsValid
+      );
     case 2:
       return OtpWidget(pageNumber, setPageNumber, updateFormData);
     case 3:

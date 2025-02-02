@@ -16,4 +16,5 @@ export class Colors {
   static messageSenderBackground = "#3680cb40";
   static lightSelected = "#F8F8F8";
   static deepOrange = "#E3984E";
+  static errorRed = "#d3675a";
 }

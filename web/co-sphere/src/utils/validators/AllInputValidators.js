@@ -85,6 +85,5 @@ export function validateDateOfBirth(dob) {
   if (inputDate > minAgeDate) {
     return "You must be at least 16 years old.";
   }
-
   return null;
 }

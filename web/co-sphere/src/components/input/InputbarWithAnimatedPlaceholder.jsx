@@ -77,7 +77,7 @@ function InputbarWithAnimatedPlaceholder(props) {
         type={props.type ? props.type : "text"}
         placeholder=" "
         id="input-bar"
-        value={input}
+        value={props.value ? props.value : input}
         onChange={(e) => {
           props.onChange && props.onChange(e.target.value);
           getValdiationMessage(e.target.value);

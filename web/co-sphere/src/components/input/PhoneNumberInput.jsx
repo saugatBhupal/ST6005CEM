@@ -73,7 +73,13 @@ const Label = styled.label`
   transition: all 0.3s ease;
 `;
 
-function PhoneNumberInput({ placeholder, validationType, isValid }) {
+function PhoneNumberInput({
+  placeholder,
+  validationType,
+  isValid,
+  value,
+  onChange,
+}) {
   const [validationMessage, setValidationMessage] = useState();
   const [chars, setChars] = useState(1);
   const getValidationMessage = (value) => {
@@ -94,7 +100,9 @@ function PhoneNumberInput({ placeholder, validationType, isValid }) {
           type="number"
           placeholder=" "
           id="phone-input"
+          value={value && value}
           onChange={(e) => {
+            onChange && onChange(e.target.value);
             getValidationMessage(e.target.value);
             setChars(chars + 1);
           }}

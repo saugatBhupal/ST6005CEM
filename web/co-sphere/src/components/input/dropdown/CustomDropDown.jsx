@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 
@@ -85,10 +85,18 @@ const DropDownArrow = styled.div`
     transition-duration: 0.4s;
   }
 `;
-
+const Hidden = styled.div`
+  color: #d3675a;
+  text-align: left;
+  padding: 2px 20px;
+  font-size: 12px;
+`;
 function CustomDropDown(props) {
   const [isToggled, setIsToggled] = useState(false);
   const [selectedItem, setSelectedItem] = useState();
+  useEffect(() => {
+    props.isValid && props.isValid(selectedItem != null);
+  });
   return (
     <Wrapper>
       <Container>
@@ -128,6 +136,7 @@ function CustomDropDown(props) {
                   onClick={() => {
                     setSelectedItem(element);
                     setIsToggled(!isToggled);
+                    props.onChange && props.onChange(element);
                   }}
                 >
                   {element}
@@ -139,6 +148,7 @@ function CustomDropDown(props) {
           <></>
         )}
       </Container>
+      <Hidden>{selectedItem == null ? "No Item Selected" : ""}</Hidden>
     </Wrapper>
   );
 }
