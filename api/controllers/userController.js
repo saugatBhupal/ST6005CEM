@@ -145,7 +145,10 @@ exports.getEducation = asyncHandler(async (req, res, next) => {
   if (!user) {
     return res.status(400).send({ message: "User does not exist" });
   }
-  return res.status(200).json({ data: user.education });
+  return res.status(200).json({
+    success: true,
+    message: "User Education Data", 
+    data: {education : user.education}  });
 });
 
 exports.addExperience = asyncHandler(async (req, res, next) => {
@@ -172,7 +175,7 @@ exports.addExperience = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Experience added",
-    data: experienceInfo,
+    data: {experience: experienceInfo},
   });
 });
 
