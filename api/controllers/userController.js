@@ -33,7 +33,7 @@ exports.getUserByID = asyncHandler(async (req, res, next) => {
   });
   res.status(200).json({
     success: true,
-    message: `User`,
+    message: `Fetched user`,
     data: userResponseDto,
   });
 });
@@ -67,7 +67,7 @@ exports.updateProfileImage = asyncHandler(async (req, res, next) => {
   await user.save();
   res.status(200).json({
     success: true,
-    message: `ProfilePicture Updated`,
+    message: `Profile Picture Updated`,
     data: {
       profileImage: user.profileImage,
     },

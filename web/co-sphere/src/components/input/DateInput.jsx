@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../constants/Colors";
 import { handleValidation } from "../../utils/validators/HandleValidation";
@@ -59,15 +59,16 @@ const Label = styled.label`
   transition: all 0.3s ease;
 `;
 
-function DateInput({ placeholder, validationType }) {
-  const [value, setValue] = useState("");
+function DateInput({ placeholder, validationType, isValid, value, onChange }) {
+  const [dob, setDob] = useState(null);
   const [validationMessage, setValidationMessage] = useState("");
 
   const handleInputChange = (e) => {
+    let formattedValue = "";
+
     let input = e.target.value.replace(/\D/g, "");
     if (input.length > 8) input = input.slice(0, 8);
 
-    let formattedValue = "";
     if (input.length <= 2) {
       formattedValue = input;
     } else if (input.length <= 4) {
@@ -77,16 +78,19 @@ function DateInput({ placeholder, validationType }) {
         4
       )}`;
     }
-    setValue(formattedValue);
+    setDob(formattedValue);
     let message = handleValidation(formattedValue, validationType);
     setValidationMessage(message);
+    isValid(message == null);
   };
-
+  useEffect(() => {
+    onChange && onChange(dob);
+  }, [dob]);
   return (
     <Wrapper>
       <Input
         type="text"
-        value={value}
+        value={value && value.length > 9 ? value : dob}
         onChange={(e) => {
           handleInputChange(e);
         }}

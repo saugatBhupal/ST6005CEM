@@ -4,6 +4,7 @@ import ChatPage from "../pages/chat/ChatPage";
 import DashboardPage from "../pages/dashboard/DashboardPage";
 import LandingPage from "../pages/LandingPage";
 import ProfilePage from "../pages/profile/ProfilePage";
+import SigninPage from "../pages/signin/SigninPage";
 import SignupPage from "../pages/signup/SignupPage";
 
 function Router() {
@@ -12,6 +13,7 @@ function Router() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/signin" element={<SigninPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/chat" element={<ChatPage />} />

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 
@@ -24,9 +24,14 @@ const InputBox = styled.input`
   }
 `;
 
-const OTPInput = () => {
+const OTPInput = (props) => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const inputRefs = useRef([]);
+
+  useEffect(() => {
+    const joinedOtp = otp.join("");
+    props.onChange(joinedOtp);
+  }, [otp]);
 
   const handleChange = (element, index) => {
     if (!isNaN(element.value)) {
@@ -73,7 +78,9 @@ const OTPInput = () => {
           maxLength="1"
           ref={(el) => (inputRefs.current[index] = el)}
           value={otp[index]}
-          onChange={(e) => handleChange(e.target, index)}
+          onChange={(e) => {
+            handleChange(e.target, index);
+          }}
           onKeyDown={(e) => {
             if (e.key === "Backspace") {
               handleBackspace(e.target, index);

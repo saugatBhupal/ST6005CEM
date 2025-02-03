@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const app = express();
+const cors = require("cors");
 const cloudinary = require("cloudinary");
 const connectDB = require("./config/db");
 const multiparty = require("connect-multiparty");
@@ -14,7 +15,7 @@ dotenv.config({
 
 app.use(express.json());
 app.use(cookieParser());
-
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multiparty());
 cloudinary.config({

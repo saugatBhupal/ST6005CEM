@@ -10,12 +10,12 @@ const Wrapper = styled.div`
     cursor: pointer;
   }
 `;
-function SignupTextBlock() {
+function SigninTextBlock() {
   return (
     <Wrapper>
-      Already have an account? <a href="/signin">Sign in</a>
+      Don't have an account? <a href="/signup">Sign up</a>
     </Wrapper>
   );
 }
 
-export default SignupTextBlock;
+export default SigninTextBlock;

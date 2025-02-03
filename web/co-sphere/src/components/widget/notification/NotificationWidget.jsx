@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
 import ContentNotification from "./ContentNotification";
+import JobNotification from "./JobNotification";
+import MessageNotification from "./MessageNotification";
 
 const Wrapper = styled.div`
   /* width: 100%; */
@@ -38,6 +40,9 @@ function NotificationWidget() {
           </Flex>
         </TopBar>
         <Content>
+          <ContentNotification />
+          <MessageNotification />
+          <JobNotification />
           <ContentNotification />
         </Content>
       </Container>

@@ -14,6 +14,16 @@ import MenubarSpacer from "../../components/spacer/MenubarSpacer";
 import ResendOtpTextBlock from "../../components/textBlocks/ResendOtpTextBlock";
 import SignupTextBlock from "../../components/textBlocks/SignupTextBlock";
 import { Colors } from "../../constants/Colors";
+import { FontSize } from "../../constants/FontSize";
+import {
+  getAllCountries,
+  getStatesOfCountry,
+} from "../../utils/address/AddressUtils";
+import {
+  manageCreatePassword,
+  manageOtpVerification,
+  manageUserRegistration,
+} from "./manager/SignupManager";
 
 const Wrapper = styled.div``;
 const Container = styled.div``;
@@ -22,6 +32,10 @@ const Center = styled.div`
   margin: auto;
   margin-top: 20px;
   text-align: center;
+  span {
+    font-size: ${FontSize.extraSmall};
+    color: ${Colors.errorRed};
+  }
 `;
 const Title = styled.div`
   color: ${Colors.mainBlue};
@@ -62,21 +76,82 @@ const Flex = styled.div`
 `;
 function SignupPage() {
   const [pageNumber, setPageNumber] = useState(0);
+  const [isValid, setIsValid] = useState(true);
+  const [error, setError] = useState();
   const navigate = useNavigate();
+  const [validationForm, setValidationForm] = useState({
+    email: false,
+    fullname: false,
+    phone: false,
+    dob: false,
+    country: false,
+    province: false,
+    city: false,
+    password: null,
+    confirmPassword: null,
+  });
+  const [formData, setFormData] = useState({
+    email: null,
+    fullname: null,
+    phone: null,
+    dob: null,
+    country: null,
+    province: null,
+    city: null,
+    otp: null,
+    password: null,
+    confirmPassword: null,
+    interests: [],
+  });
+  const updateFormData = (field, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
+  const updateValidationFormData = (field, value) => {
+    setValidationForm((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
   return (
     <Wrapper>
       <MenubarDefault />
       <MenubarSpacer />
       <Container>
-        <Center>{getPage(pageNumber, setPageNumber, navigate)}</Center>
+        <Center>
+          {getPage(
+            pageNumber,
+            setPageNumber,
+            navigate,
+            updateFormData,
+            formData,
+            updateValidationFormData,
+            validationForm,
+            setIsValid,
+            setError
+          )}
+          <span>
+            {!isValid && "Please check if the form has been filled correctly."}
+            {error && error}
+          </span>
+        </Center>
         {/* <Center>{addressWidget(pageNumber, setPageNumber)}</Center> */}
       </Container>
     </Wrapper>
   );
 }
 
-function BasicDetailsWidget(pageNumber, setPageNumber) {
-  var valid = false;
+function BasicDetailsWidget(
+  pageNumber,
+  setPageNumber,
+  updateFormData,
+  formData,
+  updateValidationFormData,
+  validationForm,
+  setIsValid
+) {
   return (
     <>
       <Title>Getting Started</Title>
@@ -87,21 +162,71 @@ function BasicDetailsWidget(pageNumber, setPageNumber) {
         <InputbarWithAnimatedPlaceholder
           placeholder="Email Address"
           validationType="email"
-          onChange={(value) => {}}
+          value={formData.email ? formData.email : null}
+          onChange={(value) => {
+            updateFormData("email", value);
+          }}
           isValid={(value) => {
-            valid = value;
+            value
+              ? updateValidationFormData("email", true)
+              : updateValidationFormData("email", false);
           }}
         />
         <InputbarWithAnimatedPlaceholder
           placeholder="Full Name"
           validationType="fullname"
+          value={formData.fullname ? formData.fullname : null}
+          onChange={(value) => {
+            updateFormData("fullname", value);
+          }}
+          isValid={(value) => {
+            value
+              ? updateValidationFormData("fullname", true)
+              : updateValidationFormData("fullname", false);
+          }}
         />
-        <PhoneNumberInput placeholder="Phone" validationType={"phone"} />
-        <DateInput placeholder={"Date Of Birth"} validationType={"dob"} />
+        <PhoneNumberInput
+          placeholder="Phone"
+          validationType={"phone"}
+          value={formData.phone ? formData.phone : null}
+          onChange={(value) => {
+            updateFormData("phone", value);
+          }}
+          isValid={(value) => {
+            value
+              ? updateValidationFormData("phone", true)
+              : updateValidationFormData("phone", false);
+          }}
+        />
+        <DateInput
+          placeholder={"Date Of Birth"}
+          validationType={"dob"}
+          value={formData.dob ? formData.dob : null}
+          onChange={(value) => {
+            updateFormData("dob", value);
+          }}
+          isValid={(value) => {
+            value
+              ? updateValidationFormData("dob", true)
+              : updateValidationFormData("dob", false);
+          }}
+        />
+
         <FilledButton
           placeholder={"Continue"}
           onClick={() => {
-            valid ? setPageNumber(pageNumber + 1) : setPageNumber(pageNumber);
+            validationForm.email &
+            validationForm.dob &
+            validationForm.fullname &
+            validationForm.phone
+              ? (() => {
+                  setPageNumber(pageNumber + 1);
+                  setIsValid(true);
+                })()
+              : (() => {
+                  setPageNumber(pageNumber + 1);
+                  setIsValid(false);
+                })();
           }}
         />
         <SignupTextBlock />
@@ -110,7 +235,16 @@ function BasicDetailsWidget(pageNumber, setPageNumber) {
   );
 }
 
-function AddressWidget(pageNumber, setPageNumber) {
+function AddressWidget(
+  pageNumber,
+  setPageNumber,
+  updateFormData,
+  formData,
+  updateValidationFormData,
+  validationForm,
+  setIsValid,
+  setError
+) {
   return (
     <>
       <Flex>
@@ -128,32 +262,71 @@ function AddressWidget(pageNumber, setPageNumber) {
       </SubTitle>
       <Form>
         <CustomDropDown
-          items={["Nepal", "China", "India"]}
+          items={getAllCountries()}
           label="Country"
           placeholder="Pick a country"
+          onChange={(value) => {
+            updateFormData("country", value);
+          }}
+          isValid={(value) => {
+            value
+              ? updateValidationFormData("country", true)
+              : updateValidationFormData("country", false);
+          }}
+          value={formData.country}
         />
         <CustomDropDown
-          label="Province"
-          placeholder="Pick a country"
-          items={[
-            "Province 1",
-            "Mashsh Pradesh",
-            "Bagmati",
-            "Gandaki",
-            "Lumbini",
-            "Karnali",
-            "Sudurpaschim",
-          ]}
+          label="Province/State"
+          placeholder="Pick a province or state"
+          items={formData.country && getStatesOfCountry(formData.country)}
+          onChange={(value) => {
+            updateFormData("province", value);
+          }}
+          isValid={(value) => {
+            value
+              ? updateValidationFormData("province", true)
+              : updateValidationFormData("province", false);
+          }}
+          value={formData.province}
         />
-        <CustomDropDown
-          items={["Nepal", "China", "India"]}
-          placeholder="Pick a city"
-          label="City"
+        <InputbarWithAnimatedPlaceholder
+          placeholder="City"
+          validationType="fullname"
+          value={formData.city ? formData.city : null}
+          onChange={(value) => {
+            updateFormData("city", value);
+          }}
+          isValid={(value) => {
+            value
+              ? updateValidationFormData("city", true)
+              : updateValidationFormData("city", false);
+          }}
         />
+
         <FilledButton
           placeholder={"Continue"}
-          onClick={() => {
-            setPageNumber(pageNumber + 1);
+          onClick={async () => {
+            if (
+              validationForm.country &&
+              validationForm.province &&
+              validationForm.city
+            ) {
+              setIsValid(true);
+              await manageUserRegistration(
+                formData,
+                () => {
+                  setPageNumber(pageNumber + 1);
+                  setError(null);
+                },
+                (message) => {
+                  setError(message);
+                }
+              );
+            } else {
+              setPageNumber(pageNumber);
+              setIsValid(false);
+              setError(null);
+            }
           }}
         />
         <SignupTextBlock />
@@ -162,15 +335,24 @@ function AddressWidget(pageNumber, setPageNumber) {
   );
 }
 
-function OtpWidget(pageNumber, setPageNumber) {
+function OtpWidget(
+  pageNumber,
+  setPageNumber,
+  updateFormData,
+  formData,
+  updateValidationFormData,
+  validationForm,
+  setIsValid,
+  setError
+) {
   return (
     <>
       <Flex>
-        <BackButton
+        {/* <BackButton
           onClick={() => {
             setPageNumber(pageNumber - 1);
           }}
-        />
+        /> */}
         <Title style={{ fontSize: "40px", marginLeft: "50px" }}>
           OTP Authentication
         </Title>
@@ -179,16 +361,40 @@ function OtpWidget(pageNumber, setPageNumber) {
       <SubTitle>
         An authentication code has been sent to
         <br />
-        <b>youremail@gmail.com</b>
+        <b>{formData.email}</b>
       </SubTitle>
       <Form style={{ height: "300px" }}>
-        <OTPInput />
-        <ResendOtpTextBlock />
+        <OTPInput
+          onChange={(value) => {
+            updateFormData("otp", value);
+          }}
+        />
+        <ResendOtpTextBlock
+          onClick={async () => {
+            await new Promise((resolve) => setTimeout(resolve, 5000));
+          }}
+        />
         <div style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
           <FilledButton
             placeholder={"Continue"}
-            onClick={() => {
-              setPageNumber(pageNumber + 1);
+            onClick={async () => {
+              if (formData.otp && formData.otp.length > 5) {
+                setIsValid(true);
+                await manageOtpVerification(
+                  formData,
+                  () => {
+                    setPageNumber(pageNumber + 1);
+                    setError(null);
+                  },
+                  (message) => {
+                    setError(message);
+                  }
+                );
+              } else {
+                setPageNumber(pageNumber);
+                setIsValid(false);
+                setError(null);
+              }
             }}
           />
           <SignupTextBlock />
@@ -198,15 +404,24 @@ function OtpWidget(pageNumber, setPageNumber) {
   );
 }
 
-function PasswordWidget(pageNumber, setPageNumber) {
+function PasswordWidget(
+  pageNumber,
+  setPageNumber,
+  updateFormData,
+  formData,
+  updateValidationFormData,
+  validationForm,
+  setIsValid,
+  setError
+) {
   return (
     <>
       <Flex>
-        <BackButton
+        {/* <BackButton
           onClick={() => {
             setPageNumber(pageNumber - 1);
           }}
-        />
+        /> */}
         <Title style={{ fontSize: "40px", marginLeft: "70px" }}>
           Create Password
         </Title>
@@ -217,16 +432,56 @@ function PasswordWidget(pageNumber, setPageNumber) {
         <InputbarWithAnimatedPlaceholder
           type="password"
           placeholder="Password"
+          validationType="password"
+          value={formData.password ? formData.password : null}
+          onChange={(value) => {
+            updateFormData("password", value);
+          }}
+          isValid={(value) => {
+            value
+              ? updateValidationFormData("password", true)
+              : updateValidationFormData("password", false);
+          }}
         />
         <InputbarWithAnimatedPlaceholder
           type="password"
           placeholder="Confirm password"
+          validationType="password"
+          value={formData.confirmPassword ? formData.confirmPassword : null}
+          onChange={(value) => {
+            updateFormData("confirmPassword", value);
+          }}
+          isValid={(value) => {
+            value
+              ? updateValidationFormData("confirmPassword", true)
+              : updateValidationFormData("confirmPassword", false);
+          }}
         />
         <div style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
           <FilledButton
             placeholder={"Continue"}
-            onClick={() => {
-              setPageNumber(pageNumber + 1);
+            onClick={async () => {
+              if (validationForm.password && validationForm.confirmPassword) {
+                if (formData.password === formData.confirmPassword) {
+                  setIsValid(true);
+                  await manageCreatePassword(
+                    formData,
+                    () => {
+                      setPageNumber(pageNumber + 1);
+                      setError(null);
+                    },
+                    (message) => {
+                      setError(message);
+                    }
+                  );
+                } else {
+                  setError("Passwords do not match");
+                }
+              } else {
+                setPageNumber(pageNumber);
+                setIsValid(false);
+                setError(null);
+              }
             }}
           />
           <SignupTextBlock />
@@ -271,18 +526,68 @@ function InterestsWidget(pageNumber, setPageNumber, navigate) {
   );
 }
 
-function getPage(pageNumber, setPageNumber, navigate) {
+function getPage(
+  pageNumber,
+  setPageNumber,
+  navigate,
+  updateFormData,
+  formData,
+  updateValidationFormData,
+  validationForm,
+  setIsValid,
+  setError
+) {
   switch (pageNumber) {
     case 0:
-      return BasicDetailsWidget(pageNumber, setPageNumber);
+      return BasicDetailsWidget(
+        pageNumber,
+        setPageNumber,
+        updateFormData,
+        formData,
+        updateValidationFormData,
+        validationForm,
+        setIsValid
+      );
     case 1:
-      return AddressWidget(pageNumber, setPageNumber);
+      return AddressWidget(
+        pageNumber,
+        setPageNumber,
+        updateFormData,
+        formData,
+        updateValidationFormData,
+        validationForm,
+        setIsValid,
+        setError
+      );
     case 2:
-      return OtpWidget(pageNumber, setPageNumber);
+      return OtpWidget(
+        pageNumber,
+        setPageNumber,
+        updateFormData,
+        formData,
+        updateValidationFormData,
+        validationForm,
+        setIsValid,
+        setError
+      );
     case 3:
-      return PasswordWidget(pageNumber, setPageNumber);
+      return PasswordWidget(
+        pageNumber,
+        setPageNumber,
+        updateFormData,
+        formData,
+        updateValidationFormData,
+        validationForm,
+        setIsValid,
+        setError
+      );
     case 4:
-      return InterestsWidget(pageNumber, setPageNumber, navigate);
+      return InterestsWidget(
+        pageNumber,
+        setPageNumber,
+        navigate,
+        updateFormData
+      );
     default:
       return <>"Error"</>;
   }

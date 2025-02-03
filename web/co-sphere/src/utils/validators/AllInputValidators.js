@@ -3,10 +3,11 @@ export function validateEmail(email) {
     return "Email cannot be empty.";
   }
   const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  console.log(email);
+
   if (!emailPattern.test(email)) {
     return "Invalid email format. Please provide a valid email address.";
   }
+  console.log(email);
   return null;
 }
 
@@ -48,6 +49,7 @@ export function validatePhoneNumber(number) {
   if (!number || number.length < 10 || number.length > 10) {
     return "Phone number must be 10 digits";
   }
+  console.log("return");
   return null;
 }
 
@@ -83,6 +85,5 @@ export function validateDateOfBirth(dob) {
   if (inputDate > minAgeDate) {
     return "You must be at least 16 years old.";
   }
-
   return null;
 }
