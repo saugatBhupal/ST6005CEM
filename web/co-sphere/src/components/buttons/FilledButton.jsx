@@ -46,7 +46,8 @@ function FilledButton(props) {
   return (
     <Wrapper>
       <Button
-        onClick={async () => {
+        onClick={async (e) => {
+          e.preventDefault();
           setLoading(true);
           try {
             await props.onClick();

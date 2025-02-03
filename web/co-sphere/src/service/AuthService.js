@@ -35,3 +35,15 @@ export async function createPasswordService(details, callback) {
       callback(response);
     });
 }
+
+export async function loginService(details, callback) {
+  await request
+    .post("/auth/login", details, { headers: {} })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      callback(response);
+    });
+}

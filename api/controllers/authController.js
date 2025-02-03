@@ -233,10 +233,14 @@ exports.login = asyncHandler(async (req, res, next) => {
     ],
   });
   if (!user) {
-    return res.status(400).send({ message: "User doesnt exist" });
+    return res
+      .status(400)
+      .send({ message: "User with this email doesnt exist. Sign up instead." });
   }
   if (!(await comparePasswords(req.body.password, user.password))) {
-    return res.status(401).send({ message: "Unauthorized" });
+    return res
+      .status(401)
+      .send({ message: "Incorrect password. Please retry." });
   }
   res.status(200).json({
     success: true,
