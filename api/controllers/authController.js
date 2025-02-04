@@ -24,6 +24,13 @@ exports.register = asyncHandler(async (req, res, next) => {
   }
 
   req.body.password = await generateDefaultPassword();
+
+  const { dob } = req.body;
+  if (dob) {
+    const [day, month, year] = dob.split("-");
+    req.body.dob = new Date(`${year}-${month}-${day}`);
+  }
+
   const otp = generateOtp();
   req.body.verificationOtp = otp;
   req.body.verificationOtpExpire = generateOtpExpiry();
@@ -39,7 +46,10 @@ exports.register = asyncHandler(async (req, res, next) => {
       emailTemplate
     );
   } catch (e) {
-    console.error("Error sending email:", e.message);
+    console.error(
+      "Error sending email: Please enure that your email is correct.",
+      e.message
+    );
 
     return res.status(550).send({
       message:
@@ -53,7 +63,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     console.log(e);
     return res.status(500).send({
       message:
-        "Error creating account. Make sure all the fields are filled and try again.",
+        "Error creating account. Make sure all the fields are filled correctly and try again.",
     });
   }
 
