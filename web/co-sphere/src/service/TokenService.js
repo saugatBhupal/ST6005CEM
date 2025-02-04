@@ -6,8 +6,8 @@ import {
 export async function getToken() {
   if (isPresent) {
     const data = await getContext();
-    console.log(data);
-    return (await data) && data.jwt;
+    console.log(data.token);
+    return (await data) && data.token;
   } else {
     return null;
   }

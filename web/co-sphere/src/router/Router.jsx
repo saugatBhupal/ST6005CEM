@@ -11,6 +11,7 @@ import ProtectedRoute from "./ProtectedRoute";
 function Router({ auth }) {
   return (
     <BrowserRouter>
+      {console.log(auth)}
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignupPage />} />

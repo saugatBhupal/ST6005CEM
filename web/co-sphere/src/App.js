@@ -4,7 +4,7 @@ import Router from "./router/Router";
 import { getToken } from "./service/TokenService";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
     const checkAuth = async () => {
