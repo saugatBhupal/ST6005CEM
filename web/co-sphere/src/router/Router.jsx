@@ -6,17 +6,20 @@ import LandingPage from "../pages/LandingPage";
 import ProfilePage from "../pages/profile/ProfilePage";
 import SigninPage from "../pages/signin/SigninPage";
 import SignupPage from "../pages/signup/SignupPage";
+import ProtectedRoute from "./ProtectedRoute";
 
-function Router() {
+function Router({ auth }) {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/signin" element={<SigninPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/chat" element={<ChatPage />} />
+        <Route element={<ProtectedRoute auth={auth} />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/chat" element={<ChatPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

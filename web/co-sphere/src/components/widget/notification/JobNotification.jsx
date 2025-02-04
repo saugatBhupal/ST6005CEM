@@ -8,6 +8,10 @@ import SkillChip from "../chip/SkillChip";
 const Wrapper = styled.div`
   border-bottom: 1px solid ${Colors.greyOutlineShadow};
   width: 100%;
+  cursor: pointer;
+  &:hover {
+    background-color: ${Colors.menuSelected};
+  }
 `;
 const Container = styled.div`
   padding: 20px 20px;

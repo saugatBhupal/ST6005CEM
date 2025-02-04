@@ -9,6 +9,7 @@ import MessageNotification from "./MessageNotification";
 const Wrapper = styled.div`
   /* width: 100%; */
   height: calc(100vh - 195px);
+  overflow-y: scroll;
   background-color: white;
   border: 1px solid ${Colors.greyOutlineShadow};
   border-radius: 18px;

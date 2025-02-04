@@ -21,31 +21,36 @@ const Container = styled.div`
   margin-left: 250px;
   width: calc(100vw - 250px);
 `;
+const Margin = styled.div`
+  margin: auto 10px;
+`;
 const Flex = styled.div`
-  margin-top: 20px;
   display: flex;
   height: 100%;
   width: 100%;
-  justify-content: space-around;
-  margin: initial 50px;
+  justify-content: space-between;
+  gap: 10px;
   /* margin: auto; */
 `;
 const Right = styled.div`
-  width: 450px;
+  width: 400px;
+  max-width: 500px;
+  flex: 1 1 0;
   height: 100%;
   overflow-y: scroll;
 `;
 const MyApplications = styled.div``;
 const Left = styled.div`
   height: 100%;
+  flex: 1 1 0;
+  max-width: 450px;
   overflow-y: scroll;
 `;
 const Notification = styled.div`
   height: 100%;
   min-width: 300px;
-  max-width: 450px;
-  flex-grow: 1;
-  margin: 30px;
+  max-width: 500px;
+  flex: 1 1 0;
   margin-top: 40px;
   overflow-y: scroll;
 `;
@@ -63,53 +68,55 @@ function DashboardPage() {
       <Container>
         <MenubarDashboard />
         <MenubarSpacerDashboard />
-        <Body>
-          <Flex>
-            <Left>
-              <Gap />
-              <StatsWidget />
-              <StatsListWidget />
-              <Gap />
-              <MyApplications>
+        <Margin>
+          <Body>
+            <Flex>
+              <Left>
+                <Gap />
+                <StatsWidget />
+                <StatsListWidget />
+                <Gap />
+                <MyApplications>
+                  <BasicWidgetTitleBlock
+                    title={"My Applications"}
+                    onClick={() => {}}
+                  />
+                  <MyApplicationWidget status={"Pending"} />
+                  <MyApplicationWidget status={"Active"} />
+                  <MyApplicationWidget status={"Active"} />
+                  <MyApplicationWidget status={"Active"} />
+                  <MyApplicationWidget status={"Pending"} />
+                  <Gap />
+                </MyApplications>
+              </Left>
+              <Right>
+                <Gap />
                 <BasicWidgetTitleBlock
-                  title={"My Applications"}
+                  title={"Created By Me"}
                   onClick={() => {}}
                 />
-                <MyApplicationWidget status={"Pending"} />
-                <MyApplicationWidget status={"Active"} />
-                <MyApplicationWidget status={"Active"} />
-                <MyApplicationWidget status={"Active"} />
-                <MyApplicationWidget status={"Pending"} />
+                <ApplicationsCreatedByMeWidget />
+                <ApplicationsCreatedByMeWidget />
+                <ApplicationsCreatedByMeWidget />
                 <Gap />
-              </MyApplications>
-            </Left>
-            <Right>
-              <Gap />
-              <BasicWidgetTitleBlock
-                title={"Created By Me"}
-                onClick={() => {}}
-              />
-              <ApplicationsCreatedByMeWidget />
-              <ApplicationsCreatedByMeWidget />
-              <ApplicationsCreatedByMeWidget />
-              <Gap />
-              <BasicWidgetTitleBlock
-                title={"Assigned To Me"}
-                onClick={() => {}}
-              />
-              <TasksAssignedToMeWidget />
-              <TasksAssignedToMeWidget />
-              <TasksAssignedToMeWidget />
-              <TasksAssignedToMeWidget />
-              <TasksAssignedToMeWidget />
-              <TasksAssignedToMeWidget />
-              <Gap />
-            </Right>
-            <Notification>
-              <NotificationWidget />
-            </Notification>
-          </Flex>
-        </Body>
+                <BasicWidgetTitleBlock
+                  title={"Assigned To Me"}
+                  onClick={() => {}}
+                />
+                <TasksAssignedToMeWidget />
+                <TasksAssignedToMeWidget />
+                <TasksAssignedToMeWidget />
+                <TasksAssignedToMeWidget />
+                <TasksAssignedToMeWidget />
+                <TasksAssignedToMeWidget />
+                <Gap />
+              </Right>
+              <Notification>
+                <NotificationWidget />
+              </Notification>
+            </Flex>
+          </Body>
+        </Margin>
       </Container>
     </Wrapper>
   );

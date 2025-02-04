@@ -4,8 +4,8 @@ export const isPresent = () => {
   else return true;
 };
 
-export const setContext = (data) => {
-  localStorage.setItem("data", JSON.stringify(data));
+export const setContext = async (data) => {
+  await localStorage.setItem("data", JSON.stringify(data));
 };
 
 export function deleteContext() {
@@ -14,9 +14,8 @@ export function deleteContext() {
 
 export async function getContext() {
   if (isPresent) {
-    // const data = await JSON.parse(localStorage.getItem("data"));
-    // console.log(data)
-    return await JSON.parse(localStorage.getItem("data"));
+    const data = await JSON.parse(localStorage.getItem("data"));
+    return data;
   } else {
     return false;
   }

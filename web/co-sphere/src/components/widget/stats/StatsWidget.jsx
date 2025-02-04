@@ -13,7 +13,7 @@ const Container = styled.div`
   grid-template-columns: repeat(2, 190px);
   grid-template-rows: repeat(2, 120px);
   gap: 10px;
-  margin: 20px;
+
   margin-top: 0;
 `;
 const Box = styled.div`

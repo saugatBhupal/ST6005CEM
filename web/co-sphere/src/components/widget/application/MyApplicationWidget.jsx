@@ -8,7 +8,7 @@ import TypeChip from "../chip/TypeChip";
 const Wrapper = styled.div`
   background-color: ${Colors.justWhite};
   border-radius: 16px;
-  margin: 20px;
+  margin: 20px auto;
   margin-right: 0px;
   padding: 20px;
   cursor: pointer;

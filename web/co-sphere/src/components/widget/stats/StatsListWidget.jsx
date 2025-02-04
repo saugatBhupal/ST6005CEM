@@ -6,7 +6,8 @@ import { FontSize } from "../../../constants/FontSize";
 const Wrapper = styled.div`
   background-color: ${Colors.justWhite};
   border-radius: 16px;
-  margin: 20px;
+  margin: 20px auto;
+
   border: 0.5px solid ${Colors.greyOutlineShadow};
   box-shadow: 1px 5px 40px -30px rgba(0, 0, 0, 0.12);
 `;
