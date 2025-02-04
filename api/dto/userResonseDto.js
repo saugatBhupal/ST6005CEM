@@ -14,6 +14,7 @@ class UserResponseDto{
         overview,
         interests,
         skills,
+        createdAt,
     }){
         this._id = _id;
         this.fullname = fullname;
@@ -25,10 +26,11 @@ class UserResponseDto{
         this.country = country;
         this.province = province;
         this.city = city;
-        this.about = about;
         this.overview = overview;
         this.interests = interests;
         this.skills = skills;
+        this.about = about;
+        this.createdAt = createdAt;
     }
 }
 module.exports = UserResponseDto;
