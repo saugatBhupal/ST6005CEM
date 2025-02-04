@@ -516,7 +516,7 @@ function InterestsWidget(pageNumber, setPageNumber, navigate) {
           <FilledButton
             placeholder={"Complete"}
             onClick={() => {
-              navigate("/dashboard");
+              navigate("/signin");
             }}
           />
           <SignupTextBlock />
