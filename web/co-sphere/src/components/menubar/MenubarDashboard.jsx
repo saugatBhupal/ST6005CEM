@@ -10,7 +10,7 @@ import MessageMenubarDashboard from "./MessageMenubarDashboard";
 
 const Wrapper = styled.div`
   z-index: 99 !important;
-  height: 60px;
+  height: 50px;
   width: inherit;
   background-color: ${Colors.justWhite};
   border-bottom: 1px solid ${Colors.greyOutlineShadow};

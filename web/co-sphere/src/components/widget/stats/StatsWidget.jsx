@@ -10,7 +10,7 @@ import VerticalProgressBar from "../progressbar/VerticalProgresssbar";
 const Wrapper = styled.div``;
 const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 190px);
+  grid-template-columns: repeat(2, 170px);
   grid-template-rows: repeat(2, 120px);
   gap: 10px;
 
@@ -18,7 +18,7 @@ const Container = styled.div`
 `;
 const Box = styled.div`
   height: inherit;
-  width: 150px;
+  width: 130px;
   background-color: ${Colors.justWhite};
   border-radius: 16px;
   border: 0.5px solid ${Colors.greyOutlineShadow};

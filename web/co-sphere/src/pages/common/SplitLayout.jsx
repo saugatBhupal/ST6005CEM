@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { Colors } from "../../constants/Colors";
 import LoggedInUserLayout from "../common/LoggedInUserLayout";
-import AllChatsSection from "./AllChatsSection";
-import ChatRoomSection from "./ChatRoomSection";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -13,24 +12,23 @@ const Container = styled.div`
   display: flex;
 `;
 const Left = styled.div`
-  width: 350px;
+  width: 453px;
+  height: 100%;
+  overflow-y: scroll;
 `;
 const Right = styled.div`
   flex: 1;
   width: auto;
+  border-left: 0.5px solid ${Colors.greyOutlineShadow};
 `;
-function ChatPage() {
+function SplitLayout({ left, right }) {
   return (
     <LoggedInUserLayout
       body={
         <Wrapper>
           <Container>
-            <Left>
-              <AllChatsSection />
-            </Left>
-            <Right>
-              <ChatRoomSection />
-            </Right>
+            <Left>{left}</Left>
+            <Right>{right}</Right>
           </Container>
         </Wrapper>
       }
@@ -38,4 +36,4 @@ function ChatPage() {
   );
 }
 
-export default ChatPage;
+export default SplitLayout;

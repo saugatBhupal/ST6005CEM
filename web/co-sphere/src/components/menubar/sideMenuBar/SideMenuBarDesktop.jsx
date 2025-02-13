@@ -7,13 +7,13 @@ import LogoMenu from "../../logo/LogoMenu";
 
 const Wrapper = styled.div`
   height: 100vh;
-  width: 250px;
+  width: 220px;
   background-color: ${Colors.justWhite};
   border-right: 1px solid ${Colors.greyOutlineShadow};
   position: fixed;
 `;
 const Logo = styled.div`
-  height: 60px;
+  height: 50px;
   width: 100%;
   z-index: 1;
   display: flex;
@@ -24,7 +24,7 @@ const Logo = styled.div`
 `;
 const Container = styled.div`
   display: flex;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 50px);
   flex-direction: column;
 `;
 
@@ -75,7 +75,7 @@ const End = styled.div`
   height: fit-content;
 `;
 const EndContainer = styled.div`
-  height: 50px;
+  height: 40px;
   width: 100%;
   border-top: 0.5px solid ${Colors.greyOutlineShadow};
   background-color: ${Colors.lightSelected};
@@ -89,6 +89,7 @@ const EndContainer = styled.div`
   div {
     width: fit-content;
     margin: auto;
+    margin-top: 12px;
     color: ${Colors.deepOrange};
     font-weight: 400;
   }

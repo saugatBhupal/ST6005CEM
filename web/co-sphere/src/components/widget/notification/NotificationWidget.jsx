@@ -5,17 +5,17 @@ import { FontSize } from "../../../constants/FontSize";
 import ContentNotification from "./ContentNotification";
 import JobNotification from "./JobNotification";
 import MessageNotification from "./MessageNotification";
+import NotificationBottomSection from "./NotificationBottomSection";
 
 const Wrapper = styled.div`
-  /* width: 100%; */
+  width: calc(100% - 10px);
   height: calc(100vh - 195px);
-  overflow-y: scroll;
   background-color: white;
   border: 1px solid ${Colors.greyOutlineShadow};
   border-radius: 18px;
 `;
 const TopBar = styled.div`
-  height: 60px;
+  height: 50px;
   width: 100%;
   border-bottom: 1px solid ${Colors.greyOutlineShadow};
 `;
@@ -29,8 +29,21 @@ const Title = styled.div`
   font-size: ${FontSize.medium};
   color: ${Colors.subtitleBlack};
 `;
-const Content = styled.div``;
-const Container = styled.div``;
+const Content = styled.div`
+  height: 100%;
+  overflow-y: scroll;
+`;
+const Bottom = styled.div`
+  height: 50px;
+  width: 100%;
+`;
+const Container = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`;
 function NotificationWidget() {
   return (
     <Wrapper>
@@ -45,7 +58,11 @@ function NotificationWidget() {
           <MessageNotification />
           <JobNotification />
           <ContentNotification />
+          <MessageNotification />
         </Content>
+        <Bottom>
+          <NotificationBottomSection />
+        </Bottom>
       </Container>
     </Wrapper>
   );

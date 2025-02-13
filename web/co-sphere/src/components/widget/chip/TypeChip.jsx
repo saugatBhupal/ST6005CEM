@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { FontSize } from "../../../constants/FontSize";
 
 const Wrapper = styled.div`
   width: 60px;
   height: 25px;
   font-weight: 500;
-  font-size: 12px;
+  font-size: ${FontSize.extraSmall} !important;
   background-color: ${(props) =>
     props.type === "Pending" || props.type === "Delayed"
       ? "#DFAB7620"

@@ -4,11 +4,12 @@ import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
 
 const Wrapper = styled.div`
-  width: 340px;
+  width: 100%;
   background-color: transparent;
   position: relative;
   align-items: center;
   display: flex;
+  height: 49px;
 `;
 
 const InputWrapper = styled.div`
@@ -36,7 +37,6 @@ const SearchIcon = styled.div`
 const InputBox = styled.input`
   background-color: transparent;
   border: none;
-  height: 60px;
   width: 100%;
   font-size: ${FontSize.small};
   font-weight: 200;
@@ -61,7 +61,6 @@ function SearchInputChat() {
   return (
     <Wrapper>
       <InputWrapper>
-        <InputBox placeholder="Search chat" />
         <SearchIcon>
           <svg
             width="23"
@@ -76,6 +75,7 @@ function SearchInputChat() {
             />
           </svg>
         </SearchIcon>
+        <InputBox placeholder="Search chat" />
       </InputWrapper>
     </Wrapper>
   );

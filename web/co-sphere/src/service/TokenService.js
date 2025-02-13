@@ -1,7 +1,7 @@
 import {
   getContext,
   isPresent,
-} from "../components/common/manager/contextManager/ContextManager";
+} from "../common/manager/contextManager/ContextManager";
 
 export async function getToken() {
   if (isPresent) {

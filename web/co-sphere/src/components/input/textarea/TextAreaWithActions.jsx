@@ -28,7 +28,7 @@ const StyledInput = styled.textarea`
   color: ${Colors.subtitleBlack};
   text-align: justify;
   &::placeholder {
-    font-size: 16px;
+    font-size: ${FontSize.small};
     font-weight: 200;
   }
 `;
@@ -41,7 +41,7 @@ const CharacterCount = styled.div`
 `;
 
 const ButtonGroup = styled.div`
-  width: 170px;
+  width: 130px;
   display: flex;
   justify-content: space-between;
 `;

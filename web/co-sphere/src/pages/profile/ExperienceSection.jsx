@@ -4,10 +4,11 @@ import TextAreaWithActions from "../../components/input/textarea/TextAreaWithAct
 import ActionChip from "../../components/widget/chip/ActionChip";
 import ExperienceCard from "../../components/widget/experience/ExperienceCard";
 import { Colors } from "../../constants/Colors";
+import { FontSize } from "../../constants/FontSize";
 
 const Wrapper = styled.div``;
 const Title = styled.div`
-  font-size: 16px;
+  font-size: ${FontSize.small};
   font-weight: 500;
   color: ${Colors.subtitleBlack};
   margin-bottom: 10px;

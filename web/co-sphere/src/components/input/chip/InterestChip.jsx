@@ -4,7 +4,7 @@ import { Colors } from "../../../constants/Colors";
 const Wrapper = styled.div`
   width: fit-content;
   height: fit-content;
-  padding: 12px 25px;
+  padding: 10px 20px;
   border-radius: 32px;
   cursor: pointer;
   background-color: ${({ isSelected }) =>

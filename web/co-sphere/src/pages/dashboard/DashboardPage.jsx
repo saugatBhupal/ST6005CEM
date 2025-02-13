@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import MenubarDashboard from "../../components/menubar/MenubarDashboard";
 import SideMenuBarDesktop from "../../components/menubar/sideMenuBar/SideMenuBarDesktop";
@@ -18,8 +19,8 @@ const Wrapper = styled.div`
   background-color: ${Colors.backgroundWhite};
 `;
 const Container = styled.div`
-  margin-left: 250px;
-  width: calc(100vw - 250px);
+  margin-left: 220px;
+  width: calc(100vw - 220px);
 `;
 const Margin = styled.div`
   margin: auto 10px;
@@ -43,7 +44,7 @@ const MyApplications = styled.div``;
 const Left = styled.div`
   height: 100%;
   flex: 1 1 0;
-  max-width: 450px;
+  max-width: 420px;
   overflow-y: scroll;
 `;
 const Notification = styled.div`
@@ -56,12 +57,13 @@ const Notification = styled.div`
 `;
 const Body = styled.div`
   overflow: hidden;
-  height: calc(100vh - 110px);
+  height: calc(100vh - 100px);
 `;
 const Gap = styled.div`
-  height: 40px;
+  height: 30px;
 `;
 function DashboardPage() {
+  const navigate = useNavigate();
   return (
     <Wrapper>
       <SideMenuBarDesktop current={"home"} />
@@ -79,7 +81,9 @@ function DashboardPage() {
                 <MyApplications>
                   <BasicWidgetTitleBlock
                     title={"My Applications"}
-                    onClick={() => {}}
+                    onClick={() => {
+                      navigate("/my-applications");
+                    }}
                   />
                   <MyApplicationWidget status={"Pending"} />
                   <MyApplicationWidget status={"Active"} />

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
+import { FontSize } from "../../../constants/FontSize";
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,7 +35,7 @@ const Dot = styled.div`
 `;
 
 const SubTitle = styled.div`
-  font-size: 14px;
+  font-size: ${FontSize.small};
   font-weight: 300;
   color: ${Colors.subtitleBlack};
 `;

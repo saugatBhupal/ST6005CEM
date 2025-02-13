@@ -3,10 +3,11 @@ import styled from "styled-components";
 import ActionChip from "../../components/widget/chip/ActionChip";
 import EducationCard from "../../components/widget/education/EducationCard";
 import { Colors } from "../../constants/Colors";
+import { FontSize } from "../../constants/FontSize";
 
 const Wrapper = styled.div``;
 const Title = styled.div`
-  font-size: 16px;
+  font-size: ${FontSize.small};
   font-weight: 500;
   color: ${Colors.subtitleBlack};
   margin-bottom: 10px;

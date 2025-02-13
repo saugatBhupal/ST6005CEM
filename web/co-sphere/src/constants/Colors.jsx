@@ -18,4 +18,8 @@ export class Colors {
   static darkSelected = "#F8F8F8";
   static deepOrange = "#E3984E";
   static errorRed = "#d3675a";
+  static deepRed = "#FB3C1A";
+  static lightRed = "#FB3C1A20";
+  static lightGreen = "#76DFAE20";
+  static deepGreen = "#0D6722";
 }

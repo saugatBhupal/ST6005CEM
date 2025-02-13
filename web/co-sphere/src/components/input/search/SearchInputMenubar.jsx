@@ -36,7 +36,7 @@ const SearchIcon = styled.div`
 const InputBox = styled.input`
   background-color: transparent;
   border: none;
-  height: 60px;
+  height: 50px;
   width: 100%;
   font-size: ${FontSize.small};
   font-weight: 200;

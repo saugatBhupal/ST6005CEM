@@ -23,16 +23,15 @@ import ReviewSection from "./ReviewSection";
 
 const Wrapper = styled.div`
   width: 100%;
-  margin-top: 42px;
+  margin-top: 5vh;
   display: flex;
   align-items: center;
 `;
 const Overlay = styled.div`
   position: absolute;
-  height: calc(100vh - 110px);
+  height: inherit;
   display: flex;
   align-items: center;
-  /* margin-top: 300px; */
   width: inherit;
   background-color: #19161629;
 `;
@@ -128,11 +127,10 @@ const Li = styled.li`
 `;
 const ContentContainer = styled.div`
   max-width: 500px;
-
   margin: 20px;
-
   margin: 20px auto;
   background-color: ${Colors.justWhite};
+  border: 0.5px solid ${Colors.greyOutlineShadow};
   padding: 20px;
   border-radius: 16px;
 `;

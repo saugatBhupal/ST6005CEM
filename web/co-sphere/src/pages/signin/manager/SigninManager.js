@@ -1,4 +1,4 @@
-import { setContext } from "../../../components/common/manager/contextManager/ContextManager";
+import { setContext } from "../../../common/manager/contextManager/ContextManager";
 import { loginService } from "../../../service/AuthService";
 
 export async function manageUserLogin(data, onSuccess, onFailure) {

@@ -11,13 +11,13 @@ const Wrapper = styled.div`
   background-color: ${Colors.backgroundWhite};
 `;
 const Container = styled.div`
-  margin-left: 250px;
-  width: calc(100vw - 250px);
+  margin-left: 220px;
+  width: calc(100vw - 220px);
 `;
 
 const Body = styled.div`
   overflow: hidden;
-  height: calc(100vh - 110px);
+  height: calc(100vh - 100px);
   width: inherit;
 `;
 
