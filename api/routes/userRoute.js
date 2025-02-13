@@ -14,9 +14,11 @@ const {
 const {
   addEducation,
   getEducationByUserID,
+} = require("../controllers/educationController");
+const {
   addExperience,
   getExperienceByUserID,
-} = require("../controllers/userInfoController");
+} = require("../controllers/educationController");
 const router = express.Router();
 
 router.get("/:userID", getUserByID)
