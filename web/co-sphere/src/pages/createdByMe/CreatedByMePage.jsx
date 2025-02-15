@@ -5,7 +5,7 @@ import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
 import SplitLayout from "../common/SplitLayout";
 import TabbedPanel from "./TabbedPanel";
-import HiringDetails from "./HiringDetails";
+import HiringDetails from "./HiringTaskDetails";
 
 const LeftWrapper = styled.div`
   height: inherit;
