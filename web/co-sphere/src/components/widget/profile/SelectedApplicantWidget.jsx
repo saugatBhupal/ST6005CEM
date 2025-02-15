@@ -5,8 +5,9 @@ import { FontSize } from "../../../constants/FontSize";
 import ProfileIcon from "../../icon/ProfileIcon";
 
 const Wrapper = styled.div`
-  max-width: 100%;
+  max-width: calc(100%);
   max-height: 80px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   border: 1px solid ${Colors.greyOutlineShadow};
@@ -37,8 +38,6 @@ const Right = styled.div`
 `;
 const Column = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: right;
   align-items: center;
   gap: 10px;
   span {

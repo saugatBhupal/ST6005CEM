@@ -1,11 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import JobDetails from "../../components/widget/job/JobDetails";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
 import SplitLayout from "../common/SplitLayout";
+import ActiveTaskDetails from "./ActiveTaskDetails";
 import TabbedPanel from "./TabbedPanel";
-import HiringDetails from "./HiringTaskDetails";
 
 const LeftWrapper = styled.div`
   height: inherit;
@@ -42,7 +41,7 @@ function CreatedByMePage() {
       right={
         <>
           <RightWrapper>
-            <HiringDetails />
+            <ActiveTaskDetails />
           </RightWrapper>
         </>
       }

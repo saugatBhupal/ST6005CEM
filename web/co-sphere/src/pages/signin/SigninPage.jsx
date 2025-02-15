@@ -150,7 +150,7 @@ function SigninPage() {
               <FilledButton
                 placeholder={"Sign in"}
                 onClick={async () => {
-                  if (validationForm.email && validationForm.password) {
+                  if (validationForm.email) {
                     setIsValid(true);
                     await manageUserLogin(
                       formData,

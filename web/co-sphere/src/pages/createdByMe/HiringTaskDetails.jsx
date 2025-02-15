@@ -101,7 +101,7 @@ const Gap = styled.div`
   height: 1px;
   margin: 10px auto;
 `;
-function HiringDetails() {
+function HiringTaskDetails() {
   return (
     <Wrapper>
       <Container>
@@ -203,4 +203,4 @@ function HiringDetails() {
   );
 }
 
-export default HiringDetails;
+export default HiringTaskDetails;
