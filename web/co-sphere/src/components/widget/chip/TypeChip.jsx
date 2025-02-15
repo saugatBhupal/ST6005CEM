@@ -8,7 +8,9 @@ const Wrapper = styled.div`
   font-weight: 500;
   font-size: ${FontSize.extraSmall} !important;
   background-color: ${(props) =>
-    props.type === "Pending" || props.type === "Delayed"
+    props.type === "Pending" ||
+    props.type === "Delayed" ||
+    props.type === "Hiring"
       ? "#DFAB7620"
       : props.type === "Active" ||
         props.type === "Junior" ||
@@ -16,7 +18,9 @@ const Wrapper = styled.div`
       ? "#76DFAE20"
       : "#e0e0e0"};
   color: ${(props) =>
-    props.type === "Pending" || props.type === "Delayed"
+    props.type === "Pending" ||
+    props.type === "Delayed" ||
+    props.type === "Hiring"
       ? "#E3984E"
       : props.type === "Active" ||
         props.type === "Junior" ||

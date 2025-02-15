@@ -13,7 +13,7 @@ const Container = styled.div`
 `;
 const Left = styled.div`
   width: 453px;
-  height: 100%;
+  height: calc(100vh - 100px);
   overflow-y: scroll;
 `;
 const Right = styled.div`
@@ -21,7 +21,7 @@ const Right = styled.div`
   width: auto;
   border-left: 0.5px solid ${Colors.greyOutlineShadow};
 `;
-function SplitLayout({ left, right }) {
+function SplitLayout({ left, right, page }) {
   return (
     <LoggedInUserLayout
       body={
@@ -32,6 +32,7 @@ function SplitLayout({ left, right }) {
           </Container>
         </Wrapper>
       }
+      page={page}
     />
   );
 }

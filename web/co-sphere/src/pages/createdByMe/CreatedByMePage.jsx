@@ -1,14 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import MyApplicationWidget from "../../components/widget/application/MyApplicationWidget";
 import JobDetails from "../../components/widget/job/JobDetails";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
 import SplitLayout from "../common/SplitLayout";
+import TabbedPanel from "./TabbedPanel";
+import HiringDetails from "./HiringDetails";
 
-const LeftWrapper = styled.div``;
+const LeftWrapper = styled.div`
+  height: inherit;
+`;
 const LeftContainer = styled.div`
   padding: 20px;
+  padding-bottom: 0px;
+  height: calc(100% - 20px);
+  overflow-y: hidden;
 `;
 const RightWrapper = styled.div`
   height: 100%;
@@ -20,22 +26,15 @@ const Title = styled.div`
   font-weight: 500;
   margin-left: 22px;
 `;
-function MyApplicationsPage() {
+function CreatedByMePage() {
   return (
     <SplitLayout
       left={
         <>
           <LeftWrapper>
             <LeftContainer>
-              <Title>My Application</Title>
-              <MyApplicationWidget status={"Pending"} />
-              <MyApplicationWidget status={"Active"} />
-              <MyApplicationWidget status={"Pending"} />
-              <MyApplicationWidget status={"Active"} />
-              <MyApplicationWidget status={"Pending"} />
-              <MyApplicationWidget status={"Active"} />
-              <MyApplicationWidget status={"Pending"} />
-              <MyApplicationWidget status={"Active"} />
+              <Title>Created By Me</Title>
+              <TabbedPanel />
             </LeftContainer>
           </LeftWrapper>
         </>
@@ -43,7 +42,7 @@ function MyApplicationsPage() {
       right={
         <>
           <RightWrapper>
-            <JobDetails />
+            <HiringDetails />
           </RightWrapper>
         </>
       }
@@ -52,4 +51,4 @@ function MyApplicationsPage() {
   );
 }
 
-export default MyApplicationsPage;
+export default CreatedByMePage;

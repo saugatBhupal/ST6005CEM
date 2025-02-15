@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ChatPage from "../pages/chat/ChatPage";
+import CreatedByMePage from "../pages/createdByMe/CreatedByMePage";
 import DashboardPage from "../pages/dashboard/DashboardPage";
 import LandingPage from "../pages/LandingPage";
 import MyApplicationsPage from "../pages/myApplications/MyApplicationsPage";
@@ -21,6 +22,7 @@ function Router({ auth }) {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/my-applications" element={<MyApplicationsPage />} />
+          <Route path="/created-by-me" element={<CreatedByMePage />} />
         </Route>
       </Routes>
     </BrowserRouter>
