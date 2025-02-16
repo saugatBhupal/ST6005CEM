@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
+import { calculateTimeDifference } from "../../../utils/date/CalculateTimeDifference";
 import ProfileIcon from "../../icon/ProfileIcon";
 
 const Wrapper = styled.div`
@@ -35,6 +36,10 @@ const Message = styled.div`
   font-size: ${FontSize.medium};
   color: ${Colors.subtitleBlack};
   font-weight: 200;
+  b {
+    color: ${Colors.mainBlue};
+    font-weight: 400;
+  }
 `;
 const Name = styled.div`
   font-weight: 400;
@@ -47,18 +52,30 @@ const Time = styled.div`
   font-weight: 200;
 `;
 
-function ChatCard({ seen }) {
+function ChatCard({ user, message, seen, userId }) {
   return (
     <Wrapper>
       <Container seen={seen}>
         <Flex>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <ProfileIcon height={"30px"} />
-            <Name>Lexi Anderson</Name>
+            <ProfileIcon url={user.profileImage} height={"30px"} />
+            <Name>{user.fullname}</Name>
           </div>
-          <Time> 1h</Time>
+          <Time> {message && calculateTimeDifference(message.sent)}</Time>
         </Flex>
-        <Message>Thank you! I will see you tomorrow....</Message>
+        <Message>
+          {message ? (
+            message.sender === userId ? (
+              <>
+                <b>You :</b> {message.content}
+              </>
+            ) : (
+              message.content
+            )
+          ) : (
+            "Say hi to start a new chat!"
+          )}
+        </Message>
       </Container>
     </Wrapper>
   );

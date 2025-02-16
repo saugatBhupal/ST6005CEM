@@ -14,7 +14,9 @@ exports.createConversation = async (req, res) => {
     await conversation.save();
     res.status(201).json(conversation);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).send({
+      message: "Server Error.",
+    });
   }
 };
 
@@ -31,15 +33,17 @@ exports.getAllConversations = async (req, res) => {
 
     const result = conversations.map((convo) => {
       return {
-        conversationId: convo._id,
+        _id: convo._id,
         members: convo.members,
-        messages: convo.messages.at(-1),
+        message: convo.messages.at(-1),
       };
     });
 
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).send({
+      message: "Server Error.",
+    });
   }
 };
 

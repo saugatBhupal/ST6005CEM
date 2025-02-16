@@ -7,10 +7,15 @@ const Wrapper = styled.div`
     border-radius: 50%;
   }
 `;
-function ProfileIcon({ height }) {
+function ProfileIcon({ url }, { height }) {
   return (
     <Wrapper>
-      <img src={ProfileImage} height={height} alt="" />
+      <img
+        src={url ? url : ProfileImage}
+        height={height ? height : "40px"}
+        width={height ? height : "40px"}
+        alt=""
+      />
     </Wrapper>
   );
 }

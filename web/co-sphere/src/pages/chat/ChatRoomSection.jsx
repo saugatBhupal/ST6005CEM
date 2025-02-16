@@ -132,12 +132,13 @@ function ChatRoomSection() {
           </Action>
         </Top>
         <Center>
-          {messages.map((message, i) => (
-            <ChatMessageCard
-              message={message.content}
-              isUser={userId === message.sender}
-            />
-          ))}
+          {messages &&
+            messages.map((message, i) => (
+              <ChatMessageCard
+                message={message.content}
+                isUser={userId === message.sender}
+              />
+            ))}
           <Gap> </Gap>
           <div ref={messageEndRef} />
         </Center>
