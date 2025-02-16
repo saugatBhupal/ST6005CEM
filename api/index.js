@@ -1,9 +1,8 @@
-const express = require("express");
+const { app, server } = require("./config/socketConfig");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-const app = express();
 const cors = require("cors");
 const cloudinary = require("cloudinary");
 const connectDB = require("./config/db");
@@ -13,7 +12,6 @@ dotenv.config({
   path: "./config/config.env",
 });
 
-app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,17 +31,21 @@ if (process.env.NODE_ENV === "development") {
 //================== Routes =================
 const authRoute = require("./routes/authRoute");
 const userRoute = require("./routes/userRoute");
+const messageRoute = require("./routes/messageRoute");
+const conversationRoute = require("./routes/conversationRoute");
 //===========================================
 
 //===================Mount Routers===========
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/message", messageRoute);
+app.use("/api/v1/conversation", conversationRoute);
 //===========================================
 
 const PORT = process.env.PORT || 5000;
 const MODE = process.env.NODE_ENV;
 
-const server = app.listen(
+server.listen(
   PORT,
   console.log(`Server running in ${MODE} mode on port ${PORT}`)
 );

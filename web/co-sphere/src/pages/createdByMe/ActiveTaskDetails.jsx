@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import DeleteButton from "../../components/buttons/DeleteButton";
 import FilledButton from "../../components/buttons/FilledButton";
@@ -10,10 +10,23 @@ import DurationWidget from "../../components/widget/duration/DurationWidget";
 import ProfileWidget from "../../components/widget/profile/ProfileWidget";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
+import EditTaskDetails from "./EditTaskDetails";
 import TaskDetailsTabbedPanel from "./TaskDetailsTabbedPanel";
 
 const Wrapper = styled.div`
   height: 100%;
+  width: 100%;
+  position: relative;
+`;
+const Overlay = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: inherit;
+  width: inherit;
+  background-color: #0000006c;
+  z-index: 98;
 `;
 const Container = styled.div`
   height: calc(100%);
@@ -93,9 +106,34 @@ const Gap = styled.div`
   height: 1px;
   margin: 10px auto;
 `;
+
+const OverlayContent = styled.div`
+  height: 600px;
+  width: 500px;
+  padding: 20px;
+  background-color: white;
+`;
+
 function ActiveTaskDetails() {
+  const [overlay, setOverlay] = useState(false);
   return (
     <Wrapper>
+      {overlay && (
+        <Overlay
+          onClick={() => {
+            setOverlay(!overlay);
+          }}
+        >
+          <OverlayContent>
+            <EditTaskDetails
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            />
+          </OverlayContent>
+        </Overlay>
+      )}
+
       <Container>
         <Content>
           <Fixed>

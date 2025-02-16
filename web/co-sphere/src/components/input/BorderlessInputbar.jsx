@@ -57,11 +57,17 @@ const InputBox = styled.input`
   }
 `;
 
-function BorderlessInputbar({ placeholder }) {
+function BorderlessInputbar({ placeholder, onChange, value }) {
   return (
     <Wrapper>
       <InputWrapper>
-        <InputBox placeholder={placeholder} />
+        <InputBox
+          placeholder={placeholder}
+          onChange={(e) => {
+            onChange(e.target.value);
+          }}
+          value={value}
+        />
       </InputWrapper>
     </Wrapper>
   );

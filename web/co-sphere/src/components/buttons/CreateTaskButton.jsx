@@ -33,17 +33,21 @@ const Icon = styled.div`
     stroke: none;
   }
 `;
-function EditJobDetailsButton() {
+function CreateTaskButton({ onClick }) {
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        onClick();
+      }}
+    >
       <Container>
         <Icon>
           <EditIcon />
         </Icon>
-        <span>Edit Details</span>
+        <span>Create Task</span>
       </Container>
     </Wrapper>
   );
 }
 
-export default EditJobDetailsButton;
+export default CreateTaskButton;

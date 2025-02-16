@@ -8,6 +8,7 @@ export async function manageUserLogin(data, onSuccess, onFailure) {
       if (response.status === 200) {
         await setContext(response.data.data);
         onSuccess();
+        window.location.reload();
       } else {
         onFailure(response.data.message);
       }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import CreateTaskButton from "../../components/buttons/CreateTaskButton";
 import SelectedApplicantProfileWidget from "../../components/widget/profile/SelectedApplicantWidget";
 import TaskDetailsCard from "../../components/widget/task/TaskDetailsCard";
 import { Colors } from "../../constants/Colors";
@@ -34,7 +35,15 @@ const Content = styled.div`
   height: 100%;
   overflow-y: scroll;
 `;
-function TaskDetailsTabbedPanel() {
+const Button = styled.div`
+  button {
+    width: 100px;
+  }
+  margin-bottom: 2px;
+  display: flex;
+  justify-content: right;
+`;
+function TaskDetailsTabbedPanel({ setOverlay }) {
   const [currentPanel, setCurrentPanel] = useState("Members");
   return (
     <Wrapper>
@@ -78,6 +87,14 @@ function TaskDetailsTabbedPanel() {
           </li>
         </ul>
       </Switch>
+      <Button>
+        <CreateTaskButton
+          onClick={() => {
+            setOverlay(true);
+          }}
+        />
+      </Button>
+
       {
         <Content>
           {currentPanel === "Tasks" ? (

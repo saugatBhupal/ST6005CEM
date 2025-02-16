@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import SendMessageIcon from "../../components/icon/SendMessageIcon";
+import { useSocket } from "../../common/manager/contextManager/SocketContextManager";
+import SendMessageButton from "../../components/buttons/SendMessageButton";
 import BorderlessInputbar from "../../components/input/BorderlessInputbar";
 import ChatMessageCard from "../../components/widget/chat/ChatMessageCard";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
+import { getUserIdFromLocalStorage } from "../../service/LocalStorageService";
+import { manageSendMessage } from "./manager/ChatManager";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -34,7 +37,7 @@ const Center = styled.div`
   max-height: calc(100% - 90px - 60px);
   overflow-y: scroll;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   gap: 20px;
 `;
 
@@ -62,6 +65,49 @@ const Gap = styled.div`
   padding: 10px;
 `;
 function ChatRoomSection() {
+  const socket = useSocket();
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [userId, setUserId] = useState(null);
+  const messageEndRef = useRef(null);
+
+  useEffect(() => {
+    async function updateUserId() {
+      const userId = await getUserIdFromLocalStorage();
+      setUserId(userId);
+    }
+    updateUserId();
+  });
+  useEffect(() => {
+    if (!socket) return;
+    socket.on("receiveMessage", (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    return () => {
+      socket.off("receiveMessage");
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleSubmit = () => {
+    manageSendMessage(
+      {
+        senderId: userId,
+        content: message,
+      },
+      () => {
+        alert("success");
+        setMessage("");
+      },
+      (err) => {
+        alert(err);
+      }
+    );
+  };
   return (
     <Wrapper>
       <Container>
@@ -72,42 +118,33 @@ function ChatRoomSection() {
           </Action>
         </Top>
         <Center>
-          <ChatMessageCard
-            message={"Hello nice to meet you my friend? Whats up my bro!"}
-            isUser={false}
-          />
-          <ChatMessageCard message={"I am fine thankyou"} isUser={true} />
-          <ChatMessageCard
-            message={"What is it that you want?"}
-            isUser={true}
-          />
-          <ChatMessageCard
-            message={"I wanted to know your name"}
-            isUser={false}
-          />
-          <ChatMessageCard message={"My name is on the screen"} isUser={true} />
-          <ChatMessageCard message={"Oh Sorry im stupid "} isUser={false} />
-          <ChatMessageCard
-            message={"Hello nice to meet you my friend? Whats up my bro!"}
-            isUser={false}
-          />
-          <ChatMessageCard
-            message={"I wanted to know your name"}
-            isUser={false}
-          />
-          <ChatMessageCard message={"My name is on the screen"} isUser={true} />
-          <ChatMessageCard message={"Oh Sorry im stupid "} isUser={false} />
-          <ChatMessageCard
-            message={"Hello nice to meet you my friend? Whats up my bro!"}
-            isUser={false}
-          />
+          {messages.map((message, i) => (
+            <ChatMessageCard
+              message={message.content}
+              isUser={userId === message.sender}
+            />
+          ))}
           <Gap> </Gap>
+          <div ref={messageEndRef} />
         </Center>
         <Bottom>
-          <MessageSection>
-            <BorderlessInputbar placeholder={"Write something...."} />
-            <SendMessageIcon />
-          </MessageSection>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
+            <MessageSection>
+              <BorderlessInputbar
+                placeholder={"Write something...."}
+                onChange={(value) => {
+                  setMessage(value);
+                }}
+                value={message}
+              />
+              <SendMessageButton onClick={() => handleSubmit()} />
+            </MessageSection>
+          </form>
         </Bottom>
       </Container>
     </Wrapper>

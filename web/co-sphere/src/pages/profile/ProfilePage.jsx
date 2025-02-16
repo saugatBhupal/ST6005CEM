@@ -169,7 +169,6 @@ function ProfilePage() {
                     e.stopPropagation();
                   }}
                 >
-                  {console.log(overlayWidget)}
                   {overlayWidget && overlayWidget === "EditLinks" ? (
                     <EditLinks />
                   ) : overlayWidget === "EditSkills" ? (

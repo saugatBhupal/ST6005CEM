@@ -8,13 +8,14 @@ import TextAreaOutlinedButton from "../../buttons/TextAreaOutlinedButton";
 const InputWrapper = styled.div`
   /* position: relative; */
   max-height: 300px;
+  min-height: 150px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   margin: 10px auto;
   padding: 10px 5px;
   border-radius: 8px;
-  /* border: 0.5px solid ${Colors.greyOutlineShadow}; */
+  border: 0.5px solid ${Colors.greyOutlineShadow};
 `;
 
 const StyledInput = styled.textarea`
@@ -25,12 +26,12 @@ const StyledInput = styled.textarea`
   outline: none;
   min-height: 150px;
   height: inherit;
-  font-size: ${FontSize.small};
+  font-size: ${FontSize.medium};
   font-weight: 300;
   color: ${Colors.subtitleBlack};
   text-align: justify;
   &::placeholder {
-    font-size: ${FontSize.small};
+    font-size: ${FontSize.medium};
     font-weight: 200;
   }
 `;
@@ -51,7 +52,7 @@ const Bottom = styled.div`
   align-self: flex-end;
 `;
 
-function TextAreaWithActions(props) {
+function TextAreaWithWordCount(props) {
   const [text, setText] = useState("");
   const maxChars = 500;
   useEffect(() => {
@@ -78,4 +79,4 @@ function TextAreaWithActions(props) {
   );
 }
 
-export default TextAreaWithActions;
+export default TextAreaWithWordCount;
