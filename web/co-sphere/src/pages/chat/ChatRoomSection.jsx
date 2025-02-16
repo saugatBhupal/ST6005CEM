@@ -7,7 +7,7 @@ import ChatMessageCard from "../../components/widget/chat/ChatMessageCard";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
 import { getUserIdFromLocalStorage } from "../../service/LocalStorageService";
-import { manageSendMessage } from "./manager/ChatManager";
+import { manageGetAllMessages, manageSendMessage } from "./manager/ChatManager";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -89,10 +89,24 @@ function ChatRoomSection() {
     };
   }, [socket]);
 
-  useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  // useEffect(() => {
+  //   messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // }, [messages]);
 
+  useEffect(() => {
+    async function getAllMessages() {
+      await manageGetAllMessages(
+        "67b199361951254f65c360f5",
+        (messages) => {
+          setMessages(messages);
+        },
+        (e) => {
+          alert(e);
+        }
+      );
+    }
+    getAllMessages();
+  });
   const handleSubmit = () => {
     manageSendMessage(
       {

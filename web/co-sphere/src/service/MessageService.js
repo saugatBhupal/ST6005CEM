@@ -11,3 +11,15 @@ export async function sendMessageService(details, callback) {
       callback(response);
     });
 }
+
+export async function getAllMessageFromConversation(conversationId, callback) {
+  await request
+    .get(`/message/${conversationId}`, { headers: {} })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      callback(response);
+    });
+}
