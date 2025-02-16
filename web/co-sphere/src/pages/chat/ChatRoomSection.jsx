@@ -106,7 +106,7 @@ function ChatRoomSection() {
       );
     }
     getAllMessages();
-  });
+  }, []);
   const handleSubmit = () => {
     manageSendMessage(
       {
