@@ -1,7 +1,7 @@
 const Conversation = require("../models/conversation");
 const User = require("../models/user");
 
-exports.createConversation = async (req, res) => {
+exports.getConversation = async (req, res) => {
   try {
     const { members } = req.body;
     if (!members || members.length < 2) {
@@ -9,16 +9,23 @@ exports.createConversation = async (req, res) => {
         .status(400)
         .json({ error: "A conversation must have at least two members." });
     }
-
-    const conversation = new Conversation({ members });
+    members.sort();
+    let conversation = await Conversation.findOne({
+      members: { $all: members }, 
+    });
+    if (conversation) {
+      return res.status(200).json(conversation);
+    }
+    conversation = new Conversation({ members });
     await conversation.save();
-    res.status(201).json(conversation);
+    res.status(200).json(conversation);
   } catch (error) {
     return res.status(500).send({
       message: "Server Error.",
     });
   }
 };
+
 
 exports.getAllConversations = async (req, res) => {
   try {
