@@ -42,7 +42,7 @@ exports.getAllConversations = async (req, res) => {
       return {
         _id: convo._id,
         members: convo.members,
-        message: convo.messages.at(-1),
+        messages: convo.messages.at(-1),
       };
     });
 
