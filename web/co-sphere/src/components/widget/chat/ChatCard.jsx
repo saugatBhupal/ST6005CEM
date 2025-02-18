@@ -37,9 +37,14 @@ const Flex = styled.div`
 `;
 const Message = styled.div`
   padding: 0px 25px;
+  max-width: 100%;
+  overflow: hidden;
+  height: 20px;
   font-size: ${FontSize.medium};
   color: ${Colors.subtitleBlack};
   font-weight: 200;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   b {
     color: ${Colors.mainBlue};
     font-weight: 400;

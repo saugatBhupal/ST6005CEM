@@ -159,7 +159,6 @@ exports.resendOtp = asyncHandler(async (req, res, next) => {
         user.fullname,
         otp
       );
-
       await sendMail(
         req.body.email,
         "Co-Sphere : Verification OTP",

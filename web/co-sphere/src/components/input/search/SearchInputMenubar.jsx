@@ -57,9 +57,13 @@ const InputBox = styled.input`
   }
 `;
 
-function SearchInputMenubar() {
+function SearchInputMenubar({ mouseEvent, state }) {
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        mouseEvent(!state);
+      }}
+    >
       <InputWrapper>
         <InputBox placeholder="Search user, company or job" />
         <SearchIcon>
