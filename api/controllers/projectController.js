@@ -1,10 +1,10 @@
-const Job = require("../models/job");
+const Project = require("../models/project");
 const Skill = require("../models/skill");
 const User = require("../models/user");
 
-exports.getAllJobs = async (req, res) => {
+exports.getAllProjects = async (req, res) => {
   try {
-    const jobs = await Job.find()
+    const projects = await Project.find()
       .populate({
         path: "postedBy",
         select: "_id name profilePicture email phone country city",
@@ -16,18 +16,18 @@ exports.getAllJobs = async (req, res) => {
         select: "_id name profilePicture email phone country city",
       })
       .populate({
-        path: "hired",
+        path: "members",
         select: "_id name profilePicture email phone country city",
       });
-    res.status(200).json(jobs);
+    res.status(200).json(projects);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }
 };
 
-exports.getJobById = async (req, res) => {
+exports.getProjectById = async (req, res) => {
   try {
-    const job = await Job.findById(req.params.id)
+    const project = await Project.findById(req.params.id)
       .populate({
         path: "postedBy",
         select: "_id name profilePicture email phone country city",
@@ -39,17 +39,17 @@ exports.getJobById = async (req, res) => {
         select: "_id name profilePicture email phone country city",
       })
       .populate({
-        path: "hired",
+        path: "members",
         select: "_id name profilePicture email phone country city",
       });
-    if (!job) return res.status(404).json({ message: "Job not found" });
-    res.status(200).json(job);
+    if (!project) return res.status(404).json({ message: "Project not found" });
+    res.status(200).json(project);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }
 };
 
-exports.getJobsBySkills = async (req, res) => {
+exports.getProjectsBySkills = async (req, res) => {
   try {
     const { skillNames } = req.body;
 
@@ -69,7 +69,7 @@ exports.getJobsBySkills = async (req, res) => {
       return res.status(404).json({ message: "No matching skills found" });
     }
 
-    const jobs = await Job.aggregate([
+    const projects = await Project.aggregate([
       {
         $match: { skills: { $in: skillIds } },
       },
@@ -85,7 +85,7 @@ exports.getJobsBySkills = async (req, res) => {
       { $sort: { matchCount: -1 } },
     ]);
 
-    const populatedJobs = await Job.populate(jobs, [
+    const populatedProjects = await Project.populate(projects, [
       {
         path: "postedBy",
         select: "_id name profilePicture email phone country city",
@@ -97,74 +97,69 @@ exports.getJobsBySkills = async (req, res) => {
         select: "_id name profilePicture email phone country city",
       },
       {
-        path: "hired",
+        path: "members",
         select: "_id name profilePicture email phone country city",
       },
     ]);
 
-    res.status(200).json(populatedJobs);
+    res.status(200).json(populatedProjects);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
 
-exports.getJobsByUser = async (req, res) => {
+exports.getProjectsByUser = async (req, res) => {
   try {
-    const jobs = await Job.find({ postedBy: req.params.userId }).populate(
-      "postedBy skills likes applicants.user hired"
+    const projects = await Project.find({ postedBy: req.params.userId }).populate(
+      "postedBy skills likes applicants.user members"
     );
-    res.status(200).json(jobs);
+    res.status(200).json(projects);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }
 };
 
-exports.getJobsByPosition = async (req, res) => {
+exports.getProjectsByPosition = async (req, res) => {
   try {
-    const jobs = await Job.find({ position: req.params.position }).populate(
-      "postedBy skills likes applicants.user hired"
+    const projects = await Project.find({ position: req.params.position }).populate(
+      "postedBy skills likes applicants.user members"
     );
-    res.status(200).json(jobs);
+    res.status(200).json(projects);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }
 };
 
-exports.getJobsByName = async (req, res) => {
+exports.getProjectsByName = async (req, res) => {
   try {
-    const searchQuery = req.params.jobName.trim().toLowerCase();
+    const searchQuery = req.params.projectName.trim().toLowerCase();
     const searchWords = searchQuery.split(/\s+/);
 
-    const jobs = [];
-    const jobPromises = searchWords.map((searchWord) =>
-      Job.find({ jobName: { $regex: new RegExp(searchWord, "i") } })
+    const projects = [];
+    const projectPromises = searchWords.map((searchWord) =>
+      Project.find({ projectName: { $regex: new RegExp(searchWord, "i") } })
     );
-    const results = await Promise.all(jobPromises);
+    const results = await Promise.all(projectPromises);
 
-    results.forEach((jobList) => jobs.push(...jobList));
+    results.forEach((projectList) => projects.push(...projectList));
 
-    const uniqueJobs = [...new Map(jobs.map((job) => [job._id, job])).values()];
+    const uniqueProjects = [...new Map(projects.map((project) => [project._id, project])).values()];
 
-    // const jobs = await Job.find({
-    //   jobName: { $regex: new RegExp(searchQuery, "i") },
-    // });
-
-    const processedJobs = uniqueJobs
-      .map((job) => {
-        const jobWords = job.jobName.toLowerCase().split(/\s+/);
-        const matchCount = jobWords.filter((word) =>
+    const processedProjects = uniqueProjects
+      .map((project) => {
+        const projectWords = project.projectName.toLowerCase().split(/\s+/);
+        const matchCount = projectWords.filter((word) =>
           searchWords.includes(word)
         ).length;
-        const matchPercentage = (matchCount / jobWords.length) * 100;
+        const matchPercentage = (matchCount / projectWords.length) * 100;
 
-        return { job, matchPercentage };
+        return { project, matchPercentage };
       })
       .filter(({ matchPercentage }) => matchPercentage >= 20)
       .sort((a, b) => b.matchPercentage - a.matchPercentage)
+      .map(({ project }) => project);
 
-      .map(({ job }) => job);
-
-    const populatedJobs = await Job.populate(processedJobs, [
+    const populatedProjects = await Project.populate(processedProjects, [
       {
         path: "postedBy",
         select: "_id name profilePicture email phone country city",
@@ -176,32 +171,21 @@ exports.getJobsByName = async (req, res) => {
         select: "_id name profilePicture email phone country city",
       },
       {
-        path: "hired",
+        path: "members",
         select: "_id name profilePicture email phone country city",
       },
     ]);
 
-    res.status(200).json(populatedJobs);
+    res.status(200).json(populatedProjects);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
 
-exports.getJobsByCompany = async (req, res) => {
-  try {
-    const jobs = await Job.find({
-      companyName: { $regex: new RegExp(req.params.companyName, "i") },
-    }).populate("postedBy skills likes applicants.user hired");
-    res.status(200).json(jobs);
-  } catch (error) {
-    res.status(500).json({ message: "Server Error", error });
-  }
-};
-
-exports.createJob = async (req, res) => {
+exports.createProject = async (req, res) => {
   try {
     const {
-      jobName,
+      projectName,
       position,
       address,
       postedBy,
@@ -212,7 +196,7 @@ exports.createJob = async (req, res) => {
     } = req.body;
 
     if (
-      !jobName ||
+      !projectName ||
       !position ||
       !address ||
       !postedBy ||
@@ -221,6 +205,7 @@ exports.createJob = async (req, res) => {
     ) {
       return res.status(400).json({ message: "Missing required fields" });
     }
+
     const normalizedSkills = skills.map((skill) => skill.toLowerCase());
 
     const existingSkills = await Skill.find(
@@ -243,11 +228,10 @@ exports.createJob = async (req, res) => {
       }
     }
 
-    // const skillIds = [];
     const skillIds = [...existingSkillIds, ...createdSkills];
 
-    const newJob = new Job({
-      jobName,
+    const newProject = new Project({
+      projectName,
       position,
       address,
       postedBy,
@@ -256,8 +240,8 @@ exports.createJob = async (req, res) => {
       status,
       salary: salary || { min: 0, max: 0 },
     });
-    const savedJob = await newJob.save();
-    res.status(200).json(skillIds);
+    const savedProject = await newProject.save();
+    res.status(200).json(savedProject);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }

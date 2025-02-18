@@ -34,6 +34,7 @@ const userRoute = require("./routes/userRoute");
 const messageRoute = require("./routes/messageRoute");
 const conversationRoute = require("./routes/conversationRoute");
 const jobRoute = require("./routes/jobRoute");
+const projectRoute = require("./routes/projectRoute");
 //===========================================
 
 //===================Mount Routers===========
@@ -42,6 +43,7 @@ app.use("/api/v1/user", userRoute);
 app.use("/api/v1/message", messageRoute);
 app.use("/api/v1/conversation", conversationRoute);
 app.use("/api/v1/job", jobRoute);
+app.use("/api/v1/project", projectRoute);
 //===========================================
 
 const PORT = process.env.PORT || 5000;

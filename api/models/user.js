@@ -115,6 +115,17 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
+    recentSearches: [
+      {
+        search: {
+          name: {
+            type: String,
+            required: true,
+          },
+        },
+      },
+      { timestamps: true },
+    ],
     experience: [
       {
         position: {
