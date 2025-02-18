@@ -17,6 +17,7 @@ exports.addSkillByUserID = asyncHandler(async (req, res, next) => {
       { phone: req.body.phone },
     ],
   });
+  req.body.name = req.body.name.toLowerCase();
   if (!user) {
     return res.status(400).send({ message: "User does not exist" });
   }
@@ -38,11 +39,13 @@ exports.addSkillByUserID = asyncHandler(async (req, res, next) => {
 
   let skills = [];
   if (user.skills && user.skills.length > 0) {
-    skills = await Promise.all(user.skills.map((id) => exports.getSkillByID(id))); 
+    skills = await Promise.all(
+      user.skills.map((id) => exports.getSkillByID(id))
+    );
   }
   res.status(200).json({
     success: true,
     message: "Skill added",
-    data: {skills: skills},
+    data: { skills: skills },
   });
 });

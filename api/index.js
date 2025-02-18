@@ -33,6 +33,7 @@ const authRoute = require("./routes/authRoute");
 const userRoute = require("./routes/userRoute");
 const messageRoute = require("./routes/messageRoute");
 const conversationRoute = require("./routes/conversationRoute");
+const jobRoute = require("./routes/jobRoute");
 //===========================================
 
 //===================Mount Routers===========
@@ -40,6 +41,7 @@ app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/message", messageRoute);
 app.use("/api/v1/conversation", conversationRoute);
+app.use("/api/v1/job", jobRoute);
 //===========================================
 
 const PORT = process.env.PORT || 5000;
