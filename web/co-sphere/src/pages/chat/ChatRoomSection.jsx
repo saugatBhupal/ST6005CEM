@@ -10,6 +10,7 @@ import { manageGetAllMessages, manageSendMessage } from "./manager/ChatManager";
 
 const Wrapper = styled.div`
   height: 100%;
+  border-left: 0.5px solid ${Colors.greyOutlineShadow};
 `;
 
 const Container = styled.div`
@@ -126,7 +127,7 @@ function ChatRoomSection({ conversationId, userId, onNewMessage, username }) {
           {messages &&
             messages.map((message, i) => (
               <ChatMessageCard
-                message={message.content}
+                message={message}
                 isUser={userId === message.sender}
               />
             ))}

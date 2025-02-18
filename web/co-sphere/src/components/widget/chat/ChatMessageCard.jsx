@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
+import { convertToTime } from "../../../utils/date/ConvertToTime";
 import ProfileIcon from "../../icon/ProfileIcon";
 
 const Wrapper = styled.div`
@@ -22,22 +23,30 @@ const Flex = styled.div`
   flex-direction: ${({ isUser }) => (isUser ? `row-reverse` : `initial`)};
 `;
 const Message = styled.div`
+  width: fit-content;
   padding: 15px 18px;
   border-radius: 18px;
   font-size: ${FontSize.small};
-  margin-left: ${({ isUser }) => (isUser ? `0px;` : `10px`)};
-  margin-right: ${({ isUser }) => (isUser ? `10px;` : `0px`)};
+
   background-color: ${({ isUser }) =>
     isUser ? `${Colors.mainBlue};` : `${Colors.messageSenderBackground};`};
   color: ${({ isUser }) => (isUser ? `${Colors.justWhite};` : `initial`)};
 `;
 const Time = styled.div`
+  width: fit-content;
   font-weight: 300;
-  font-size: ${FontSize.extraSmall};
+  font-size: ${FontSize.tiny};
   color: ${Colors.subtitleBlack};
-  align-self: flex-end;
-  margin-top: 2px;
-  margin-right: ${({ isUser }) => (isUser ? `55px` : `initial`)};
+  margin-top: 4px;
+  margin-left: ${({ isUser }) => (isUser ? `0px;` : `10px`)};
+  margin-right: ${({ isUser }) => (isUser ? `10px;` : `0px`)};
+`;
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: ${({ isUser }) => (isUser ? `end` : `start`)};
+  margin-left: ${({ isUser }) => (isUser ? `0px;` : `10px`)};
+  margin-right: ${({ isUser }) => (isUser ? `10px;` : `0px`)};
 `;
 function ChatMessageCard({ message, isUser }) {
   return (
@@ -45,9 +54,11 @@ function ChatMessageCard({ message, isUser }) {
       <Container>
         <Flex isUser={isUser}>
           <ProfileIcon height={"52px"} />
-          <Message isUser={isUser}>{message}</Message>
+          <Column isUser={isUser}>
+            <Message isUser={isUser}>{message.content}</Message>
+            <Time isUser={isUser}>{convertToTime(message.sent)}</Time>
+          </Column>
         </Flex>
-        <Time isUser={isUser}>2:36 pm</Time>
       </Container>
     </Wrapper>
   );

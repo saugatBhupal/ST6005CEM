@@ -23,7 +23,7 @@ const InputWrapper = styled.div`
 const SearchIcon = styled.div`
   position: absolute;
   left: 15px;
-  top: 50%;
+  top: calc(50% + 2px);
   transform: translateY(-50%);
   background-color: ${Colors.justWhite};
   svg {
@@ -41,6 +41,7 @@ const InputBox = styled.input`
   font-size: ${FontSize.small};
   font-weight: 200;
   color: ${Colors.subtitleBlack};
+  padding-top: 5px;
   padding-left: 50px;
   &:focus {
     outline: none;

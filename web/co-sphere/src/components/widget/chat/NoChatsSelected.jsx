@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   height: 100%;
   font-size: ${FontSize.mediumLarge};
   text-align: center;
-  color: ${Colors.subtitleBlack};
+  color: ${Colors.greyOutline};
 `;
 const Content = styled.div`
   height: calc(100% - 80px);
@@ -20,7 +20,7 @@ const Content = styled.div`
   svg {
     height: 80px !important;
     width: 80px !important;
-    stroke: ${Colors.subtitleBlack};
+    stroke: ${Colors.greyOutline};
   }
 `;
 
