@@ -68,6 +68,10 @@ const JobSchema = new mongoose.Schema(
           enum: ["Pending", "Accepted", "Rejected"],
           default: "Pending",
         },
+        date: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
     hired: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

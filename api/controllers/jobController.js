@@ -110,9 +110,58 @@ exports.getJobsBySkills = async (req, res) => {
 
 exports.getJobsByUser = async (req, res) => {
   try {
-    const jobs = await Job.find({ postedBy: req.params.userId }).populate(
-      "postedBy skills likes applicants.user hired"
-    );
+    const user = await User.findById(req.params.userId).populate("createdJobs");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const jobs = await Job.find({ _id: { $in: user.createdJobs } })
+      .populate({
+        path: "postedBy",
+        select: "_id name profilePicture email phone country city",
+      })
+      .populate("skills")
+      .populate("likes")
+      .populate({
+        path: "applicants.user",
+        select: "_id name profilePicture email phone country city",
+      })
+      .populate({
+        path: "hired",
+        select: "_id name profilePicture email phone country city",
+      });
+
+    res.status(200).json(jobs);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error });
+  }
+};
+
+exports.getJobsByMember = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).populate("appliedJobs");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const jobs = await Job.find({ _id: { $in: user.appliedJobs } })
+      .populate({
+        path: "postedBy",
+        select: "_id name profilePicture email phone country city",
+      })
+      .populate("skills")
+      .populate("likes")
+      .populate({
+        path: "applicants.user",
+        select: "_id name profilePicture email phone country city",
+      })
+      .populate({
+        path: "hired",
+        select: "_id name profilePicture email phone country city",
+      });
+
     res.status(200).json(jobs);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
@@ -257,7 +306,16 @@ exports.createJob = async (req, res) => {
       salary: salary || { min: 0, max: 0 },
     });
     const savedJob = await newJob.save();
-    res.status(200).json(skillIds);
+    const user = await User.findByIdAndUpdate(
+      postedBy,
+      { $push: { createdJobs: savedJob._id } },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(savedJob);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }

@@ -76,11 +76,20 @@ const ProjectSchema = new mongoose.Schema(
           enum: ["Pending", "Accepted", "Rejected"],
           default: "Pending",
         },
+        date: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
-    members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    members: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Job", ProjectSchema);
+module.exports = mongoose.model("Project", ProjectSchema);
