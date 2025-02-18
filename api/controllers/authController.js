@@ -45,6 +45,7 @@ exports.register = asyncHandler(async (req, res, next) => {
       "Co-Sphere : Verification OTP",
       emailTemplate
     );
+    console.log("mail sent");
   } catch (e) {
     console.error(
       "Error sending email: Please enure that your email is correct.",
@@ -164,6 +165,7 @@ exports.resendOtp = asyncHandler(async (req, res, next) => {
         "Co-Sphere : Verification OTP",
         emailTemplate
       );
+      console.log("mail sent");
     } catch (e) {
       console.error("Error sending email:", e.message);
 
