@@ -12,7 +12,7 @@ const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 10px auto;
-  padding: 10px 5px;
+  /* padding: 10px 5px; */
   border-radius: 8px;
   /* border: 0.5px solid ${Colors.greyOutlineShadow}; */
 `;

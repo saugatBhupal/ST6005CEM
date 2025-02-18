@@ -3,7 +3,7 @@ import styled from "styled-components";
 import SearchInputChat from "../../components/input/search/SearchInputChat";
 import ChatCard from "../../components/widget/chat/ChatCard";
 import { Colors } from "../../constants/Colors";
-import { getUserIdFromLocalStorage } from "../../service/LocalStorageService";
+import ChatRoomSection from "./ChatRoomSection";
 import { manageGetAllConversations } from "./manager/ConversationManager";
 
 const Wrapper = styled.div`
@@ -17,16 +17,10 @@ const Container = styled.div`
   overflow-y: scroll;
 `;
 
-function AllChatsSection() {
-  const [userId, setUserId] = useState(null);
+function AllChatsSection({ userId, onClick }) {
   const [conversations, setConversations] = useState(null);
-
-  useEffect(() => {
-    async function updateUserId() {
-      setUserId(await getUserIdFromLocalStorage());
-    }
-    updateUserId();
-  }, []);
+  const [reload, setReload] = useState("");
+  const [selectedRoomID, setSelectedRoomID] = useState();
 
   useEffect(() => {
     async function updateConversations() {
@@ -42,7 +36,7 @@ function AllChatsSection() {
         );
     }
     updateConversations();
-  }, [userId]);
+  }, [userId, reload]);
   return (
     <Wrapper>
       <Container>
@@ -56,9 +50,25 @@ function AllChatsSection() {
                   (member) => member._id !== userId
                 )[0]
               }
-              message={conversation.message}
+              message={conversation.messages}
               seen={"false"}
               userId={userId}
+              selected={selectedRoomID === conversation._id}
+              onClick={() => {
+                setSelectedRoomID(conversation._id);
+                onClick(
+                  <ChatRoomSection
+                    userId={userId}
+                    username={
+                      conversation.members.filter(
+                        (member) => member._id !== userId
+                      )[0].fullname
+                    }
+                    conversationId={conversation._id}
+                    onNewMessage={(message) => setReload(message)}
+                  />
+                );
+              }}
             />
           ))}
       </Container>

@@ -15,9 +15,13 @@ const Container = styled.div`
   height: inherit;
   width: calc(100% - 4px);
   border-right: ${({ seen }) =>
-    seen ? ` 4px solid transparent` : `4px solid ${Colors.strokeBlue}`};
+    seen ? ` 4px solid transparent` : `4px solid ${Colors.deepOrange}`};
   background-color: ${({ seen }) =>
     seen ? `transparent` : `${Colors.menuSelected}`};
+  border-right: ${({ selected }) =>
+    !selected ? ` 4px solid transparent` : `4px solid ${Colors.mainBlue}`};
+  background-color: ${({ selected }) =>
+    !selected ? `transparent` : `${Colors.menuSelected}`};
   &:hover {
     background-color: ${Colors.menuSelected};
   }
@@ -52,10 +56,14 @@ const Time = styled.div`
   font-weight: 200;
 `;
 
-function ChatCard({ user, message, seen, userId }) {
+function ChatCard({ user, message, seen, userId, onClick, selected }) {
   return (
-    <Wrapper>
-      <Container seen={seen}>
+    <Wrapper
+      onClick={() => {
+        onClick();
+      }}
+    >
+      <Container seen={seen} selected={selected}>
         <Flex>
           <div style={{ display: "flex", alignItems: "center" }}>
             <ProfileIcon url={user.profileImage} height={"30px"} />

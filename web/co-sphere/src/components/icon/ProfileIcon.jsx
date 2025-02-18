@@ -7,7 +7,7 @@ const Wrapper = styled.div`
     border-radius: 50%;
   }
 `;
-function ProfileIcon({ url }, { height }) {
+function ProfileIcon({ url, height }) {
   return (
     <Wrapper>
       <img

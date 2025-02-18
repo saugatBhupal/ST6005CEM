@@ -27,6 +27,7 @@ const Column = styled.div`
 `;
 const Flex = styled.div`
   display: flex;
+  align-items: center;
 `;
 const Title = styled.div`
   font-size: ${FontSize.small};

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import NoChatsSelected from "../../components/widget/chat/NoChatsSelected";
+import { getUserIdFromLocalStorage } from "../../service/LocalStorageService";
 import LoggedInUserLayout from "../common/LoggedInUserLayout";
 import AllChatsSection from "./AllChatsSection";
-import ChatRoomSection from "./ChatRoomSection";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -19,22 +20,38 @@ const Right = styled.div`
   flex: 1;
   width: auto;
 `;
+
 function ChatPage() {
+  const [userId, setUserId] = useState();
+  const [chatRoom, setChatroom] = useState();
+
+  useEffect(() => {
+    async function updateUserId() {
+      const userId = await getUserIdFromLocalStorage();
+      setUserId(userId);
+    }
+    updateUserId();
+  });
   return (
-    <LoggedInUserLayout
-      body={
-        <Wrapper>
-          <Container>
-            <Left>
-              <AllChatsSection />
-            </Left>
-            <Right>
-              <ChatRoomSection />
-            </Right>
-          </Container>
-        </Wrapper>
-      }
-    />
+    <>
+      {userId && (
+        <LoggedInUserLayout
+          body={
+            <Wrapper>
+              <Container>
+                <Left>
+                  <AllChatsSection
+                    userId={userId}
+                    onClick={(room) => setChatroom(room)}
+                  />
+                </Left>
+                <Right>{chatRoom ?? <NoChatsSelected />}</Right>
+              </Container>
+            </Wrapper>
+          }
+        />
+      )}
+    </>
   );
 }
 

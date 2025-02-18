@@ -25,7 +25,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     if (userId) {
       const newSocket = io("http://localhost:3000", {
-        query: { userId },
+        query: { userId: userId },
       });
 
       setSocket(newSocket);

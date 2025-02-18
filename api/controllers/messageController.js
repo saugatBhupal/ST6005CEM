@@ -7,12 +7,12 @@ exports.getMessagesFromConversation = async (req, res) => {
     const conversation = await Conversation.findById(conversationID);
 
     if (!conversation) {
-      return res.status(404).json({ error: "Conversation not found" });
+      return res.status(404).json({ message: "Conversation not found" });
     }
 
     res.status(200).json(conversation.messages);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: "Internal Servor Error" });
   }
 };
 
@@ -24,13 +24,13 @@ exports.sendMessage = async (req, res) => {
     if (!content || !senderID) {
       return res
         .status(400)
-        .json({ error: "Message content and sender ID are required." });
+        .json({ message: "Message content and sender ID are required." });
     }
 
     const conversation = await Conversation.findById(conversationID);
 
     if (!conversation) {
-      return res.status(404).json({ error: "Conversation not found" });
+      return res.status(404).json({ message: "Conversation not found" });
     }
 
     const members = [];
@@ -48,6 +48,6 @@ exports.sendMessage = async (req, res) => {
     });
     res.status(200).json(newMessage);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: "Internal Servor Error" });
   }
 };

@@ -11,7 +11,7 @@ exports.getConversation = async (req, res) => {
     }
     members.sort();
     let conversation = await Conversation.findOne({
-      members: { $all: members }, 
+      members: { $all: members },
     });
     if (conversation) {
       return res.status(200).json(conversation);
@@ -25,7 +25,6 @@ exports.getConversation = async (req, res) => {
     });
   }
 };
-
 
 exports.getAllConversations = async (req, res) => {
   try {
@@ -60,11 +59,11 @@ exports.getConversationById = async (req, res) => {
     const conversation = await Conversation.findById(conversationID);
 
     if (!conversation) {
-      return res.status(404).json({ error: "Conversation not found" });
+      return res.status(404).json({ message: "Conversation not found" });
     }
     console.log("conversation");
     res.status(200).json(conversation);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };

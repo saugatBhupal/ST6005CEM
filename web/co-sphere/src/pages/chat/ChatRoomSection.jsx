@@ -6,7 +6,6 @@ import BorderlessInputbar from "../../components/input/BorderlessInputbar";
 import ChatMessageCard from "../../components/widget/chat/ChatMessageCard";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
-import { getUserIdFromLocalStorage } from "../../service/LocalStorageService";
 import { manageGetAllMessages, manageSendMessage } from "./manager/ChatManager";
 
 const Wrapper = styled.div`
@@ -64,39 +63,31 @@ const MessageSection = styled.div`
 const Gap = styled.div`
   padding: 10px;
 `;
-function ChatRoomSection() {
+function ChatRoomSection({ conversationId, userId, onNewMessage, username }) {
   const socket = useSocket();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [userId, setUserId] = useState(null);
   const messageEndRef = useRef(null);
 
-  useEffect(() => {
-    async function updateUserId() {
-      const userId = await getUserIdFromLocalStorage();
-      setUserId(userId);
-    }
-    updateUserId();
-  });
   useEffect(() => {
     if (!socket) return;
     socket.on("receiveMessage", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
+      onNewMessage(message.content);
     });
-
     return () => {
       socket.off("receiveMessage");
     };
-  }, [socket]);
+  }, [socket, onNewMessage]);
 
-  // useEffect(() => {
-  //   messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  // }, [messages]);
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     async function getAllMessages() {
       await manageGetAllMessages(
-        "67b199361951254f65c360f5",
+        conversationId,
         (messages) => {
           setMessages(messages);
         },
@@ -106,15 +97,15 @@ function ChatRoomSection() {
       );
     }
     getAllMessages();
-  }, []);
+  }, [conversationId]);
   const handleSubmit = () => {
     manageSendMessage(
       {
         senderId: userId,
         content: message,
+        conversationId: conversationId,
       },
       () => {
-        alert("success");
         setMessage("");
       },
       (err) => {
@@ -126,7 +117,7 @@ function ChatRoomSection() {
     <Wrapper>
       <Container>
         <Top>
-          <Name>Lexi Anderson</Name>
+          <Name>{username}</Name>
           <Action>
             <a>•••</a>
           </Action>
