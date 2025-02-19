@@ -5,6 +5,7 @@ const {
   updateIntro,
   updateDetails,
   getUserByID,
+  addSearchHistory,
 } = require("../controllers/userController");
 
 const { addSkillByUserID } = require("../controllers/skillController");
@@ -29,5 +30,6 @@ router.get("/experience/:userID", getExperienceByUserID);
 router.post("/skill/:userID", addSkillByUserID);
 router.put("/update-intro/:userID", updateIntro);
 router.put("/update-details/:userID", updateDetails);
+router.post("/search-history", addSearchHistory);
 
 module.exports = router;

@@ -117,14 +117,15 @@ const userSchema = new mongoose.Schema(
     ],
     recentSearches: [
       {
-        search: {
-          name: {
-            type: String,
-            required: true,
-          },
+        query: {
+          type: String,
+          required: true,
+        },
+        date: {
+          type: Date,
+          default: Date.now(),
         },
       },
-      { timestamps: true },
     ],
     experience: [
       {

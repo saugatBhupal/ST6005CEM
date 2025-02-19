@@ -36,7 +36,12 @@ exports.sendMessage = async (req, res) => {
     const members = [];
     conversation.members.map((member) => members.push(member._id.toString()));
 
-    const newMessage = { content, sender: senderID, sent: new Date() };
+    const newMessage = {
+      content,
+      sender: senderID,
+      sent: new Date(),
+      conversationId: conversationID,
+    };
     conversation.messages.push(newMessage);
     await conversation.save();
 
