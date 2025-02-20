@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { manageGetAppliedJobs } from "../../common/manager/jobManager/JobManager";
 import MenubarDashboard from "../../components/menubar/MenubarDashboard";
 import SideMenuBarDesktop from "../../components/menubar/sideMenuBar/SideMenuBarDesktop";
 import MenubarSpacerDashboard from "../../components/spacer/MenubarSpacerDashboard";
@@ -64,6 +65,23 @@ const Gap = styled.div`
 `;
 function DashboardPage() {
   const navigate = useNavigate();
+  const [appliedJobs, setAppliedJobs] = useState();
+
+  useEffect(() => {
+    async function getAppliedJobs() {
+      await manageGetAppliedJobs(
+        (jobs) => {
+          setAppliedJobs(jobs);
+        },
+        (res) => {
+          console.log(res);
+          setAppliedJobs(null);
+        }
+      );
+    }
+    getAppliedJobs();
+  }, []);
+
   return (
     <Wrapper>
       <SideMenuBarDesktop current={"home"} />
@@ -85,11 +103,11 @@ function DashboardPage() {
                       navigate("/my-applications");
                     }}
                   />
-                  <MyApplicationWidget status={"Pending"} />
-                  <MyApplicationWidget status={"Active"} />
-                  <MyApplicationWidget status={"Active"} />
-                  <MyApplicationWidget status={"Active"} />
-                  <MyApplicationWidget status={"Pending"} />
+
+                  {appliedJobs &&
+                    appliedJobs.map((application) => (
+                      <MyApplicationWidget application={application} />
+                    ))}
                   <Gap />
                 </MyApplications>
               </Left>

@@ -305,3 +305,99 @@ exports.createProject = async (req, res) => {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
+
+exports.applyToProject = async (req, res) => {
+  try {
+    const { userId, projectId } = req.body;
+
+    if (!userId || !projectId) {
+      return res
+        .status(400)
+        .json({ message: "User ID and project ID are required." });
+    }
+
+    // Find the project
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res.status(404).json({ message: "project not found." });
+    }
+
+    // Check if user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Check if the user has already applied
+    const alreadyApplied = project.applicants.some(
+      (applicant) => applicant.user.toString() === userId
+    );
+    if (alreadyApplied) {
+      return res
+        .status(400)
+        .json({ message: "User has already applied for this project." });
+    }
+
+    // Add user to applicants
+    project.applicants.push({ user: userId, status: "Pending" });
+    await project.save();
+
+    // Add project to user's applied projects
+    user.appliedProjects.push(projectId);
+    await user.save();
+
+    res.status(200).json({ message: "Successfully applied to project." });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+exports.getAppliedProjects = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required." });
+    }
+
+    const user = await User.findById(userId).populate({
+      path: "appliedProjects",
+      select:
+        "projectName position companyName site applicants postedBy address",
+      populate: [
+        {
+          path: "postedBy",
+          select: "_id fullname profileImage country city",
+        },
+        {
+          path: "applicants.user",
+          select: "_id",
+        },
+      ],
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    const appliedProjects = user.appliedProjects.map((project) => {
+      const application = project.applicants.find(
+        (applicant) => applicant.user._id.toString() === userId
+      );
+      console.log(project);
+      return {
+        _id: project._id,
+        postedBy: project.postedBy,
+        projectName: project.projectName,
+        companyName: project.companyName,
+        status: application.status,
+        site: project.site,
+        address: project.address,
+      };
+    });
+
+    res.status(200).json(appliedProjects);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};

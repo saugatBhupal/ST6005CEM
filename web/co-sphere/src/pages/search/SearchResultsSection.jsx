@@ -38,20 +38,24 @@ function SearchResultsSection({ type, query, userId }) {
     if (results.length === 0) {
       return <NoResultsFound query={query} type={type} />;
     }
-
+    console.log(type, results);
     switch (type) {
       case "user":
         return results.map((result, key) => (
           <ProfileDetailsWidget userId={userId} key={key} user={result} />
         ));
       case "project":
-        return results.map((result, key) => (
-          <ApplicationFullCard key={key} project={result} />
-        ));
+        return results.map(
+          (result, key) =>
+            result.projectName && (
+              <ApplicationFullCard key={key} project={result} />
+            )
+        );
       default:
-        return results.map((result, key) => (
-          <JobFullCard key={key} job={result} />
-        ));
+        return results.map(
+          (result, key) =>
+            result.jobName && <JobFullCard key={key} job={result} />
+        );
     }
   };
 

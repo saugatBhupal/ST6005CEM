@@ -314,3 +314,98 @@ exports.createJob = async (req, res) => {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
+
+exports.applyToJob = async (req, res) => {
+  try {
+    const { userId, jobId } = req.body;
+
+    if (!userId || !jobId) {
+      return res
+        .status(400)
+        .json({ message: "User ID and Job ID are required." });
+    }
+
+    // Find the job
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found." });
+    }
+
+    // Check if user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Check if the user has already applied
+    const alreadyApplied = job.applicants.some(
+      (applicant) => applicant.user.toString() === userId
+    );
+    if (alreadyApplied) {
+      return res
+        .status(400)
+        .json({ message: "User has already applied for this job." });
+    }
+
+    // Add user to applicants
+    job.applicants.push({ user: userId, status: "Pending" });
+    await job.save();
+
+    // Add job to user's applied jobs
+    user.appliedJobs.push(jobId);
+    await user.save();
+
+    res.status(200).json({ message: "Successfully applied to job." });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+exports.getAppliedJobs = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required." });
+    }
+
+    const user = await User.findById(userId).populate({
+      path: "appliedJobs",
+      select: "jobName position companyName site applicants postedBy address",
+      populate: [
+        {
+          path: "postedBy",
+          select: "_id fullname profileImage country city",
+        },
+        {
+          path: "applicants.user",
+          select: "_id",
+        },
+      ],
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    const appliedJobs = user.appliedJobs.map((job) => {
+      const application = job.applicants.find(
+        (applicant) => applicant.user._id.toString() === userId
+      );
+      console.log(job);
+      return {
+        _id: job._id,
+        postedBy: job.postedBy,
+        jobName: job.jobName,
+        companyName: job.companyName,
+        status: application.status,
+        site: job.site,
+        address: job.address,
+      };
+    });
+
+    res.status(200).json(appliedJobs);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};

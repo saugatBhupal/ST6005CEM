@@ -54,7 +54,7 @@ const ProjectSchema = new mongoose.Schema(
         type: Number,
       },
     },
-    likes_count: {
+    likesCount: {
       type: Number,
       default: 0,
     },

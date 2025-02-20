@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import EsewaLogo from "../../../assets/images/logo/esewa-logo.png";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
+import ProfileIcon from "../../icon/ProfileIcon";
 import TypeChip from "../chip/TypeChip";
 
 const Wrapper = styled.div`
@@ -71,7 +71,7 @@ const Column = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `;
-function MyApplicationWidget({ status }) {
+function MyApplicationWidget({ application }) {
   return (
     <Wrapper>
       <Container>
@@ -80,11 +80,16 @@ function MyApplicationWidget({ status }) {
             <Top>
               <Flex>
                 <div>
-                  <img src={EsewaLogo} alt="" />
+                  <ProfileIcon
+                    url={application.postedBy.profileImage}
+                    height={"50px"}
+                  />
                 </div>
                 <div>
-                  <a>Esewa</a>
-                  <div>Product Designer</div>
+                  <a>
+                    {application.companyName || application.postedBy.fullname}
+                  </a>
+                  <div>{application.jobName}</div>
                 </div>
               </Flex>
             </Top>
@@ -110,18 +115,18 @@ function MyApplicationWidget({ status }) {
                     />
                   </svg>
                 </div>
-                <div>Kathmandu, Nepal</div>
+                <div>{application.address}</div>
               </Flex>
             </Location>
             <Specifications>
               <ul>
-                <li>Remote</li>
-                <li>Full-Time</li>
-                <li>Company</li>
+                <li>{application.site}</li>
+                <li>{application.fullTime || "Part-time"}</li>
+                <li>{application.companyName || "Freelance"}</li>
               </ul>
             </Specifications>
           </Column>
-          <TypeChip type={status} />
+          <TypeChip type={application.status} />
         </Flex>
       </Container>
     </Wrapper>
