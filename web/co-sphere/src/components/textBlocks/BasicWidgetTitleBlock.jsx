@@ -33,13 +33,15 @@ function BasicWidgetTitleBlock({ title, onClick }) {
     <Wrapper>
       <Flex>
         <Title>{title}</Title>
-        <Button
-          onClick={() => {
-            onClick();
-          }}
-        >
-          View all
-        </Button>
+        {onClick && (
+          <Button
+            onClick={() => {
+              onClick();
+            }}
+          >
+            View all
+          </Button>
+        )}
       </Flex>
     </Wrapper>
   );

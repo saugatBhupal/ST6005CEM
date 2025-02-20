@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   align-items: center;
   font-size: ${FontSize.extraSmall} !important;
   border-radius: 8px;
+  text-transform: capitalize;
   div {
     padding: 15px !important;
     font-weight: 500 !important;

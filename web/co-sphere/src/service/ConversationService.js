@@ -11,3 +11,14 @@ export async function getAllConversationsService(userId, callback) {
       callback(response);
     });
 }
+export async function getConversationsByMembersService(members, callback) {
+  await request
+    .post(`/conversation/`, members, { headers: {} })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      callback(response);
+    });
+}

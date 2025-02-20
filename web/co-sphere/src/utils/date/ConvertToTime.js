@@ -1,9 +1,9 @@
 export function convertToTime(time) {
   const date = new Date(time);
 
-  const hours = date.getUTCHours() % 12 || 12;
-  const minutes = date.getUTCMinutes().toString().padStart(2, "0");
-  const ampm = date.getUTCHours() < 12 ? "AM" : "PM";
+  const hours = date.getHours() % 12 || 12;
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const ampm = date.getHours() < 12 ? "AM" : "PM";
 
   const day = date.getUTCDate();
   const month = date.toLocaleString("en-US", {
@@ -28,5 +28,3 @@ function getOrdinalSuffix(day) {
       return "th";
   }
 }
-
-console.log(convertToTime(1721641800000));

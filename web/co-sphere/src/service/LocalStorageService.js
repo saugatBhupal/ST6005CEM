@@ -4,3 +4,8 @@ export async function getUserIdFromLocalStorage() {
   const localContext = await getContext();
   return localContext.user._id;
 }
+
+export async function getUserFromLocalStorage() {
+  const localContext = await getContext();
+  return localContext.user;
+}

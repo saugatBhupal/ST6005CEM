@@ -21,7 +21,7 @@ const Right = styled.div`
   width: auto;
   border-left: 0.5px solid ${Colors.greyOutlineShadow};
 `;
-function SplitLayout({ left, right, page }) {
+function SplitLayout({ left, right, page,  }) {
   return (
     <LoggedInUserLayout
       body={

@@ -6,7 +6,7 @@ const {
 } = require("../controllers/conversationController");
 const router = express.Router();
 
-router.get("/", getConversation);
+router.post("/", getConversation);
 router.get("/user/:userId", getAllConversations);
 router.get("/id/:conversationID", getConversationById);
 module.exports = router;

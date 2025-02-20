@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import NoChatsSelected from "../../components/widget/chat/NoChatsSelected";
 import { getUserIdFromLocalStorage } from "../../service/LocalStorageService";
@@ -24,14 +25,15 @@ const Right = styled.div`
 function ChatPage() {
   const [userId, setUserId] = useState();
   const [chatRoom, setChatroom] = useState();
-
+  const { conversationId } = useParams();
   useEffect(() => {
     async function updateUserId() {
       const userId = await getUserIdFromLocalStorage();
       setUserId(userId);
     }
     updateUserId();
-  });
+  }, []);
+
   return (
     <>
       {userId && (
@@ -43,6 +45,7 @@ function ChatPage() {
                   <AllChatsSection
                     userId={userId}
                     onClick={(room) => setChatroom(room)}
+                    roomId={conversationId}
                   />
                 </Left>
                 <Right>{chatRoom ?? <NoChatsSelected />}</Right>

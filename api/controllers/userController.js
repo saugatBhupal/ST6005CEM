@@ -198,18 +198,69 @@ exports.addSearchHistory = async (req, res) => {
 
 exports.getSearchHistory = async (req, res) => {
   try {
-    const userId = req.parmas.userId;
+    const userId = req.params.userID;
 
     const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    const recentSearches = user.recentSearches.slice(-5).reverse();
 
     res.status(200).json({
       message: "Search history fetched",
-      data: user.recentSearches,
+      data: recentSearches,
     });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+exports.getUsersByName = async (req, res) => {
+  try {
+    const searchQuery = req.params.name.trim().toLowerCase();
+    const searchWords = searchQuery.split(/\s+/);
+
+    const Users = [];
+    const userPromises = searchWords.map((searchWord) =>
+      User.find({ fullname: { $regex: new RegExp(searchWord, "i") } }).select(
+        "_id fullname profileImage city country skills about"
+      )
+    );
+    const results = await Promise.all(userPromises);
+
+    results.forEach((userList) => Users.push(...userList));
+
+    const uniqueUsers = [
+      ...new Map(Users.map((user) => [user._id, user])).values(),
+    ];
+
+    // const Users = await user.find({
+    //   userName: { $regex: new RegExp(searchQuery, "i") },
+    // });
+
+    const processedUsers = uniqueUsers
+      .map((user) => {
+        const userWords = user.fullname.toLowerCase().split(/\s+/);
+        const matchCount = userWords.filter((word) =>
+          searchWords.includes(word)
+        ).length;
+        const matchPercentage = (matchCount / userWords.length) * 100;
+
+        return { user, matchPercentage };
+      })
+      .filter(({ matchPercentage }) => matchPercentage >= 20)
+      .sort((a, b) => b.matchPercentage - a.matchPercentage)
+
+      .map(({ user }) => user);
+
+    const populatedUsers = await user.populate(processedUsers, [
+      {
+        path: "skills",
+        select: "_id name",
+      },
+    ]);
+
+    res.status(200).json(populatedUsers);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }

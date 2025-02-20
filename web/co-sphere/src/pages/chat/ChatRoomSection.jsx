@@ -73,13 +73,15 @@ function ChatRoomSection({ conversationId, userId, onNewMessage, username }) {
   useEffect(() => {
     if (!socket) return;
     socket.on("receiveMessage", (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
+      if (message.conversationId === conversationId) {
+        setMessages((prevMessages) => [...prevMessages, message]);
+      }
       onNewMessage(message.content);
     });
     return () => {
       socket.off("receiveMessage");
     };
-  }, [socket, onNewMessage]);
+  }, [socket, onNewMessage, conversationId]);
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });

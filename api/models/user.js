@@ -83,6 +83,10 @@ const userSchema = new mongoose.Schema(
       required: false,
       default: null,
     },
+    about: {
+      type: String,
+      default: "Hey there! I am using Co-Sphere.",
+    },
     interests: [
       {
         type: mongoose.Schema.ObjectId,

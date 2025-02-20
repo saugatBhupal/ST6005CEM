@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
+import { manageGetRecentSearches } from "../../common/manager/searchManager/SearchManager";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
+import { getUserFromLocalStorage } from "../../service/LocalStorageService";
 import ClockIcon from "../icon/ClockIcon";
 import MessageIcon from "../icon/MessageIcon";
 import NotificationIcon from "../icon/NotificationIcon";
@@ -149,72 +151,89 @@ const BrowseIcon = styled.div`
 export default function MenubarDashboard() {
   const navigate = useNavigate();
   const [showOverlay, setShowOverlay] = useState(false);
+  const [searches, setSearches] = useState([]);
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    async function getCurrentUser() {
+      const user = await getUserFromLocalStorage();
+      setUser(user);
+    }
+    getCurrentUser();
+  }, []);
+
+  useEffect(() => {
+    async function getRecentSearches() {
+      await manageGetRecentSearches(
+        user._id,
+        (searchData) => setSearches(searchData),
+        () => setSearches(null)
+      );
+    }
+    user && getRecentSearches();
+  }, [user]);
   return (
-    <Wrapper>
-      <Container>
-        <SearchInputMenubar
-          state={showOverlay}
-          mouseEvent={(state) => {
-            setShowOverlay(state);
-          }}
-        />
-        <Right>
-          <MessageIcon
-            onClick={() => {
-              navigate("/chat");
+    user && (
+      <Wrapper>
+        <Container>
+          <SearchInputMenubar
+            state={showOverlay}
+            mouseEvent={(state) => {
+              setShowOverlay(state);
             }}
           />
-          <NotificationIcon />
-          <ProfileWidgetMenubar />
-        </Right>
-      </Container>
-      {showOverlay && (
-        <Overlay
-          onClick={() => {
-            setShowOverlay(!showOverlay);
-          }}
-        >
-          <RecentSearchesContainer
-            onClick={(e) => {
-              e.stopPropagation();
+          <Right>
+            <MessageIcon
+              onClick={() => {
+                navigate("/chat");
+              }}
+            />
+            <NotificationIcon />
+            <ProfileWidgetMenubar
+              name={user.fullname}
+              url={user.profileImage}
+            />
+          </Right>
+        </Container>
+        {showOverlay && (
+          <Overlay
+            onClick={() => {
+              setShowOverlay(!showOverlay);
             }}
           >
-            <RecentSearchesTitle>
-              <Icon>
-                <ClockIcon />
-              </Icon>
-              <span> Recent Searches</span>
-            </RecentSearchesTitle>
-            <RecentSearches>
-              <RecentSearch>
-                <IconSearch>
-                  <SearchIcon />
-                </IconSearch>
-                <span>Mobile Developer</span>
-              </RecentSearch>
-              <RecentSearch>
-                <IconSearch>
-                  <SearchIcon />
-                </IconSearch>
-                <span>Mobile Developer</span>
-              </RecentSearch>
-              <RecentSearch>
-                <IconSearch>
-                  <SearchIcon />
-                </IconSearch>
-                <span>Mobile Developer</span>
-              </RecentSearch>
-              <RecentSearch>
-                <IconSearch>
-                  <SearchIcon />
-                </IconSearch>
-                <span>Mobile Developer</span>
-              </RecentSearch>
-            </RecentSearches>
-          </RecentSearchesContainer>
-        </Overlay>
-      )}
-      <MessageMenubarDashboard />
-    </Wrapper>
+            <RecentSearchesContainer
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <RecentSearchesTitle>
+                <Icon>
+                  <ClockIcon />
+                </Icon>
+                <span> Recent Searches</span>
+              </RecentSearchesTitle>
+              <RecentSearches>
+                {searches &&
+                  searches.map((search, key) => (
+                    <RecentSearch
+                      key={key}
+                      onClick={() => {
+                        navigate(`/search/${search.query}`);
+                        setShowOverlay(false);
+                      }}
+                    >
+                      <IconSearch>
+                        <SearchIcon />
+                      </IconSearch>
+                      <span>{search.query}</span>
+                    </RecentSearch>
+                  ))}
+              </RecentSearches>
+            </RecentSearchesContainer>
+          </Overlay>
+        )}
+        <MessageMenubarDashboard />
+      </Wrapper>
+    )
   );
 }

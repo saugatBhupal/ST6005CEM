@@ -17,60 +17,82 @@ const Container = styled.div`
   overflow-y: scroll;
 `;
 
-function AllChatsSection({ userId, onClick }) {
+function AllChatsSection({ userId, onClick, roomId }) {
   const [conversations, setConversations] = useState(null);
   const [reload, setReload] = useState("");
   const [selectedRoomID, setSelectedRoomID] = useState();
+  const [change, setChange] = useState(true);
 
   useEffect(() => {
     async function updateConversations() {
       if (userId !== null)
         await manageGetAllConversations(
           userId,
-          (res) => {
-            setConversations(res);
-          },
-          (err) => {
-            alert(err);
-          }
+          (res) => setConversations(res),
+          (err) => alert(err)
         );
     }
     updateConversations();
   }, [userId, reload]);
+
+  useEffect(() => {
+    if (roomId) {
+      if (change) {
+        setSelectedRoomID(roomId);
+      }
+      setChange(false);
+      const selectedConversation = conversations?.find(
+        (conversation) => conversation._id === selectedRoomID
+      );
+
+      if (selectedConversation) {
+        const otherUser = selectedConversation.members.find(
+          (member) => member._id !== userId
+        );
+        onClick(
+          <ChatRoomSection
+            userId={userId}
+            username={otherUser?.fullname}
+            conversationId={selectedConversation._id}
+            onNewMessage={(message) => setReload(message)}
+          />
+        );
+      }
+    }
+  }, [roomId, conversations]); // ✅ Runs only when roomId or conversations update
+
   return (
     <Wrapper>
       <Container>
         <SearchInputChat />
         {conversations &&
-          conversations.map((conversation, index) => (
-            <ChatCard
-              key={index}
-              user={
-                conversation.members.filter(
-                  (member) => member._id !== userId
-                )[0]
-              }
-              message={conversation.messages}
-              seen={"false"}
-              userId={userId}
-              selected={selectedRoomID === conversation._id}
-              onClick={() => {
-                setSelectedRoomID(conversation._id);
-                onClick(
-                  <ChatRoomSection
-                    userId={userId}
-                    username={
-                      conversation.members.filter(
-                        (member) => member._id !== userId
-                      )[0].fullname
-                    }
-                    conversationId={conversation._id}
-                    onNewMessage={(message) => setReload(message)}
-                  />
-                );
-              }}
-            />
-          ))}
+          conversations.map((conversation, index) => {
+            const otherUser = conversation.members.find(
+              (member) => member._id !== userId
+            );
+
+            return (
+              <ChatCard
+                key={index}
+                user={otherUser}
+                message={conversation.messages}
+                seen={"false"}
+                userId={userId}
+                selected={selectedRoomID === conversation._id}
+                onClick={() => {
+                  setSelectedRoomID(conversation._id);
+                  onClick(
+                    <ChatRoomSection
+                      userId={userId}
+                      username={otherUser?.fullname}
+                      conversationId={conversation._id}
+                      onNewMessage={(message) => setReload(message)}
+                    />
+                  );
+                }}
+              />
+            );
+          })}
       </Container>
     </Wrapper>
   );

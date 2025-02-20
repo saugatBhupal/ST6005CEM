@@ -197,7 +197,9 @@ exports.getProjectsByName = async (req, res) => {
     results.forEach((projectList) => projects.push(...projectList));
 
     const uniqueProjects = [
-      ...new Map(projects.map((project) => [project._id, project])).values(),
+      ...new Map(
+        projects.map((project) => [project._id.toString(), project])
+      ).values(),
     ];
 
     const processedProjects = uniqueProjects
@@ -214,21 +216,22 @@ exports.getProjectsByName = async (req, res) => {
       .sort((a, b) => b.matchPercentage - a.matchPercentage)
       .map(({ project }) => project);
 
+    // Populate project fields
     const populatedProjects = await Project.populate(processedProjects, [
       {
         path: "postedBy",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city fullname",
       },
       { path: "skills" },
       { path: "likes", select: "_id" },
-      {
-        path: "applicants.user",
-        select: "_id name profilePicture email phone country city",
-      },
-      {
-        path: "members",
-        select: "_id name profilePicture email phone country city",
-      },
+      // {
+      //   path: "applicants.user",
+      //   select: "_id name profilePicture email phone country city",
+      // },
+      // {
+      //   path: "members",
+      //   select: "_id name profilePicture email phone country city",
+      // },
     ]);
 
     res.status(200).json(populatedProjects);
@@ -263,27 +266,16 @@ exports.createProject = async (req, res) => {
 
     const normalizedSkills = skills.map((skill) => skill.toLowerCase());
 
-    const existingSkills = await Skill.find(
-      { name: { $in: normalizedSkills } },
-      "_id name"
+    const skillIds = await Promise.all(
+      normalizedSkills.map(async (skillName) => {
+        const skill = await Skill.findOneAndUpdate(
+          { name: { $regex: new RegExp(`^${skillName}$`, "i") } },
+          { $setOnInsert: { name: skillName } },
+          { upsert: true, new: true }
+        );
+        return skill._id;
+      })
     );
-    const existingSkillIds = existingSkills.map((skill) => skill._id);
-    const existingSkillNames = existingSkills.map((skill) => skill.name);
-
-    const missingSkills = skills.filter(
-      (skill) => !existingSkillNames.includes(skill)
-    );
-
-    const createdSkills = [];
-    if (missingSkills.length > 0) {
-      for (let skillName of missingSkills) {
-        const newSkill = new Skill({ name: skillName });
-        const savedSkill = await newSkill.save();
-        createdSkills.push(savedSkill._id);
-      }
-    }
-
-    const skillIds = [...existingSkillIds, ...createdSkills];
 
     const newProject = new Project({
       projectName,
@@ -310,6 +302,6 @@ exports.createProject = async (req, res) => {
 
     res.status(200).json(savedProject);
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error });
+    res.status(500).json({ message: "Server Error", error: error.message });
   }
 };

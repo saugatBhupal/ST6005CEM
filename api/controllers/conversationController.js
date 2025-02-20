@@ -12,7 +12,7 @@ exports.getConversation = async (req, res) => {
     members.sort();
     let conversation = await Conversation.findOne({
       members: { $all: members },
-    });
+    }).select("-messages");
     if (conversation) {
       return res.status(200).json(conversation);
     }

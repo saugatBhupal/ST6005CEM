@@ -35,7 +35,7 @@ const Icon = styled.div`
     stroke: ${Colors.fontBlack};
   }
 `;
-function DurationWidget({ from, to }) {
+function DurationWidget({ from, to, date, type }) {
   return (
     <Wrapper>
       <Flex>
@@ -43,12 +43,24 @@ function DurationWidget({ from, to }) {
           <CalendarIcon />
         </Icon>
         <Column>
-          <span>
-            {from} - {to} Days
-          </span>
-          <span>
-            <a>Duration</a>
-          </span>
+          {type ? (
+            <>
+              <span>{date}</span>
+              <span>
+                <a>{type}</a>
+              </span>
+            </>
+          ) : (
+            <>
+              {" "}
+              <span>
+                {from} - {to} Days
+              </span>
+              <span>
+                <a>Duration</a>
+              </span>
+            </>
+          )}
         </Column>
       </Flex>
     </Wrapper>

@@ -25,13 +25,13 @@ const Right = styled.div`
     color: ${Colors.greyOutline};
   }
 `;
-function ProfileWidgetMenubar() {
+function ProfileWidgetMenubar({ name, url }) {
   return (
     <Wrapper>
       <Container>
-        <ProfileIcon height={"35px"} />
+        <ProfileIcon url={url} height={"35px"} />
         <Right>
-          <b>John Cena</b>
+          <b>{name}</b>
           <a>Settings</a>
         </Right>
       </Container>

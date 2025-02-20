@@ -192,7 +192,9 @@ exports.getJobsByName = async (req, res) => {
 
     results.forEach((jobList) => jobs.push(...jobList));
 
-    const uniqueJobs = [...new Map(jobs.map((job) => [job._id, job])).values()];
+    const uniqueJobs = [
+      ...new Map(jobs.map((job) => [job._id.toString(), job])).values(),
+    ];
 
     // const jobs = await Job.find({
     //   jobName: { $regex: new RegExp(searchQuery, "i") },
@@ -216,18 +218,10 @@ exports.getJobsByName = async (req, res) => {
     const populatedJobs = await Job.populate(processedJobs, [
       {
         path: "postedBy",
-        select: "_id name profilePicture email phone country city",
+        select: "_id fullname profileImage email phone country city ",
       },
       { path: "skills" },
       { path: "likes", select: "_id" },
-      {
-        path: "applicants.user",
-        select: "_id name profilePicture email phone country city",
-      },
-      {
-        path: "hired",
-        select: "_id name profilePicture email phone country city",
-      },
     ]);
 
     res.status(200).json(populatedJobs);
@@ -260,6 +254,7 @@ exports.createJob = async (req, res) => {
       salary,
     } = req.body;
 
+    // Validate required fields
     if (
       !jobName ||
       !position ||
@@ -270,31 +265,24 @@ exports.createJob = async (req, res) => {
     ) {
       return res.status(400).json({ message: "Missing required fields" });
     }
+
+    // Normalize skill names to lowercase
     const normalizedSkills = skills.map((skill) => skill.toLowerCase());
 
-    const existingSkills = await Skill.find(
-      { name: { $in: normalizedSkills } },
-      "_id name"
+    // Find or create skills in a single query using upsert
+    const skillIds = await Promise.all(
+      normalizedSkills.map(async (skillName) => {
+        // Use findOneAndUpdate with upsert to avoid duplicates
+        const skill = await Skill.findOneAndUpdate(
+          { name: { $regex: new RegExp(`^${skillName}$`, "i") } }, // Case-insensitive search
+          { $setOnInsert: { name: skillName } }, // Insert only if not found
+          { upsert: true, new: true } // Return the document after update/insert
+        );
+        return skill._id;
+      })
     );
-    const existingSkillIds = existingSkills.map((skill) => skill._id);
-    const existingSkillNames = existingSkills.map((skill) => skill.name);
 
-    const missingSkills = skills.filter(
-      (skill) => !existingSkillNames.includes(skill)
-    );
-
-    const createdSkills = [];
-    if (missingSkills.length > 0) {
-      for (let skillName of missingSkills) {
-        const newSkill = new Skill({ name: skillName });
-        const savedSkill = await newSkill.save();
-        createdSkills.push(savedSkill._id);
-      }
-    }
-
-    // const skillIds = [];
-    const skillIds = [...existingSkillIds, ...createdSkills];
-
+    // Create the new job
     const newJob = new Job({
       jobName,
       position,
@@ -305,7 +293,11 @@ exports.createJob = async (req, res) => {
       status,
       salary: salary || { min: 0, max: 0 },
     });
+
+    // Save the job
     const savedJob = await newJob.save();
+
+    // Update the user's createdJobs array
     const user = await User.findByIdAndUpdate(
       postedBy,
       { $push: { createdJobs: savedJob._id } },
@@ -315,8 +307,10 @@ exports.createJob = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    // Return the saved job
     res.status(200).json(savedJob);
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error });
+    res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
