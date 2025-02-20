@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
 
 const Wrapper = styled.div`
@@ -14,9 +15,10 @@ const Wrapper = styled.div`
       ? "#DFAB7620"
       : props.type === "Active" ||
         props.type === "Junior" ||
-        props.type === "On-Time"
+        props.type === "On-Time" ||
+        props.type === "Job"
       ? "#76DFAE20"
-      : "#e0e0e0"};
+      : `${Colors.lightMainBlue}`};
   color: ${(props) =>
     props.type === "Pending" ||
     props.type === "Delayed" ||
@@ -24,9 +26,10 @@ const Wrapper = styled.div`
       ? "#E3984E"
       : props.type === "Active" ||
         props.type === "Junior" ||
-        props.type === "On-Time"
+        props.type === "On-Time" ||
+        props.type === "Job"
       ? "#0D6722"
-      : "#000000"};
+      : `${Colors.mainBlue}`};
   display: flex;
   justify-content: center;
   align-items: center;

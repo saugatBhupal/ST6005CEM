@@ -246,6 +246,7 @@ exports.createProject = async (req, res) => {
       projectName,
       position,
       address,
+      companyName,
       postedBy,
       skills,
       site,
@@ -282,6 +283,7 @@ exports.createProject = async (req, res) => {
       position,
       address,
       postedBy,
+      companyName,
       skills: skillIds,
       site,
       status,
@@ -363,7 +365,7 @@ exports.getAppliedProjects = async (req, res) => {
     const user = await User.findById(userId).populate({
       path: "appliedProjects",
       select:
-        "projectName position companyName site applicants postedBy address",
+        "projectName position companyName site applicants postedBy address salary",
       populate: [
         {
           path: "postedBy",
@@ -393,6 +395,7 @@ exports.getAppliedProjects = async (req, res) => {
         status: application.status,
         site: project.site,
         address: project.address,
+        salary: project.salary,
       };
     });
 

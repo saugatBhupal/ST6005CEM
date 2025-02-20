@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
 import ProfileIcon from "../../icon/ProfileIcon";
+import PriceChip from "../chip/PriceChip";
 import TypeChip from "../chip/TypeChip";
 
 const Wrapper = styled.div`
@@ -19,7 +20,7 @@ const Wrapper = styled.div`
   }
 `;
 const Container = styled.div`
-  height: 100px;
+  height: fit-content;
 `;
 const Top = styled.div`
   div {
@@ -65,14 +66,16 @@ const Flex = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 5px;
 `;
 const Column = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 10px;
 `;
-function MyApplicationWidget({ application }) {
+function AppliedTaskWidget({ application }) {
   return (
     <Wrapper>
       <Container>
@@ -90,7 +93,7 @@ function MyApplicationWidget({ application }) {
                   <a>
                     {application.companyName || application.postedBy.fullname}
                   </a>
-                  <div>{application.jobName}</div>
+                  <div>{application.projectName}</div>
                 </div>
               </Flex>
             </Top>
@@ -117,6 +120,10 @@ function MyApplicationWidget({ application }) {
                   </svg>
                 </div>
                 <div>{application.address}</div>
+                <PriceChip
+                  min={application.salary.min}
+                  max={application.salary.max}
+                />
               </Flex>
             </Location>
             <Specifications>
@@ -124,7 +131,7 @@ function MyApplicationWidget({ application }) {
                 <li>{application.site}</li>
                 <li>{application.fullTime || "Part-time"}</li>
                 <li>{application.companyName || "Freelance"}</li>
-                <TypeChip type={"Job"} />
+                <TypeChip type={"Project"} />
               </ul>
             </Specifications>
           </Column>
@@ -135,4 +142,4 @@ function MyApplicationWidget({ application }) {
   );
 }
 
-export default MyApplicationWidget;
+export default AppliedTaskWidget;

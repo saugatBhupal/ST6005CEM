@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { manageGetAppliedJobs } from "../../common/manager/jobManager/JobManager";
+import {
+  manageGetAppliedProjects,
+  manageGetProjectsCreatedByUser,
+} from "../../common/manager/projectManager/ProjectManager";
 import MenubarDashboard from "../../components/menubar/MenubarDashboard";
 import SideMenuBarDesktop from "../../components/menubar/sideMenuBar/SideMenuBarDesktop";
 import MenubarSpacerDashboard from "../../components/spacer/MenubarSpacerDashboard";
@@ -11,6 +15,7 @@ import MyApplicationWidget from "../../components/widget/application/MyApplicati
 import NotificationWidget from "../../components/widget/notification/NotificationWidget";
 import StatsListWidget from "../../components/widget/stats/StatsListWidget";
 import StatsWidget from "../../components/widget/stats/StatsWidget";
+import AppliedTaskWidget from "../../components/widget/task/AppliedTaskWidget";
 import TasksAssignedToMeWidget from "../../components/widget/task/TasksAssignedToMeWidget";
 import { Colors } from "../../constants/Colors";
 
@@ -66,6 +71,8 @@ const Gap = styled.div`
 function DashboardPage() {
   const navigate = useNavigate();
   const [appliedJobs, setAppliedJobs] = useState();
+  const [appliedProjects, setAppliedProjects] = useState();
+  const [creatredProjects, setCreatedProjects] = useState();
 
   useEffect(() => {
     async function getAppliedJobs() {
@@ -81,7 +88,35 @@ function DashboardPage() {
     }
     getAppliedJobs();
   }, []);
-
+  useEffect(() => {
+    async function getAppliedProjects() {
+      await manageGetAppliedProjects(
+        (projects) => {
+          setAppliedProjects(projects);
+        },
+        (res) => {
+          console.log(res);
+          setAppliedJobs(null);
+        }
+      );
+    }
+    getAppliedProjects();
+  }, []);
+  useEffect(() => {
+    async function getProjectCreatedByUser() {
+      await manageGetProjectsCreatedByUser(
+        (projects) => {
+          console.log(projects);
+          setCreatedProjects(projects);
+        },
+        (err) => {
+          console.log(err);
+          setCreatedProjects(null);
+        }
+      );
+    }
+    getProjectCreatedByUser();
+  }, []);
   return (
     <Wrapper>
       <SideMenuBarDesktop current={"home"} />
@@ -108,6 +143,10 @@ function DashboardPage() {
                     appliedJobs.map((application) => (
                       <MyApplicationWidget application={application} />
                     ))}
+                  {appliedProjects &&
+                    appliedProjects.map((application) => (
+                      <AppliedTaskWidget application={application} />
+                    ))}
                   <Gap />
                 </MyApplications>
               </Left>
@@ -117,9 +156,10 @@ function DashboardPage() {
                   title={"Created By Me"}
                   onClick={() => {}}
                 />
-                <ApplicationsCreatedByMeWidget />
-                <ApplicationsCreatedByMeWidget />
-                <ApplicationsCreatedByMeWidget />
+                {creatredProjects &&
+                  creatredProjects.map((project) => (
+                    <ApplicationsCreatedByMeWidget project={project} />
+                  ))}
                 <Gap />
                 <BasicWidgetTitleBlock
                   title={"Assigned To Me"}
