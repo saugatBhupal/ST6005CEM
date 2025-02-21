@@ -122,7 +122,11 @@ function HiringTaskDetails({ projectId, updateState }) {
       await manageGetProjectById(
         projectId,
         (project) => {
-          setProject(project);
+          if (project.status === "Hiring") {
+            setProject(project);
+          } else {
+            showToast("The project could not be found under hiring.");
+          }
         },
         (err) => {
           console.log(err);
@@ -174,133 +178,137 @@ function HiringTaskDetails({ projectId, updateState }) {
     );
   }
   return (
-    project && (
-      <Wrapper>
-        <Container>
-          <Content>
-            <Fixed>
-              <Title>{project.projectName}</Title>
-              <Flex>
-                <Row>
-                  <PostedDate>
-                    <ClockIcon />
-                    <div>
-                      Posted {calculateTimeDifference(project.createdAt)}
-                    </div>
-                  </PostedDate>
-                  <TypeChip type={project.status} />
-                </Row>
-                <Row>
-                  <FilledButton
-                    placeholder={"Finish Hiring"}
-                    onClick={() => {
-                      handleFinishHiring();
-                    }}
-                  />
-                </Row>
-              </Flex>
-              <Box>
+    <Wrapper>
+      <Container>
+        {project && project != null ? (
+          <>
+            <Content>
+              <Fixed>
+                <Title>{project.projectName}</Title>
                 <Flex>
                   <Row>
-                    <ProfileWidget
-                      name={project.companyName || project.postedBy.fullname}
-                      address={project.address}
-                    />
-                    <PriceChip
-                      min={project.salary.min}
-                      max={project.salary.max}
+                    <PostedDate>
+                      <ClockIcon />
+                      <div>
+                        Posted {calculateTimeDifference(project.createdAt)}
+                      </div>
+                    </PostedDate>
+                    <TypeChip type={project.status} />
+                  </Row>
+                  <Row>
+                    <FilledButton
+                      placeholder={"Finish Hiring"}
+                      onClick={() => {
+                        handleFinishHiring();
+                      }}
                     />
                   </Row>
-                  {project.duration && (
-                    <DurationWidget
-                      from={project.duration.from}
-                      to={project.duration.to}
+                </Flex>
+                <Box>
+                  <Flex>
+                    <Row>
+                      <ProfileWidget
+                        name={project.companyName || project.postedBy.fullname}
+                        address={project.address}
+                      />
+                      <PriceChip
+                        min={project.salary.min}
+                        max={project.salary.max}
+                      />
+                    </Row>
+                    {project.duration && (
+                      <DurationWidget
+                        from={project.duration.from}
+                        to={project.duration.to}
+                      />
+                    )}
+                  </Flex>
+                  <SkillsRow>
+                    {project.skills.map((skill) => (
+                      <SkillChip title={skill.name} />
+                    ))}
+                  </SkillsRow>
+                  <Flex>
+                    <EditJobDetailsButton />
+                    <Row>
+                      <ShareButton />
+                      <DeleteButton />
+                    </Row>
+                  </Flex>
+                </Box>
+              </Fixed>
+              <Gap />
+              <Scroll>
+                <Applicants>
+                  <BasicWidgetTitleBlock
+                    title={`All Pending Applicants (${project.pendingApplicants.length})`}
+                  />
+                  <Gap />
+                  {project.pendingApplicants.map((applicant, key) => (
+                    <UnselectedApplicantProfileWidget
+                      applicant={applicant}
+                      key={key}
+                      onAccept={() => {
+                        handleAccept(applicant.user._id, projectId);
+                      }}
+                      onReject={() => {
+                        handleReject(applicant.user._id, projectId);
+                      }}
                     />
+                  ))}
+                </Applicants>
+                <Gap />
+                <Gap />
+                <Applicants>
+                  <BasicWidgetTitleBlock
+                    title={`Accepted (${project.acceptedApplicants.length})`}
+                  />
+                  <Gap />
+                  {project ? (
+                    project.acceptedApplicants.map((applicant, key) => (
+                      <SelectedApplicantProfileWidget
+                        name={applicant.user.fullname}
+                        profileImage={applicant.user.profileImage}
+                        postedTime={convertToTime(applicant.date)}
+                        key={key}
+                        onReject={() =>
+                          handleReject(applicant.user._id, projectId)
+                        }
+                      />
+                    ))
+                  ) : (
+                    <>No accpted applicants</>
                   )}
-                </Flex>
-                <SkillsRow>
-                  {project.skills.map((skill) => (
-                    <SkillChip title={skill.name} />
-                  ))}
-                </SkillsRow>
-                <Flex>
-                  <EditJobDetailsButton />
-                  <Row>
-                    <ShareButton />
-                    <DeleteButton />
-                  </Row>
-                </Flex>
-              </Box>
-            </Fixed>
-            <Gap />
-            <Scroll>
-              <Applicants>
-                <BasicWidgetTitleBlock
-                  title={`All Pending Applicants (${project.pendingApplicants.length})`}
-                />
+                  <Gap />
+                </Applicants>
                 <Gap />
-                {project.pendingApplicants.map((applicant, key) => (
-                  <UnselectedApplicantProfileWidget
-                    applicant={applicant}
-                    key={key}
-                    onAccept={() => {
-                      handleAccept(applicant.user._id, projectId);
-                    }}
-                    onReject={() => {
-                      handleReject(applicant.user._id, projectId);
-                    }}
+                <Gap />
+                <Applicants>
+                  <BasicWidgetTitleBlock
+                    title={`Rejected (${project.rejectedApplicants.length})`}
                   />
-                ))}
-              </Applicants>
-              <Gap />
-              <Gap />
-              <Applicants>
-                <BasicWidgetTitleBlock
-                  title={`Accepted (${project.acceptedApplicants.length})`}
-                />
-                <Gap />
-                {project ? (
-                  project.acceptedApplicants.map((applicant, key) => (
-                    <SelectedApplicantProfileWidget
-                      name={applicant.user.fullname}
-                      postedTime={convertToTime(applicant.date)}
-                      key={key}
-                      onReject={() =>
-                        handleReject(applicant.user._id, projectId)
-                      }
-                    />
-                  ))
-                ) : (
-                  <>No accpted applicants</>
-                )}
-                <Gap />
-              </Applicants>
-              <Gap />
-              <Gap />
-              <Applicants>
-                <BasicWidgetTitleBlock
-                  title={`Rejected (${project.rejectedApplicants.length})`}
-                />
-                <Gap />
-                {project &&
-                  project.rejectedApplicants.map((applicant, key) => (
-                    <RejectedApplicantCard
-                      name={applicant.user.fullname}
-                      postedTime={convertToTime(applicant.date)}
-                      key={key}
-                      onAccept={() =>
-                        handleAccept(applicant.user._id, projectId)
-                      }
-                    />
-                  ))}
-                <Gap />
-              </Applicants>
-            </Scroll>
-          </Content>
-        </Container>
-      </Wrapper>
-    )
+                  <Gap />
+                  {project &&
+                    project.rejectedApplicants.map((applicant, key) => (
+                      <RejectedApplicantCard
+                        name={applicant.user.fullname}
+                        postedTime={convertToTime(applicant.date)}
+                        key={key}
+                        onAccept={() =>
+                          handleAccept(applicant.user._id, projectId)
+                        }
+                      />
+                    ))}
+                  <Gap />
+                </Applicants>
+              </Scroll>
+            </Content>
+          </>
+        ) : (
+          <Content>Could not load project</Content>
+        )}
+      </Container>
+    </Wrapper>
   );
 }
-
 export default HiringTaskDetails;

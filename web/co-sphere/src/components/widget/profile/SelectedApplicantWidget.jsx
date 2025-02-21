@@ -47,23 +47,31 @@ const Column = styled.div`
     font-size: ${FontSize.small};
   }
 `;
-function SelectedApplicantProfileWidget({ name, postedTime, onReject }) {
+function SelectedApplicantProfileWidget({
+  name,
+  profileImage,
+  postedTime,
+  onReject,
+}) {
   return (
     <Wrapper>
       <Container>
         <Flex>
-          <ProfileIcon height={"50px"} />
+          <ProfileIcon url={profileImage} height={"50px"} />
           <Right>
             <b>{name}</b>
             <a>{postedTime}</a>
           </Right>
         </Flex>
         <Column>
-          <CancelButtonRound
-            onClick={() => {
-              onReject();
-            }}
-          />
+          {onReject && (
+            <CancelButtonRound
+              onClick={() => {
+                onReject();
+              }}
+            />
+          )}
+
           <span>Tap to view profile</span>
         </Column>
       </Container>

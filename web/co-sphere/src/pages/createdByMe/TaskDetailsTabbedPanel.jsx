@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useToast } from "../../common/manager/contextManager/ToastContextManager";
 import CreateTaskButton from "../../components/buttons/CreateTaskButton";
 import SelectedApplicantProfileWidget from "../../components/widget/profile/SelectedApplicantWidget";
 import TaskDetailsCard from "../../components/widget/task/TaskDetailsCard";
@@ -43,8 +44,10 @@ const Button = styled.div`
   display: flex;
   justify-content: right;
 `;
-function TaskDetailsTabbedPanel({ setOverlay }) {
+function TaskDetailsTabbedPanel({ setOverlay, project }) {
   const [currentPanel, setCurrentPanel] = useState("Members");
+  const { showToast } = useToast();
+
   return (
     <Wrapper>
       <Switch>
@@ -99,10 +102,10 @@ function TaskDetailsTabbedPanel({ setOverlay }) {
         <Content>
           {currentPanel === "Tasks" ? (
             <>
-              <TaskDetailsCard />
-              <TaskDetailsCard />
-              <TaskDetailsCard />
-              <TaskDetailsCard />
+              {project.tasks &&
+                project.tasks.map((task, key) => (
+                  <TaskDetailsCard key={key} task={task} />
+                ))}
             </>
           ) : currentPanel === "Completed Tasks" ? (
             <>
@@ -110,26 +113,14 @@ function TaskDetailsTabbedPanel({ setOverlay }) {
             </>
           ) : (
             <>
-              <SelectedApplicantProfileWidget
-                name={"Saugat Singh"}
-                postedTime={"3 weeks ago"}
-              />
-              <SelectedApplicantProfileWidget
-                name={"Saugat Singh"}
-                postedTime={"3 weeks ago"}
-              />
-              <SelectedApplicantProfileWidget
-                name={"Saugat Singh"}
-                postedTime={"3 weeks ago"}
-              />
-              <SelectedApplicantProfileWidget
-                name={"Saugat Singh"}
-                postedTime={"3 weeks ago"}
-              />
-              <SelectedApplicantProfileWidget
-                name={"Saugat Singh"}
-                postedTime={"3 weeks ago"}
-              />
+              {project &&
+                project.members.map((member, key) => (
+                  <SelectedApplicantProfileWidget
+                    key={key}
+                    name={member.fullname}
+                    profileImage={member.profileImage}
+                  />
+                ))}
             </>
           )}
           <Padding />

@@ -148,3 +148,16 @@ export async function manageFinishHiring(projectId, onSuccess, onFailure) {
     onFailure("Error connecting to network.");
   }
 }
+export async function manageGetTasksByProject(projectId, onSuccess, onFailure) {
+  try {
+    await finishHiringService(projectId, async (response) => {
+      if (response.status === 200) {
+        onSuccess(response.data);
+      } else {
+        onFailure(response.data.message);
+      }
+    });
+  } catch (e) {
+    onFailure("Error connecting to network.");
+  }
+}

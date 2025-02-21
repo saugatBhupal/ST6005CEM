@@ -133,18 +133,14 @@ function TaskActiveCard({ project }) {
               </li>
               <li>
                 <Stat>
-                  <b>
-                    {(project.tasks && project.tasks.completed.length) || 0}
-                  </b>
+                  <b>{(project.tasks && project.tasks.length) || 0}</b>
                   <br />
                   <a>Completed</a>
                 </Stat>
               </li>
               <li>
                 <Stat>
-                  <b>
-                    {(project.tasks && project.tasks.remaining.length) || 0}
-                  </b>
+                  <b>{(project.tasks && project.tasks.length) || 0}</b>
                   <br />
                   <a>Remaining</a>
                 </Stat>

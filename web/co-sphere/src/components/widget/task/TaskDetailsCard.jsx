@@ -3,10 +3,11 @@ import styled from "styled-components";
 import ProfileImage from "../../../assets/images/icon/profile_icon/profile_icon.png";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
+import { convertToTime } from "../../../utils/date/ConvertToTime";
 import DeleteButton from "../../buttons/DeleteButton";
 import TickButtonRound from "../../buttons/TickButtonRound";
 import TypeChip from "../chip/TypeChip";
-import DurationWidget from "../duration/DurationWidget";
+import DeadlineWidget from "../duration/DeadlineWidget";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -50,35 +51,24 @@ const Icon = styled.div`
     border-radius: 50%;
   }
 `;
-function TaskDetailsCard({ completed }) {
+function TaskDetailsCard({ task, completed }) {
   return (
     <Wrapper>
       <Container>
         <Flex>
-          <Title>Initialize flutter application and connect to database</Title>
-          <DurationWidget from={"6"} to={"9"} />
+          <Title>{task.taskName}</Title>
+          <DeadlineWidget date={convertToTime(task.deadline)} />
         </Flex>
-        <Description>
-          First initialize flutter app and then goto addd dependency and then
-          when you can finish adding dependency then you need to connect to the
-          database. If you do not have the database please message me.
-        </Description>
+        <Description>{task.taskDescription}</Description>
         <Flex>
           <Row>
             <span>
-              <Icon>
-                <img src={ProfileImage} alt="" />
-              </Icon>
-              <Icon>
-                <img src={ProfileImage} alt="" />
-              </Icon>
-              <Icon>
-                <img src={ProfileImage} alt="" />
-              </Icon>
-              <Icon>
-                <img src={ProfileImage} alt="" />
-              </Icon>
-              29 members
+              {task.members.map((member) => (
+                <Icon>
+                  <img src={member.profileImage || ProfileImage} alt="" />
+                </Icon>
+              ))}
+              {task.members.length} members
             </span>
             {completed ? (
               <>

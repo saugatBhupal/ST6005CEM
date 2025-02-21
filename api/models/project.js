@@ -64,6 +64,39 @@ const ProjectSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    tasks: [
+      {
+        taskName: {
+          type: String,
+          required: true,
+        },
+        taskDescription: {
+          type: String,
+          required: true,
+        },
+        deadline: {
+          type: Date,
+          required: true,
+        },
+        status: {
+          type: String,
+          enum: ["Active", "Completed"],
+          default: "Active",
+        },
+        createdDate: {
+          type: Date,
+          default: Date.now(),
+        },
+        members: [
+          {
+            type: mongoose.Schema.ObjectId,
+            ref: "User",
+            sparse: true,
+            required: true,
+          },
+        ],
+      },
+    ],
     applicants: [
       {
         user: {

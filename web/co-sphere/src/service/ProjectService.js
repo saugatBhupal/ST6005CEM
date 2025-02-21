@@ -100,3 +100,14 @@ export async function finishHiringService(postId, callback) {
       callback(response);
     });
 }
+export async function getTasksByProjectService(postId, callback) {
+  await request
+    .get(`/project/${postId}/task`, { headers: {} })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      callback(response);
+    });
+}

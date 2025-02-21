@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useToast } from "../../common/manager/contextManager/ToastContextManager";
+import { manageGetProjectById } from "../../common/manager/projectManager/ProjectManager";
 import DeleteButton from "../../components/buttons/DeleteButton";
 import FilledButton from "../../components/buttons/FilledButton";
 import ClockIcon from "../../components/icon/ClockIcon";
@@ -10,6 +12,7 @@ import DurationWidget from "../../components/widget/duration/DurationWidget";
 import ProfileWidget from "../../components/widget/profile/ProfileWidget";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
+import { calculateTimeDifference } from "../../utils/date/CalculateTimeDifference";
 import EditTaskDetails from "./EditTaskDetails";
 import TaskDetailsTabbedPanel from "./TaskDetailsTabbedPanel";
 
@@ -114,8 +117,24 @@ const OverlayContent = styled.div`
   background-color: white;
 `;
 
-function ActiveTaskDetails() {
+function ActiveTaskDetails({ projectId }) {
   const [overlay, setOverlay] = useState(false);
+  const [project, setProject] = useState();
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    async function getProject() {
+      await manageGetProjectById(
+        projectId,
+        (project) => setProject(project),
+        (err) => {
+          showToast(err);
+          setProject(null);
+        }
+      );
+    }
+    getProject();
+  }, [projectId]);
   return (
     <Wrapper>
       {overlay && (
@@ -135,53 +154,60 @@ function ActiveTaskDetails() {
       )}
 
       <Container>
-        <Content>
-          <Fixed>
-            <Title>Develop a Mobile App for Food Delivery</Title>
-            <Flex>
-              <Row>
-                <PostedDate>
-                  <ClockIcon />
-                  <div>Posted 6 hours ago</div>
-                </PostedDate>
-                <TypeChip type={"Active"} />
-              </Row>
-              <Row>
-                <FilledButton placeholder={"Finish Project"} />
-              </Row>
-            </Flex>
-            <Box>
+        {project && project != null ? (
+          <Content>
+            <Fixed>
+              <Title>{project.projectName}</Title>
               <Flex>
                 <Row>
-                  <ProfileWidget
-                    name={"Harry Potter"}
-                    address={"Kathmandu, Nepal"}
-                  />
-                  <PriceChip min={"2000"} max={"7000"} />
+                  <PostedDate>
+                    <ClockIcon />
+                    <div>{calculateTimeDifference(project.created)}</div>
+                  </PostedDate>
+                  <TypeChip type={project.status} />
                 </Row>
-
-                <DurationWidget from={"3"} to={"6"} />
-              </Flex>
-              <SkillsRow>
-                <SkillChip title={"Mobile Development"} />
-                <SkillChip title={"ReactJS"} />
-                <SkillChip title={"NodeJS"} />
-                <SkillChip title={"MySQL"} />
-                <SkillChip title={"MongoDB"} />
-                <SkillChip title={"Agile"} />
-                <SkillChip title={"Dancing"} />
-              </SkillsRow>
-              <Flex>
-                <span>*This project is only visible to project members</span>
                 <Row>
-                  <DeleteButton />
+                  <FilledButton placeholder={"Finish Project"} />
                 </Row>
               </Flex>
-            </Box>
-          </Fixed>
-          <Gap />
-          <TaskDetailsTabbedPanel />
-        </Content>
+              <Box>
+                <Flex>
+                  <Row>
+                    <ProfileWidget
+                      name={project.companyName || project.postedBy.fullname}
+                      address={project.address}
+                    />
+                    <PriceChip
+                      min={project.salary.min}
+                      max={project.salary.max}
+                    />
+                  </Row>
+                  {project.duration && (
+                    <DurationWidget
+                      from={project.duration.from}
+                      to={project.duration.to}
+                    />
+                  )}
+                </Flex>
+                <SkillsRow>
+                  {project.skills.map((skill, key) => (
+                    <SkillChip title={skill.name} key={key} />
+                  ))}
+                </SkillsRow>
+                <Flex>
+                  <span>*This project is only visible to project members</span>
+                  <Row>
+                    <DeleteButton />
+                  </Row>
+                </Flex>
+              </Box>
+            </Fixed>
+            <Gap />
+            <TaskDetailsTabbedPanel setOverlay={setOverlay} project={project} />
+          </Content>
+        ) : (
+          <>Error could not load</>
+        )}
       </Container>
     </Wrapper>
   );

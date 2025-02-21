@@ -46,6 +46,10 @@ exports.getProjectById = async (req, res) => {
       .populate({
         path: "members",
         select: "_id fullname profileImage email phone country city",
+      })
+      .populate({
+        path: "tasks.members",
+        select: "_id fullname profileImage email phone country city",
       });
 
     if (!project) return res.status(404).json({ message: "Project not found" });
@@ -298,6 +302,8 @@ exports.createProject = async (req, res) => {
       skills: skillIds,
       site,
       status,
+      members: [],
+      applicants: [],
       salary: salary || { min: 0, max: 0 },
     });
 
@@ -625,15 +631,75 @@ exports.finishHiring = async (req, res) => {
     project.members = [...new Set([...project.members, ...acceptedApplicants])];
 
     project.status = "Active";
+    if (project.members.length < 1) {
+      res.status(400).json({
+        message: "Cannot finish hiring process without atleast 1 member.",
+      });
+    } else {
+      await project.save();
 
+      res.status(200).json({
+        message: "Hiring has completed. Project moved to active",
+        members: project.members,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+exports.createTask = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+    const { taskName, taskDescription, deadline, members } = req.body;
+
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+    members.map((member) => {
+      if (!project.members.includes(member))
+        return res.status(400).json({
+          message: "Tasks can only be assigned to members of project.",
+        });
+    });
+    const newTask = {
+      taskName,
+      taskDescription,
+      deadline,
+      members,
+      createdDate: new Date(),
+    };
+
+    project.tasks.push(newTask);
     await project.save();
 
     res.status(200).json({
-      message: "Hiring has completed. Project moved to active",
-      members: project.members,
+      message: "Task added successfully",
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+exports.getTask = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+
+    const project = await Project.findById(projectId).select("tasks").populate({
+      path: "tasks.members",
+      select: "_id fullname profileImage city country email phone",
+    });
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    res.status(200).json({
+      project,
+    });
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };

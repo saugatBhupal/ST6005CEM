@@ -16,6 +16,8 @@ const {
   hireUser,
   rejectUser,
   finishHiring,
+  createTask,
+  getTask,
 } = require("../controllers/projectController");
 
 const router = express.Router();
@@ -36,5 +38,6 @@ router.post("/hire", hireUser);
 router.post("/reject", rejectUser);
 router.post("/finish-hiring/:projectId", finishHiring);
 router.post("", createProject);
-
+router.post("/:projectId/task", createTask);
+router.get("/:projectId/task", getTask);
 module.exports = router;
