@@ -2,15 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { SocketProvider } from "./common/manager/contextManager/SocketContextManager";
+import { ToastProvider } from "./common/manager/contextManager/ToastContextManager";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <SocketProvider>
-      <App />
-    </SocketProvider>
+    <ToastProvider>
+      <SocketProvider>
+        <App />
+      </SocketProvider>
+    </ToastProvider>
     {/* <App /> */}
   </React.StrictMode>
 );

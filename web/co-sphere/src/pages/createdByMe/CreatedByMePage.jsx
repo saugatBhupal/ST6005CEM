@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
 import SplitLayout from "../common/SplitLayout";
-import ActiveTaskDetails from "./ActiveTaskDetails";
+import HiringTaskDetails from "./HiringTaskDetails";
 import TabbedPanel from "./TabbedPanel";
 
 const LeftWrapper = styled.div`
@@ -26,6 +26,11 @@ const Title = styled.div`
   margin-left: 22px;
 `;
 function CreatedByMePage() {
+  const [currentProject, setCurrentProject] = useState();
+  const [updateState, setUpdateState] = useState();
+  useEffect(() => {
+    console.log("");
+  }, [updateState]);
   return (
     <SplitLayout
       left={
@@ -33,7 +38,10 @@ function CreatedByMePage() {
           <LeftWrapper>
             <LeftContainer>
               <Title>Created By Me</Title>
-              <TabbedPanel />
+              <TabbedPanel
+                setCurrentProject={setCurrentProject}
+                reload={updateState}
+              />
             </LeftContainer>
           </LeftWrapper>
         </>
@@ -41,7 +49,14 @@ function CreatedByMePage() {
       right={
         <>
           <RightWrapper>
-            <ActiveTaskDetails />
+            {currentProject && currentProject.type === "hiring" ? (
+              <HiringTaskDetails
+                projectId={currentProject.project}
+                updateState={(state) => setUpdateState(state)}
+              />
+            ) : (
+              <>Empty</>
+            )}
           </RightWrapper>
         </>
       }

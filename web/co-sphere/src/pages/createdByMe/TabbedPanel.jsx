@@ -34,7 +34,7 @@ const Content = styled.div`
   height: 100%;
   overflow-y: scroll;
 `;
-function TabbedPanel() {
+function TabbedPanel({ setCurrentProject, reload }) {
   const [currentPanel, setCurrentPanel] = useState("Hiring");
   return (
     <Wrapper>
@@ -81,7 +81,12 @@ function TabbedPanel() {
       {
         <Content>
           {currentPanel === "Hiring" ? (
-            <HiringTasks />
+            <HiringTasks
+              onClick={(project) =>
+                setCurrentProject({ project, type: "hiring" })
+              }
+              reload={reload}
+            />
           ) : currentPanel === "Completed" ? (
             <CompletedTasks />
           ) : (

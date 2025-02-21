@@ -18,9 +18,13 @@ const Container = styled.div`
     margin-top: 4px;
   }
 `;
-function CancelButtonRound() {
+function CancelButtonRound({ onClick }) {
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        onClick && onClick();
+      }}
+    >
       <Container>
         <CancelIcon />
       </Container>

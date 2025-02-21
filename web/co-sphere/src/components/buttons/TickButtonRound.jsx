@@ -18,9 +18,13 @@ const Container = styled.div`
     margin-top: 3px;
   }
 `;
-function TickButtonRound() {
+function TickButtonRound({ onClick }) {
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        onClick && onClick();
+      }}
+    >
       <Container>
         <TickIcon />
       </Container>

@@ -2,14 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
-import { calculateTimeDifference } from "../../../utils/date/CalculateTimeDifference";
-import CancelButtonRound from "../../buttons/CancelButton";
 import TickButtonRound from "../../buttons/TickButtonRound";
 import ProfileIcon from "../../icon/ProfileIcon";
 
 const Wrapper = styled.div`
-  max-width: 100%;
+  max-width: calc(100%);
   max-height: 80px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   border: 1px solid ${Colors.greyOutlineShadow};
@@ -41,7 +40,6 @@ const Right = styled.div`
 const Column = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: right;
   align-items: center;
   gap: 10px;
   span {
@@ -49,27 +47,23 @@ const Column = styled.div`
     font-size: ${FontSize.small};
   }
 `;
-function UnselectedApplicantProfileWidget({ applicant, onAccept }) {
+function RejectedApplicantCard({ name, postedTime, onAccept }) {
   return (
     <Wrapper>
       <Container>
         <Flex>
           <ProfileIcon height={"50px"} />
           <Right>
-            <b>{applicant.user.fullname}</b>
-            <a>{calculateTimeDifference(applicant.date)}</a>
+            <b>{name}</b>
+            <a>{postedTime}</a>
           </Right>
         </Flex>
         <Column>
-          <Flex>
-            <TickButtonRound
-              onClick={() => {
-                onAccept();
-              }}
-            />
-            <div style={{ width: "10px" }}></div>
-            <CancelButtonRound />
-          </Flex>
+          <TickButtonRound
+            onClick={() => {
+              onAccept();
+            }}
+          />
           <span>Tap to view profile</span>
         </Column>
       </Container>
@@ -77,4 +71,4 @@ function UnselectedApplicantProfileWidget({ applicant, onAccept }) {
   );
 }
 
-export default UnselectedApplicantProfileWidget;
+export default RejectedApplicantCard;

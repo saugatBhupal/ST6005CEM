@@ -1,5 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useToast } from "../../common/manager/contextManager/ToastContextManager";
+import {
+  manageGetProjectById,
+  manageHireUser,
+  manageRejectUser,
+} from "../../common/manager/projectManager/ProjectManager";
 import DeleteButton from "../../components/buttons/DeleteButton";
 import EditJobDetailsButton from "../../components/buttons/EditJobDetailsButton";
 import FilledButton from "../../components/buttons/FilledButton";
@@ -11,10 +17,13 @@ import SkillChip from "../../components/widget/chip/SkillChip";
 import TypeChip from "../../components/widget/chip/TypeChip";
 import DurationWidget from "../../components/widget/duration/DurationWidget";
 import ProfileWidget from "../../components/widget/profile/ProfileWidget";
+import RejectedApplicantCard from "../../components/widget/profile/RejectedApplicantWidget";
 import SelectedApplicantProfileWidget from "../../components/widget/profile/SelectedApplicantWidget";
 import UnselectedApplicantProfileWidget from "../../components/widget/profile/UnselectedApplicantProfileWidget";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
+import { calculateTimeDifference } from "../../utils/date/CalculateTimeDifference";
+import { convertToTime } from "../../utils/date/ConvertToTime";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -101,105 +110,175 @@ const Gap = styled.div`
   height: 1px;
   margin: 10px auto;
 `;
-function HiringTaskDetails() {
+function HiringTaskDetails({ projectId, updateState }) {
+  const [project, setProject] = useState();
+  const { showToast } = useToast();
+  const [reload, setReload] = useState();
+  useEffect(() => {
+    async function getProjectById() {
+      await manageGetProjectById(
+        projectId,
+        (project) => {
+          console.log(project);
+          setProject(project);
+        },
+        (err) => {
+          console.log(err);
+          setProject(null);
+        }
+      );
+    }
+    getProjectById();
+  }, [projectId, reload]);
+
+  async function handleAccept(userId, projectId) {
+    updateState(true);
+    await manageHireUser(
+      { userId: userId, projectId: projectId },
+      () => {
+        setReload(true);
+        showToast("Applicant has been hired");
+      },
+      (err) => {
+        showToast(err);
+      }
+    );
+  }
+  async function handleReject(userId, projectId) {
+    updateState(false);
+    await manageRejectUser(
+      { userId: userId, projectId: projectId },
+      () => {
+        setReload(false);
+        showToast("Applicant has been rejected");
+      },
+      (err) => {
+        showToast(err);
+      }
+    );
+  }
   return (
-    <Wrapper>
-      <Container>
-        <Content>
-          <Fixed>
-            <Title>Develop a Mobile App for Food Delivery</Title>
-            <Flex>
-              <Row>
-                <PostedDate>
-                  <ClockIcon />
-                  <div>Posted 6 hours ago</div>
-                </PostedDate>
-                <TypeChip type={"Hiring"} />
-              </Row>
-              <Row>
-                <FilledButton placeholder={"Finish Hiring"} />
-              </Row>
-            </Flex>
-            <Box>
+    project && (
+      <Wrapper>
+        <Container>
+          <Content>
+            <Fixed>
+              <Title>{project.projectName}</Title>
               <Flex>
                 <Row>
-                  <ProfileWidget
-                    name={"Harry Potter"}
-                    address={"Kathmandu, Nepal"}
+                  <PostedDate>
+                    <ClockIcon />
+                    <div>
+                      Posted {calculateTimeDifference(project.createdAt)}
+                    </div>
+                  </PostedDate>
+                  <TypeChip type={project.status} />
+                </Row>
+                <Row>
+                  <FilledButton placeholder={"Finish Hiring"} />
+                </Row>
+              </Flex>
+              <Box>
+                <Flex>
+                  <Row>
+                    <ProfileWidget
+                      name={project.companyName || project.postedBy.fullname}
+                      address={project.address}
+                    />
+                    <PriceChip
+                      min={project.salary.min}
+                      max={project.salary.max}
+                    />
+                  </Row>
+                  {project.duration && (
+                    <DurationWidget
+                      from={project.duration.from}
+                      to={project.duration.to}
+                    />
+                  )}
+                </Flex>
+                <SkillsRow>
+                  {project.skills.map((skill) => (
+                    <SkillChip title={skill.name} />
+                  ))}
+                </SkillsRow>
+                <Flex>
+                  <EditJobDetailsButton />
+                  <Row>
+                    <ShareButton />
+                    <DeleteButton />
+                  </Row>
+                </Flex>
+              </Box>
+            </Fixed>
+            <Gap />
+            <Scroll>
+              <Applicants>
+                <BasicWidgetTitleBlock
+                  title={`All Pending Applicants (${project.pendingApplicants.length})`}
+                />
+                <Gap />
+                {project.pendingApplicants.map((applicant, key) => (
+                  <UnselectedApplicantProfileWidget
+                    applicant={applicant}
+                    key={key}
+                    onAccept={() => {
+                      handleAccept(applicant.user._id, projectId);
+                    }}
+                    onReject={() => {
+                      handleReject(applicant.user._id, projectId);
+                    }}
                   />
-                  <PriceChip min={"2000"} max={"7000"} />
-                </Row>
-
-                <DurationWidget from={"3"} to={"6"} />
-              </Flex>
-              <SkillsRow>
-                <SkillChip title={"Mobile Development"} />
-                <SkillChip title={"ReactJS"} />
-                <SkillChip title={"NodeJS"} />
-                <SkillChip title={"MySQL"} />
-                <SkillChip title={"MongoDB"} />
-                <SkillChip title={"Agile"} />
-                <SkillChip title={"Dancing"} />
-              </SkillsRow>
-              <Flex>
-                <EditJobDetailsButton />
-                <Row>
-                  <ShareButton />
-                  <DeleteButton />
-                </Row>
-              </Flex>
-            </Box>
-          </Fixed>
-          <Gap />
-          <Scroll>
-            <Applicants>
-              <BasicWidgetTitleBlock title={"All Applicants (22)"} />
+                ))}
+              </Applicants>
               <Gap />
-              <UnselectedApplicantProfileWidget
-                name={"Saugat Singh"}
-                postedTime={"2hrs ago"}
-              />
-              <UnselectedApplicantProfileWidget
-                name={"Saugat Singh"}
-                postedTime={"2hrs ago"}
-              />
-              <UnselectedApplicantProfileWidget
-                name={"Saugat Singh"}
-                postedTime={"2hrs ago"}
-              />
-              <UnselectedApplicantProfileWidget
-                name={"Saugat Singh"}
-                postedTime={"2hrs ago"}
-              />
-            </Applicants>
-            <Gap />
-            <Gap />
-            <Applicants>
-              <BasicWidgetTitleBlock title={"Accepted (22)"} />
               <Gap />
-              <SelectedApplicantProfileWidget
-                name={"Saugat Singh"}
-                postedTime={"2hrs ago"}
-              />
-              <SelectedApplicantProfileWidget
-                name={"Saugat Singh"}
-                postedTime={"2hrs ago"}
-              />
-              <SelectedApplicantProfileWidget
-                name={"Saugat Singh"}
-                postedTime={"2hrs ago"}
-              />
-              <SelectedApplicantProfileWidget
-                name={"Saugat Singh"}
-                postedTime={"2hrs ago"}
-              />
-
+              <Applicants>
+                <BasicWidgetTitleBlock
+                  title={`Accepted (${project.acceptedApplicants.length})`}
+                />
+                <Gap />
+                {project ? (
+                  project.acceptedApplicants.map((applicant, key) => (
+                    <SelectedApplicantProfileWidget
+                      name={applicant.user.fullname}
+                      postedTime={convertToTime(applicant.date)}
+                      key={key}
+                      onReject={() =>
+                        handleReject(applicant.user._id, projectId)
+                      }
+                    />
+                  ))
+                ) : (
+                  <>No accpted applicants</>
+                )}
+                <Gap />
+              </Applicants>
               <Gap />
-            </Applicants>
-          </Scroll>
-        </Content>
-      </Container>
-    </Wrapper>
+              <Gap />
+              <Applicants>
+                <BasicWidgetTitleBlock
+                  title={`Rejected (${project.rejectedApplicants.length})`}
+                />
+                <Gap />
+                {project &&
+                  project.rejectedApplicants.map((applicant, key) => (
+                    <RejectedApplicantCard
+                      name={applicant.user.fullname}
+                      postedTime={convertToTime(applicant.date)}
+                      key={key}
+                      onAccept={() =>
+                        handleAccept(applicant.user._id, projectId)
+                      }
+                    />
+                  ))}
+                <Gap />
+              </Applicants>
+            </Scroll>
+          </Content>
+        </Container>
+      </Wrapper>
+    )
   );
 }
 

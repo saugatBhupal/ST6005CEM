@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
+import CancelButtonRound from "../../buttons/CancelButton";
 import ProfileIcon from "../../icon/ProfileIcon";
 
 const Wrapper = styled.div`
@@ -38,6 +39,7 @@ const Right = styled.div`
 `;
 const Column = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 10px;
   span {
@@ -45,7 +47,7 @@ const Column = styled.div`
     font-size: ${FontSize.small};
   }
 `;
-function SelectedApplicantProfileWidget({ name, postedTime }) {
+function SelectedApplicantProfileWidget({ name, postedTime, onReject }) {
   return (
     <Wrapper>
       <Container>
@@ -57,6 +59,11 @@ function SelectedApplicantProfileWidget({ name, postedTime }) {
           </Right>
         </Flex>
         <Column>
+          <CancelButtonRound
+            onClick={() => {
+              onReject();
+            }}
+          />
           <span>Tap to view profile</span>
         </Column>
       </Container>

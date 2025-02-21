@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
+import { convertToTime } from "../../../utils/date/ConvertToTime";
 import ProfileIcon from "../../icon/ProfileIcon";
 import PriceChip from "../chip/PriceChip";
 
@@ -69,9 +70,8 @@ const Stat = styled.div`
   }
 `;
 const Price = styled.div`
-  align-self: flex-end;
-  height: 10px;
-
+  align-self: center;
+  margin-left: 30px;
   svg {
     fill: ${Colors.subtitleBlack};
     &:hover {
@@ -94,14 +94,15 @@ const Column = styled.div`
   justify-content: space-between;
 `;
 
-function ApplicationsCreatedByMeWidget({ project }) {
+function ApplicationsCreatedByMeWidget({ project, onClick }) {
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        onClick(project._id);
+      }}
+    >
       <Container>
         <Column>
-          <Price>
-            <PriceChip min={project.salary.min} max={project.salary.max} />
-          </Price>
           <Top>
             <Flex>
               <ProfileIcon
@@ -109,9 +110,12 @@ function ApplicationsCreatedByMeWidget({ project }) {
                 height={"50px"}
               />
               <div>
-                <div>Assignment Helper Needed</div>
-                <a>Posted on 10-11-2025</a>
+                <div>{project.projectName}</div>
+                <a>Posted on {convertToTime(project.createdAt)}</a>
               </div>
+              <Price>
+                <PriceChip min={project.salary.min} max={project.salary.max} />
+              </Price>
             </Flex>
           </Top>
 
@@ -119,28 +123,28 @@ function ApplicationsCreatedByMeWidget({ project }) {
             <ul>
               <li>
                 <Stat>
-                  <b>20</b>
+                  <b>{project.applicants.length}</b>
                   <br />
                   <a>Applicants</a>
                 </Stat>
               </li>
               <li>
                 <Stat>
-                  <b>36</b>
+                  <b>{project.likesCount}</b>
                   <br />
                   <a>Likes</a>
                 </Stat>
               </li>
               <li>
                 <Stat>
-                  <b>13</b>
+                  <b>{project.rejectedApplicants.length}</b>
                   <br />
                   <a>Rejected</a>
                 </Stat>
               </li>
               <li>
                 <Stat>
-                  <b>7</b>
+                  <b>{project.acceptedApplicants.length}</b>
                   <br />
                   <a>Hired</a>
                 </Stat>

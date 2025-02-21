@@ -35,8 +35,8 @@ const ProjectSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Active", "Pending"],
-      default: "Active",
+      enum: ["Hiring", "Active", "Pending"],
+      default: "Hiring",
     },
     salary: {
       min: {
@@ -86,6 +86,7 @@ const ProjectSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+        timestamps: true,
       },
     ],
   },

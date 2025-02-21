@@ -3,7 +3,9 @@ import styled from "styled-components";
 import { Colors } from "../../constants/Colors";
 import ShareIcon from "../icon/ShareIcon";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  cursor: pointer;
+`;
 const Container = styled.div``;
 const Icon = styled.div`
   height: 25px;
