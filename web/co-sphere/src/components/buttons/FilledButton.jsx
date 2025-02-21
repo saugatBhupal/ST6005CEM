@@ -52,7 +52,6 @@ function FilledButton(props) {
           try {
             await props.onClick();
           } catch (error) {
-            console.error("Error during OTP resend:", error);
           } finally {
             setLoading(false);
           }

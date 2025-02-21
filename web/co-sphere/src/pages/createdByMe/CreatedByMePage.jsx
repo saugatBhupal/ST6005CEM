@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
 import SplitLayout from "../common/SplitLayout";
+import ActiveTaskDetails from "./ActiveTaskDetails";
+import CompletedTasks from "./CompletedTasks";
 import HiringTaskDetails from "./HiringTaskDetails";
 import TabbedPanel from "./TabbedPanel";
 
@@ -26,11 +29,17 @@ const Title = styled.div`
   margin-left: 22px;
 `;
 function CreatedByMePage() {
-  const [currentProject, setCurrentProject] = useState();
+  const [currentProject, setCurrentProject] = useState({});
   const [updateState, setUpdateState] = useState();
+  const { type, project } = useParams();
+  const navigate = useNavigate();
+  useEffect(() => {}, [updateState]);
+
   useEffect(() => {
-    console.log("");
-  }, [updateState]);
+    type != null && project != null
+      ? setCurrentProject({ project, type: type })
+      : (() => {})();
+  }, [project, type]);
   return (
     <SplitLayout
       left={
@@ -39,8 +48,11 @@ function CreatedByMePage() {
             <LeftContainer>
               <Title>Created By Me</Title>
               <TabbedPanel
-                setCurrentProject={setCurrentProject}
+                onSelect={(details) => {
+                  navigate(`/created-by-me/${details.type}/${details.project}`);
+                }}
                 reload={updateState}
+                defaultPanel={type ?? null}
               />
             </LeftContainer>
           </LeftWrapper>
@@ -49,7 +61,11 @@ function CreatedByMePage() {
       right={
         <>
           <RightWrapper>
-            {currentProject && currentProject.type === "hiring" ? (
+            {currentProject && currentProject.type === "completed" ? (
+              <CompletedTasks />
+            ) : currentProject.type === "active" ? (
+              <ActiveTaskDetails projectId={currentProject.project} />
+            ) : currentProject.type === "hiring" ? (
               <HiringTaskDetails
                 projectId={currentProject.project}
                 updateState={(state) => setUpdateState(state)}

@@ -26,7 +26,7 @@ function HiringTasks({ onClick, reload }) {
             project={project}
             key={key}
             onClick={(projectId) => {
-              onClick(projectId, "hiring");
+              onClick(projectId);
             }}
           />
         ))}

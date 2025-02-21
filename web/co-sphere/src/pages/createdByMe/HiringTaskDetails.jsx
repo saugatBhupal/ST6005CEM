@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useToast } from "../../common/manager/contextManager/ToastContextManager";
 import {
+  manageFinishHiring,
   manageGetProjectById,
   manageHireUser,
   manageRejectUser,
@@ -114,12 +116,12 @@ function HiringTaskDetails({ projectId, updateState }) {
   const [project, setProject] = useState();
   const { showToast } = useToast();
   const [reload, setReload] = useState();
+  const navigate = useNavigate();
   useEffect(() => {
     async function getProjectById() {
       await manageGetProjectById(
         projectId,
         (project) => {
-          console.log(project);
           setProject(project);
         },
         (err) => {
@@ -132,12 +134,12 @@ function HiringTaskDetails({ projectId, updateState }) {
   }, [projectId, reload]);
 
   async function handleAccept(userId, projectId) {
-    updateState(true);
     await manageHireUser(
       { userId: userId, projectId: projectId },
       () => {
         setReload(true);
         showToast("Applicant has been hired");
+        updateState(1);
       },
       (err) => {
         showToast(err);
@@ -145,12 +147,26 @@ function HiringTaskDetails({ projectId, updateState }) {
     );
   }
   async function handleReject(userId, projectId) {
-    updateState(false);
     await manageRejectUser(
       { userId: userId, projectId: projectId },
       () => {
         setReload(false);
         showToast("Applicant has been rejected");
+        updateState(2);
+      },
+      (err) => {
+        showToast(err);
+      }
+    );
+  }
+  async function handleFinishHiring() {
+    await manageFinishHiring(
+      projectId,
+      () => {
+        updateState(3);
+        setReload(false);
+        showToast("Project has been moved to the active tab.");
+        navigate(`/created-by-me/active/${projectId}`);
       },
       (err) => {
         showToast(err);
@@ -175,7 +191,12 @@ function HiringTaskDetails({ projectId, updateState }) {
                   <TypeChip type={project.status} />
                 </Row>
                 <Row>
-                  <FilledButton placeholder={"Finish Hiring"} />
+                  <FilledButton
+                    placeholder={"Finish Hiring"}
+                    onClick={() => {
+                      handleFinishHiring();
+                    }}
+                  />
                 </Row>
               </Flex>
               <Box>

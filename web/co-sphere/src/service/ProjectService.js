@@ -67,7 +67,7 @@ export async function getProjectByIdService(projectId, callback) {
       callback(response);
     });
 }
-export async function hireUser(details, callback) {
+export async function hireUserService(details, callback) {
   await request
     .post(`/project/hire`, details, { headers: {} })
     .then((response) => {
@@ -78,9 +78,20 @@ export async function hireUser(details, callback) {
       callback(response);
     });
 }
-export async function rejectUser(details, callback) {
+export async function rejectUserService(details, callback) {
   await request
     .post(`/project/reject`, details, { headers: {} })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      callback(response);
+    });
+}
+export async function finishHiringService(postId, callback) {
+  await request
+    .post(`/project/finish-hiring/${postId}`, { headers: {} })
     .then((response) => {
       callback(response);
     })

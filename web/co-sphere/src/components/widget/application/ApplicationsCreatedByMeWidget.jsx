@@ -71,7 +71,8 @@ const Stat = styled.div`
 `;
 const Price = styled.div`
   align-self: center;
-  margin-left: 30px;
+  margin-left: 20px;
+  min-width: 150px;
   svg {
     fill: ${Colors.subtitleBlack};
     &:hover {

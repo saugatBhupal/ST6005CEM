@@ -1,13 +1,14 @@
 import { getUserIdFromLocalStorage } from "../../../service/LocalStorageService";
 import {
+  finishHiringService,
   getActiveProjectsByUserService,
   getAppliedProjectService,
   getCompletedProjectsByUserService,
   getHiringProjectsByUserService,
   getProjectByIdService,
   getProjectCreatedByUserService,
-  hireUser,
-  rejectUser,
+  hireUserService,
+  rejectUserService,
 } from "../../../service/ProjectService";
 
 export async function manageGetAppliedProjects(onSuccess, onFailure) {
@@ -110,7 +111,7 @@ export async function manageGetProjectById(projectId, onSuccess, onFailure) {
 }
 export async function manageHireUser(details, onSuccess, onFailure) {
   try {
-    await hireUser(details, async (response) => {
+    await hireUserService(details, async (response) => {
       if (response.status === 200) {
         onSuccess(response.data);
       } else {
@@ -123,7 +124,7 @@ export async function manageHireUser(details, onSuccess, onFailure) {
 }
 export async function manageRejectUser(details, onSuccess, onFailure) {
   try {
-    await rejectUser(details, async (response) => {
+    await rejectUserService(details, async (response) => {
       if (response.status === 200) {
         onSuccess(response.data);
       } else {
@@ -134,4 +135,16 @@ export async function manageRejectUser(details, onSuccess, onFailure) {
     onFailure("Error connecting to network.");
   }
 }
-
+export async function manageFinishHiring(projectId, onSuccess, onFailure) {
+  try {
+    await finishHiringService(projectId, async (response) => {
+      if (response.status === 200) {
+        onSuccess(response.data);
+      } else {
+        onFailure(response.data.message);
+      }
+    });
+  } catch (e) {
+    onFailure("Error connecting to network.");
+  }
+}

@@ -69,6 +69,7 @@ const ProjectSchema = new mongoose.Schema(
         user: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
+          sparse: true,
           required: true,
         },
         status: {
@@ -87,6 +88,7 @@ const ProjectSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         timestamps: true,
+        unique: true,
       },
     ],
   },

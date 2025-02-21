@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
@@ -34,44 +34,49 @@ const Content = styled.div`
   height: 100%;
   overflow-y: scroll;
 `;
-function TabbedPanel({ setCurrentProject, reload }) {
-  const [currentPanel, setCurrentPanel] = useState("Hiring");
+function TabbedPanel({ onSelect, reload, defaultPanel }) {
+  const [currentPanel, setCurrentPanel] = useState("hiring");
+  useEffect(() => {
+    if (defaultPanel != null) {
+      setCurrentPanel(defaultPanel);
+    }
+  }, [defaultPanel]);
   return (
     <Wrapper>
       <Switch>
         <ul>
           <li
             style={
-              currentPanel === "Hiring"
+              currentPanel === "hiring"
                 ? { color: "#000000", fontWeight: 400 }
                 : {}
             }
             onClick={() => {
-              setCurrentPanel("Hiring");
+              setCurrentPanel("hiring");
             }}
           >
             Hiring
           </li>
           <li
             style={
-              currentPanel === "Active"
+              currentPanel === "active"
                 ? { color: "#000000", fontWeight: 400 }
                 : {}
             }
             onClick={() => {
-              setCurrentPanel("Active");
+              setCurrentPanel("active");
             }}
           >
             Active
           </li>
           <li
             style={
-              currentPanel === "Completed"
+              currentPanel === "completed"
                 ? { color: "#000000", fontWeight: 400 }
                 : {}
             }
             onClick={() => {
-              setCurrentPanel("Completed");
+              setCurrentPanel("completed");
             }}
           >
             Completed
@@ -80,14 +85,12 @@ function TabbedPanel({ setCurrentProject, reload }) {
       </Switch>
       {
         <Content>
-          {currentPanel === "Hiring" ? (
+          {currentPanel === "hiring" ? (
             <HiringTasks
-              onClick={(project) =>
-                setCurrentProject({ project, type: "hiring" })
-              }
+              onClick={(project) => onSelect({ project, type: "hiring" })}
               reload={reload}
             />
-          ) : currentPanel === "Completed" ? (
+          ) : currentPanel === "completed" ? (
             <CompletedTasks />
           ) : (
             <ActiveTasks />

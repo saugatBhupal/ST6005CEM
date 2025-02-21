@@ -315,6 +315,7 @@ exports.createProject = async (req, res) => {
 
     res.status(200).json(savedProject);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
@@ -617,13 +618,20 @@ exports.finishHiring = async (req, res) => {
       return res.status(404).json({ message: "Project not found" });
     }
 
-    project.status = "Hiring";
+    const acceptedApplicants = project.applicants
+      .filter((applicant) => applicant.status === "Accepted")
+      .map((applicant) => applicant.user);
+
+    project.members = [...new Set([...project.members, ...acceptedApplicants])];
+
+    project.status = "Active";
 
     await project.save();
 
-    res
-      .status(200)
-      .json({ message: "Hiring has completed. Project moved to active" });
+    res.status(200).json({
+      message: "Hiring has completed. Project moved to active",
+      members: project.members,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server Error", error: error.message });
