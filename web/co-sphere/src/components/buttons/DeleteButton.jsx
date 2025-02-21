@@ -20,7 +20,7 @@ const Icon = styled.div`
   svg {
     margin-top: 2px;
     height: 20px !important;
-    stroke-width: 1px !important;
+    strokewidth: 1px !important;
     stroke: none;
   }
 `;

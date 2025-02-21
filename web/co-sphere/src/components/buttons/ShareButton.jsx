@@ -18,7 +18,7 @@ const Icon = styled.div`
   justify-content: center;
   svg {
     height: 15px !important;
-    stroke-width: 0.1px !important;
+    strokewidth: 0.1px !important;
     stroke: none;
   }
 `;

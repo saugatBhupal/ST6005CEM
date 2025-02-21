@@ -93,7 +93,7 @@ function TabbedPanel({ onSelect, reload, defaultPanel }) {
           ) : currentPanel === "completed" ? (
             <CompletedTasks />
           ) : (
-            <ActiveTasks />
+            <ActiveTasks reload={reload} />
           )}
           <Padding />
         </Content>

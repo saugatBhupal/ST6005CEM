@@ -8,11 +8,13 @@ import ClockIcon from "../../components/icon/ClockIcon";
 import PriceChip from "../../components/widget/chip/PriceChip";
 import SkillChip from "../../components/widget/chip/SkillChip";
 import TypeChip from "../../components/widget/chip/TypeChip";
+import DeadlineWidget from "../../components/widget/duration/DeadlineWidget";
 import DurationWidget from "../../components/widget/duration/DurationWidget";
 import ProfileWidget from "../../components/widget/profile/ProfileWidget";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
 import { calculateTimeDifference } from "../../utils/date/CalculateTimeDifference";
+import { convertToTime } from "../../utils/date/ConvertToTime";
 import EditTaskDetails from "./EditTaskDetails";
 import TaskDetailsTabbedPanel from "./TaskDetailsTabbedPanel";
 
@@ -60,7 +62,7 @@ const PostedDate = styled.div`
   color: ${Colors.subtitleBlack};
   gap: 4px;
   svg {
-    stroke-width: 1px !important;
+    strokewidth: 1px !important;
     margin-bottom: -3px;
     height: 16px !important;
   }
@@ -117,16 +119,20 @@ const OverlayContent = styled.div`
   background-color: white;
 `;
 
-function ActiveTaskDetails({ projectId }) {
+function ActiveTaskDetails({ projectId, updateState }) {
   const [overlay, setOverlay] = useState(false);
   const [project, setProject] = useState();
+  const [reload, setReload] = useState();
   const { showToast } = useToast();
 
   useEffect(() => {
     async function getProject() {
       await manageGetProjectById(
         projectId,
-        (project) => setProject(project),
+        (project) => {
+          setProject(project);
+          updateState(Math.random());
+        },
         (err) => {
           showToast(err);
           setProject(null);
@@ -134,7 +140,7 @@ function ActiveTaskDetails({ projectId }) {
       );
     }
     getProject();
-  }, [projectId]);
+  }, [projectId, reload]);
   return (
     <Wrapper>
       {overlay && (
@@ -182,10 +188,15 @@ function ActiveTaskDetails({ projectId }) {
                       max={project.salary.max}
                     />
                   </Row>
-                  {project.duration && (
+                  {project.duration && project.duration != null ? (
                     <DurationWidget
                       from={project.duration.from}
                       to={project.duration.to}
+                    />
+                  ) : (
+                    <DeadlineWidget
+                      date={convertToTime(project.createdAt)}
+                      type={"Posted Date"}
                     />
                   )}
                 </Flex>
@@ -203,7 +214,11 @@ function ActiveTaskDetails({ projectId }) {
               </Box>
             </Fixed>
             <Gap />
-            <TaskDetailsTabbedPanel setOverlay={setOverlay} project={project} />
+            <TaskDetailsTabbedPanel
+              setOverlay={setOverlay}
+              project={project}
+              reload={setReload}
+            />
           </Content>
         ) : (
           <>Error could not load</>

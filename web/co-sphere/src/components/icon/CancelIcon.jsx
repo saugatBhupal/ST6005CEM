@@ -14,8 +14,8 @@ function CancelIcon() {
         <path
           d="M10.25 0.75L0.75 10.25M0.75 0.75L10.25 10.25"
           stroke="#FB3C1A"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </Icon>

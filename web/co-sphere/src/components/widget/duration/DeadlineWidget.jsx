@@ -31,7 +31,7 @@ const Icon = styled.div`
   justify-content: center;
   svg {
     height: 14px !important;
-    stroke-width: 0.7px !important;
+    strokewidth: 0.7px !important;
     stroke: ${Colors.fontBlack};
   }
 `;

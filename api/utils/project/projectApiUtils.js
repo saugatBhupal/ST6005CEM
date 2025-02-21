@@ -35,7 +35,17 @@ const populateApplicantsWithStatusFromList = (projects) => {
     };
   });
 };
+const populateTasksWithStatus = (project) => {
+  const active = project.tasks.filter((task) => task.status === "Active");
+  const completed = project.tasks.filter((task) => task.status === "Completed");
+  return {
+    ...project,
+    activeTasks: active,
+    completedTasks: completed,
+  };
+};
 module.exports = {
   populateApplicantsWithStatus,
   populateApplicantsWithStatusFromList,
+  populateTasksWithStatus,
 };

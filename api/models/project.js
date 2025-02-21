@@ -87,6 +87,13 @@ const ProjectSchema = new mongoose.Schema(
           type: Date,
           default: Date.now(),
         },
+        completionDate: {
+          type: Date,
+        },
+        completionType: {
+          type: String,
+          enum: ["Delayed", "On-Time", "Early"],
+        },
         members: [
           {
             type: mongoose.Schema.ObjectId,

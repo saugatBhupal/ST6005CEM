@@ -17,7 +17,7 @@ const Icon = styled.div`
   svg {
     margin-top: 3px;
     height: 15px !important;
-    stroke-width: 1px !important;
+    strokewidth: 1px !important;
     stroke: ${Colors.fontBlack} !important;
   }
 `;

@@ -68,7 +68,7 @@ const PostedDate = styled.div`
   color: ${Colors.subtitleBlack};
   gap: 4px;
   svg {
-    stroke-width: 1px !important;
+    strokewidth: 1px !important;
     margin-bottom: -3px;
     height: 16px !important;
   }

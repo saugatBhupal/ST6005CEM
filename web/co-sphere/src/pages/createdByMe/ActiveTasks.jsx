@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { manageGetActiveProjectsCreatedByUser } from "../../common/manager/projectManager/ProjectManager";
 import TaskActiveCard from "../../components/widget/task/TaskActiveCard";
 
-function ActiveTasks() {
+function ActiveTasks({ reload }) {
   const [projects, setProjects] = useState();
   useEffect(() => {
-    async function getHiringProjects() {
+    async function getActiveProjects() {
       await manageGetActiveProjectsCreatedByUser(
         (projects) => {
           setProjects(projects);
@@ -16,8 +16,8 @@ function ActiveTasks() {
         }
       );
     }
-    getHiringProjects();
-  }, []);
+    getActiveProjects();
+  }, [reload]);
   return (
     <div>
       {projects &&

@@ -5,6 +5,7 @@ const User = require("../models/user");
 const {
   populateApplicantsWithStatus,
   populateApplicantsWithStatusFromList,
+  populateTasksWithStatus,
 } = require("../utils/project/projectApiUtils");
 
 exports.getAllProjects = async (req, res) => {
@@ -54,7 +55,8 @@ exports.getProjectById = async (req, res) => {
 
     if (!project) return res.status(404).json({ message: "Project not found" });
 
-    const projectWithStatus = populateApplicantsWithStatus(project);
+    let projectWithStatus = populateApplicantsWithStatus(project);
+    projectWithStatus = populateTasksWithStatus(projectWithStatus);
     res.status(200).json(projectWithStatus);
   } catch (error) {
     console.log(error);
@@ -697,6 +699,56 @@ exports.getTask = async (req, res) => {
 
     res.status(200).json({
       project,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+exports.completeTask = async (req, res) => {
+  try {
+    const { projectId, taskId } = req.params; // Destructure both projectId and taskId from params
+
+    // Find the project by ID and populate the tasks
+    const project = await Project.findById(projectId).select("tasks").populate({
+      path: "tasks",
+      select:
+        "_id taskName taskDescription deadline status completionDate completionType", // Populate the required fields
+    });
+
+    // Check if the project exists
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    // Find the task by taskId
+    const task = project.tasks.find((task) => task._id.toString() === taskId);
+
+    // Check if the task exists
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    // Check if the task's deadline has passed and set the completionType
+    const currentDate = new Date();
+    let completionType = "On-Time";
+
+    if (task.deadline < currentDate) {
+      completionType = "Delayed";
+    }
+
+    // Update the task status and completionType
+    task.status = "Completed";
+    task.completionDate = currentDate;
+    task.completionType = completionType;
+
+    // Save the updated task to the project
+    await project.save();
+
+    // Respond with the updated project data
+    res.status(200).json({
+      message: "Task completed successfully",
+      project: project,
     });
   } catch (error) {
     console.error(error);

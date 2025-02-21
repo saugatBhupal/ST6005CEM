@@ -64,7 +64,7 @@ function CreatedByMePage() {
             {currentProject && currentProject.type === "completed" ? (
               <CompletedTasks />
             ) : currentProject.type === "active" ? (
-              <ActiveTaskDetails projectId={currentProject.project} />
+              <ActiveTaskDetails projectId={currentProject.project} updateState={(state) => setUpdateState(state)}/>
             ) : currentProject.type === "hiring" ? (
               <HiringTaskDetails
                 projectId={currentProject.project}

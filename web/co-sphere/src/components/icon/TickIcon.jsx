@@ -14,9 +14,9 @@ function TickIcon() {
         <path
           d="M12.5712 1.57141L4.71408 9.42852L1.14258 5.85713"
           stroke="#0D6722"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </Icon>

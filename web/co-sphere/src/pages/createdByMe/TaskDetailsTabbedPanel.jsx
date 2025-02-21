@@ -44,7 +44,7 @@ const Button = styled.div`
   display: flex;
   justify-content: right;
 `;
-function TaskDetailsTabbedPanel({ setOverlay, project }) {
+function TaskDetailsTabbedPanel({ setOverlay, project, reload }) {
   const [currentPanel, setCurrentPanel] = useState("Members");
   const { showToast } = useToast();
 
@@ -62,7 +62,7 @@ function TaskDetailsTabbedPanel({ setOverlay, project }) {
               setCurrentPanel("Members");
             }}
           >
-            Members
+            Members ({project.members.length})
           </li>
           <li
             style={
@@ -74,7 +74,7 @@ function TaskDetailsTabbedPanel({ setOverlay, project }) {
               setCurrentPanel("Tasks");
             }}
           >
-            Tasks(6)
+            Active Tasks({project.activeTasks.length})
           </li>
           <li
             style={
@@ -86,7 +86,7 @@ function TaskDetailsTabbedPanel({ setOverlay, project }) {
               setCurrentPanel("Completed Tasks");
             }}
           >
-            Completed Tasks (3)
+            Completed Tasks ({project.completedTasks.length})
           </li>
         </ul>
       </Switch>
@@ -102,14 +102,25 @@ function TaskDetailsTabbedPanel({ setOverlay, project }) {
         <Content>
           {currentPanel === "Tasks" ? (
             <>
-              {project.tasks &&
-                project.tasks.map((task, key) => (
-                  <TaskDetailsCard key={key} task={task} />
+              {project.activeTasks &&
+                project.activeTasks.map((task, key) => (
+                  <TaskDetailsCard
+                    key={key}
+                    task={task}
+                    projectId={project._id}
+                    reload={reload}
+                  />
                 ))}
             </>
           ) : currentPanel === "Completed Tasks" ? (
             <>
-              <TaskDetailsCard completed={"Delayed"} />
+              {project.completedTasks.map((task, key) => (
+                <TaskDetailsCard
+                  key={key}
+                  task={task}
+                  completed={task.completionType}
+                />
+              ))}
             </>
           ) : (
             <>

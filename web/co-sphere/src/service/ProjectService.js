@@ -111,3 +111,16 @@ export async function getTasksByProjectService(postId, callback) {
       callback(response);
     });
 }
+export async function completeTaskService(details, callback) {
+  await request
+    .post(`/project/${details.projectId}/task/${details.taskId}`, {
+      headers: {},
+    })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      callback(response);
+    });
+}

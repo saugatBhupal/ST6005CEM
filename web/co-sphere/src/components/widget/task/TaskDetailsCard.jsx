@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import ProfileImage from "../../../assets/images/icon/profile_icon/profile_icon.png";
+import { useToast } from "../../../common/manager/contextManager/ToastContextManager";
+import { manageCompleteTask } from "../../../common/manager/projectManager/ProjectManager";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
 import { convertToTime } from "../../../utils/date/ConvertToTime";
@@ -51,7 +53,21 @@ const Icon = styled.div`
     border-radius: 50%;
   }
 `;
-function TaskDetailsCard({ task, completed }) {
+function TaskDetailsCard({ projectId, task, completed, reload }) {
+  const { showToast } = useToast();
+  async function handleCompleteTask() {
+    await manageCompleteTask(
+      { projectId: projectId, taskId: task._id },
+      (data) => {
+        showToast("Task moved to completed section.");
+        reload(Math.random());
+      },
+      (err) => {
+        console.log(err);
+        showToast(err);
+      }
+    );
+  }
   return (
     <Wrapper>
       <Container>
@@ -77,7 +93,11 @@ function TaskDetailsCard({ task, completed }) {
             ) : (
               <span>
                 <DeleteButton />
-                <TickButtonRound />
+                <TickButtonRound
+                  onClick={() => {
+                    handleCompleteTask();
+                  }}
+                />
               </span>
             )}
           </Row>

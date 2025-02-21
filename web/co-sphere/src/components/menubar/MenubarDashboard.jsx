@@ -120,7 +120,7 @@ const IconSearch = styled.div`
   svg {
     height: 12px !important;
     width: 12px !important;
-    stroke-width: 1.5px;
+    strokewidth: 1.5px;
     stroke: ${Colors.subtitleBlack} !important;
   }
 `;
@@ -128,7 +128,7 @@ const Icon = styled.div`
   svg {
     height: 20px;
     width: 20px;
-    stroke-width: 1px;
+    strokewidth: 1px;
     stroke: ${Colors.subtitleBlack} !important;
   }
 `;
