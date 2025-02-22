@@ -614,12 +614,10 @@ exports.rejectUser = async (req, res) => {
 
     await project.save();
 
-    res
-      .status(200)
-      .json({
-        message: "User rejected successfully",
-        applicant: rejectedApplicant,
-      });
+    res.status(200).json({
+      message: "User rejected successfully",
+      applicant: rejectedApplicant,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
@@ -674,19 +672,25 @@ exports.createTask = async (req, res) => {
           message: "Tasks can only be assigned to members of project.",
         });
     });
+    const createdAt = new Date();
     const newTask = {
       taskName,
       taskDescription,
       deadline,
       members,
-      createdDate: new Date(),
+      createdDate: createdAt,
     };
 
     project.tasks.push(newTask);
     await project.save();
 
+    const createdTask = project.tasks.filter(
+      (task) => task.createdDate == createdAt
+    );
+
     res.status(200).json({
       message: "Task added successfully",
+      task: createdTask,
     });
   } catch (error) {
     console.error(error);
@@ -715,29 +719,24 @@ exports.getTask = async (req, res) => {
 };
 exports.completeTask = async (req, res) => {
   try {
-    const { projectId, taskId } = req.params; // Destructure both projectId and taskId from params
+    const { projectId, taskId } = req.params;
 
-    // Find the project by ID and populate the tasks
     const project = await Project.findById(projectId).select("tasks").populate({
       path: "tasks",
       select:
         "_id taskName taskDescription deadline status completionDate completionType", // Populate the required fields
     });
 
-    // Check if the project exists
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
 
-    // Find the task by taskId
     const task = project.tasks.find((task) => task._id.toString() === taskId);
 
-    // Check if the task exists
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    // Check if the task's deadline has passed and set the completionType
     const currentDate = new Date();
     let completionType = "On-Time";
 
@@ -745,18 +744,17 @@ exports.completeTask = async (req, res) => {
       completionType = "Delayed";
     }
 
-    // Update the task status and completionType
     task.status = "Completed";
     task.completionDate = currentDate;
     task.completionType = completionType;
 
-    // Save the updated task to the project
     await project.save();
 
-    // Respond with the updated project data
+    const savedTask = project.tasks.filter((task) => task._id == taskId);
+
     res.status(200).json({
       message: "Task completed successfully",
-      project: project,
+      task: savedTask,
     });
   } catch (error) {
     console.error(error);
