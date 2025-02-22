@@ -558,15 +558,16 @@ exports.hireUser = async (req, res) => {
       return res.status(404).json({ message: "Project not found" });
     }
 
-    let applicantFound = false;
+    let hiredApplicant = null;
     project.applicants = project.applicants.map((applicant) => {
       if (applicant.user.toString() === userId) {
-        applicantFound = true;
-        return { ...applicant, status: "Accepted" };
+        hiredApplicant = { ...applicant.toObject(), status: "Accepted" };
+        return hiredApplicant;
       }
       return applicant;
     });
-    if (!applicantFound) {
+
+    if (!hiredApplicant) {
       return res
         .status(400)
         .json({ message: "User did not apply to this project" });
@@ -574,7 +575,9 @@ exports.hireUser = async (req, res) => {
 
     await project.save();
 
-    res.status(200).json({ message: "User hired successfully" });
+    res
+      .status(200)
+      .json({ message: "User hired successfully", applicant: hiredApplicant });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
@@ -594,16 +597,16 @@ exports.rejectUser = async (req, res) => {
       return res.status(404).json({ message: "Project not found" });
     }
 
-    let applicantFound = false;
+    let rejectedApplicant = null;
     project.applicants = project.applicants.map((applicant) => {
       if (applicant.user.toString() === userId) {
-        applicantFound = true;
-        return { ...applicant, status: "Rejected" };
+        rejectedApplicant = { ...applicant.toObject(), status: "Rejected" };
+        return rejectedApplicant;
       }
       return applicant;
     });
 
-    if (!applicantFound) {
+    if (!rejectedApplicant) {
       return res
         .status(400)
         .json({ message: "User did not apply to this project" });
@@ -611,7 +614,12 @@ exports.rejectUser = async (req, res) => {
 
     await project.save();
 
-    res.status(200).json({ message: "User rejected successfully" });
+    res
+      .status(200)
+      .json({
+        message: "User rejected successfully",
+        applicant: rejectedApplicant,
+      });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
