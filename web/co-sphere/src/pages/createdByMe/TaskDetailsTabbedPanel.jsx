@@ -9,6 +9,7 @@ import { FontSize } from "../../constants/FontSize";
 
 const Wrapper = styled.div`
   width: 100%;
+  padding-bottom: 40px;
   height: inherit;
   overflow-y: hidden;
 `;

@@ -87,3 +87,34 @@ export function validateDateOfBirth(dob) {
   }
   return null;
 }
+
+export function validateDeadlineOfTask(dob) {
+  if (!dob) {
+    return "Deadline cannot be empty.";
+  }
+
+  const regex = /^(\d{2})-(\d{2})-(\d{4})$/;
+  const match = dob.match(regex);
+
+  if (!match) {
+    return "Invalid date format. Please use DD-MM-YYYY.";
+  }
+
+  const [_, day, month, year] = match;
+  const inputDate = new Date(`${year}-${month}-${day}`);
+
+  if (
+    inputDate.getDate() !== parseInt(day) ||
+    inputDate.getMonth() + 1 !== parseInt(month) ||
+    inputDate.getFullYear() !== parseInt(year)
+  ) {
+    return "Invalid date. Please check the day, month, and year.";
+  }
+
+  const today = new Date();
+  if (inputDate < today) {
+    return "Deadline cannot be in the past.";
+  }
+
+  return null;
+}

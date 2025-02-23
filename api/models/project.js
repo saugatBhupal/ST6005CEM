@@ -35,8 +35,15 @@ const ProjectSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Hiring", "Active", "Pending"],
+      enum: ["Hiring", "Active", "Completed"],
       default: "Hiring",
+    },
+    completionDate: {
+      type: Date,
+    },
+    completionType: {
+      type: String,
+      enum: ["Delayed", "On-Time", "Early"],
     },
     salary: {
       min: {

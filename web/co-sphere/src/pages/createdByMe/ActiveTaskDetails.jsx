@@ -149,10 +149,16 @@ function ActiveTaskDetails({ projectId, updateState }) {
             setOverlay(!overlay);
           }}
         >
-          <OverlayContent>
+          <OverlayContent
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             <EditTaskDetails
-              onClick={(e) => {
-                e.stopPropagation();
+              project_id={project._id}
+              members={project.members}
+              setReload={(val) => {
+                setReload(val);
               }}
             />
           </OverlayContent>

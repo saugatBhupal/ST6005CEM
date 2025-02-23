@@ -62,7 +62,10 @@ function TextAreaWithWordCount(props) {
     <InputWrapper>
       <StyledInput
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => {
+          setText(e.target.value);
+          props.onChange(e.target.value);
+        }}
         maxLength={maxChars}
         placeholder={props.placeholder}
       />

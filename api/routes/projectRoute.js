@@ -19,6 +19,7 @@ const {
   createTask,
   getTask,
   completeTask,
+  completeProject,
 } = require("../controllers/projectController");
 
 const router = express.Router();
@@ -42,4 +43,5 @@ router.post("", createProject);
 router.post("/:projectId/task", createTask);
 router.get("/:projectId/task", getTask);
 router.post("/:projectId/task/:taskId", completeTask);
+router.post("/:projectId/complete", completeProject);
 module.exports = router;

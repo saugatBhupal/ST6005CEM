@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
@@ -96,8 +97,9 @@ const Column = styled.div`
 `;
 
 function TaskActiveCard({ project }) {
+  const navigate = useNavigate();
   return (
-    <Wrapper>
+    <Wrapper onClick={() => navigate(`/created-by-me/active/${project._id}`)}>
       <Container>
         <Column>
           <Top>

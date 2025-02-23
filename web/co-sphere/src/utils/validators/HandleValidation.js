@@ -1,5 +1,6 @@
 import {
   validateDateOfBirth,
+  validateDeadlineOfTask,
   validateEmail,
   validateFullname,
   validatePassword,
@@ -23,6 +24,9 @@ export const handleValidation = (value, type) => {
       break;
     case "dob":
       message = validateDateOfBirth(value);
+      break;
+    case "taskDeadline":
+      message = validateDeadlineOfTask(value);
       break;
     default:
       break;

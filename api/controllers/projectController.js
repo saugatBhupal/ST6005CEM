@@ -666,6 +666,7 @@ exports.createTask = async (req, res) => {
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
+    console.log(members);
     members.map((member) => {
       if (!project.members.includes(member))
         return res.status(400).json({
@@ -687,7 +688,7 @@ exports.createTask = async (req, res) => {
     const createdTask = project.tasks.filter(
       (task) => task.createdDate == createdAt
     );
-
+    console.log(newTask);
     res.status(200).json({
       message: "Task added successfully",
       task: createdTask,
@@ -755,6 +756,31 @@ exports.completeTask = async (req, res) => {
     res.status(200).json({
       message: "Task completed successfully",
       task: savedTask,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+exports.completeProject = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+    const { completionType } = req.body;
+
+    const project = await Project.findById(projectId);
+
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    project.status = "Completed";
+    project.completionDate = new Date();
+    project.completionType = completionType;
+
+    await project.save();
+
+    res.status(200).json({
+      message: "Project completed successfully",
     });
   } catch (error) {
     console.error(error);

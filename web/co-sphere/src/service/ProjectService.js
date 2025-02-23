@@ -124,3 +124,16 @@ export async function completeTaskService(details, callback) {
       callback(response);
     });
 }
+export async function addTaskService(details, callback) {
+  await request
+    .post(`/project/${details.projectId}/task/`, details, {
+      headers: {},
+    })
+    .then((response) => {
+      callback(response);
+    })    
+    .catch((e) => {
+      var response = e.response;
+      callback(response);
+    });
+}
