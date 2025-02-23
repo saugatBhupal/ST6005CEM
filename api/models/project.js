@@ -38,6 +38,12 @@ const ProjectSchema = new mongoose.Schema(
       enum: ["Hiring", "Active", "Completed"],
       default: "Hiring",
     },
+    reviews: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        reference: "Review",
+      },
+    ],
     completionDate: {
       type: Date,
     },

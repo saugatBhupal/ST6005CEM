@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useToast } from "../../../common/manager/contextManager/ToastContextManager";
+import { manageGetReviewById } from "../../../common/manager/reviewManager/ReviewManager";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
+import ProfileWidget from "../profile/ProfileWidget";
 
 const Wrapper = styled.div`
+  min-height: 80px;
+`;
+const Container = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: 80px;
-  margin: 10px 0px;
+
+  /* margin: 10px 0px; */
   align-items: center;
 `;
 const Left = styled.div``;
@@ -21,8 +27,11 @@ const Column = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: end;
 `;
 const Flex = styled.div`
+  width: 100%;
+  justify-content: space-between;
   display: flex;
   align-items: center;
 `;
@@ -39,31 +48,52 @@ const SubTitle = styled.div`
   font-weight: 300;
   color: ${Colors.subtitleBlack};
 `;
-function ReviewCard() {
+const Star = styled.div`
+  color: ${Colors.mainBlue};
+`;
+function ReviewCard({ reviewId, showUser }) {
+  const [review, setReview] = useState();
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    async function getReview() {
+      await manageGetReviewById(
+        reviewId,
+        (review) => {
+          console.log(review);
+          setReview(review);
+        },
+        (err) => {
+          showToast(err);
+          setReview(null);
+        }
+      );
+    }
+    getReview();
+  }, []);
   return (
-    <Wrapper>
-      <Flex>
-        <Left>
-          <SubTitle>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
-            viverra pharetra ligula, nec mattis quam porta vitae. Nullam a
-            congue neque, nec volutpat justo. Nullam et est condimentum
-          </SubTitle>
-        </Left>
-        <Right>
-          <Column>
-            <Flex>
-              <Dot />
-              <Dot />
-              <Dot />
-              <Dot />
-              <Dot />
-            </Flex>
-            <SubTitle>eSewa</SubTitle>
-          </Column>
-        </Right>
-      </Flex>
-    </Wrapper>
+    review && (
+      <Wrapper>
+        <ProfileWidget name={review.user.fullname} />
+        <Container>
+          <Flex>
+            <Left>
+              <SubTitle>{review.review}</SubTitle>
+            </Left>
+            <Right>
+              <Column>
+                <Flex>
+                  {Array.from({ length: review.rating }, (_, i) => (
+                    <Star>★</Star>
+                  ))}
+                </Flex>
+                <SubTitle>eSewa</SubTitle>
+              </Column>
+            </Right>
+          </Flex>
+        </Container>
+      </Wrapper>
+    )
   );
 }
 

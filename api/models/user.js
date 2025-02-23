@@ -155,6 +155,12 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
+    reviews: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        reference: "Review",
+      },
+    ],
     appliedJobs: [
       {
         type: mongoose.Schema.Types.ObjectId,

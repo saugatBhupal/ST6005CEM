@@ -131,7 +131,20 @@ export async function addTaskService(details, callback) {
     })
     .then((response) => {
       callback(response);
-    })    
+    })
+    .catch((e) => {
+      var response = e.response;
+      callback(response);
+    });
+}
+export async function completeProjectService(projectId, callback) {
+  await request
+    .post(`/project/${projectId}/complete/`, {
+      headers: {},
+    })
+    .then((response) => {
+      callback(response);
+    })
     .catch((e) => {
       var response = e.response;
       callback(response);

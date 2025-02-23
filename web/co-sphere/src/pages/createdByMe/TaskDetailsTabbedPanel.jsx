@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useToast } from "../../common/manager/contextManager/ToastContextManager";
-import CreateTaskButton from "../../components/buttons/CreateTaskButton";
 import SelectedApplicantProfileWidget from "../../components/widget/profile/SelectedApplicantWidget";
+import ReviewCard from "../../components/widget/review/ReviewCard";
 import TaskDetailsCard from "../../components/widget/task/TaskDetailsCard";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
@@ -45,7 +45,11 @@ const Button = styled.div`
   display: flex;
   justify-content: right;
 `;
-function TaskDetailsTabbedPanel({ setOverlay, project, reload }) {
+const Box = styled.div`
+  padding: 12px;
+  border: 0.5px solid ${Colors.greyOutlineShadow};
+`;
+function TaskDetailsTabbedPanel({ setOverlay, project, reload, showReviews }) {
   const [currentPanel, setCurrentPanel] = useState("Members");
   const { showToast } = useToast();
 
@@ -65,18 +69,36 @@ function TaskDetailsTabbedPanel({ setOverlay, project, reload }) {
           >
             Members ({project.members.length})
           </li>
-          <li
-            style={
-              currentPanel === "Tasks"
-                ? { color: "#000000", fontWeight: 400 }
-                : {}
-            }
-            onClick={() => {
-              setCurrentPanel("Tasks");
-            }}
-          >
-            Active Tasks({project.activeTasks.length})
-          </li>
+          {showReviews && showReviews === true ? (
+            <>
+              <li
+                style={
+                  currentPanel === "Reviews"
+                    ? { color: "#000000", fontWeight: 400 }
+                    : {}
+                }
+                onClick={() => {
+                  setCurrentPanel("Reviews");
+                }}
+              >
+                Reviews({project.reviews.length})
+              </li>
+            </>
+          ) : (
+            <li
+              style={
+                currentPanel === "Tasks"
+                  ? { color: "#000000", fontWeight: 400 }
+                  : {}
+              }
+              onClick={() => {
+                setCurrentPanel("Tasks");
+              }}
+            >
+              Active Tasks({project.activeTasks.length})
+            </li>
+          )}
+
           <li
             style={
               currentPanel === "Completed Tasks"
@@ -91,13 +113,6 @@ function TaskDetailsTabbedPanel({ setOverlay, project, reload }) {
           </li>
         </ul>
       </Switch>
-      <Button>
-        <CreateTaskButton
-          onClick={() => {
-            setOverlay(true);
-          }}
-        />
-      </Button>
 
       {
         <Content>
@@ -121,6 +136,14 @@ function TaskDetailsTabbedPanel({ setOverlay, project, reload }) {
                   task={task}
                   completed={task.completionType}
                 />
+              ))}
+            </>
+          ) : currentPanel === "Reviews" ? (
+            <>
+              {project.reviews.map((review, key) => (
+                <Box>
+                  <ReviewCard reviewId={review} showUser={true} key={key} />
+                </Box>
               ))}
             </>
           ) : (

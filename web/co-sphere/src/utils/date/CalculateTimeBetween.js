@@ -1,8 +1,8 @@
-export function calculateTimeDifference(time) {
-  const now = new Date();
-  const mongoDate = new Date(time);
+export function calculateTimeBetween(t1, t2) {
+  const from = new Date(t1);
+  const to = new Date(t2);
 
-  const timeDifferenceInMilliseconds = now - mongoDate;
+  const timeDifferenceInMilliseconds = from - to;
 
   const seconds = Math.floor(timeDifferenceInMilliseconds / 1000);
   const minutes = Math.floor(seconds / 60);
@@ -10,13 +10,13 @@ export function calculateTimeDifference(time) {
   const days = Math.floor(hours / 24);
 
   if (days > 0) {
-    return `${days} days ago`;
+    return `${days} days`;
   } else if (hours > 0) {
-    return `${hours} hour ago`;
+    return `${hours} hour`;
   } else if ((minutes > 0) & minutes) {
-    return `${minutes} minutes ago`;
+    return `${minutes} minutes`;
   } else {
-    return `Just a moment ago`;
+    return `Just a moment`;
     // return `${seconds} second(s) ago`;
   }
 }

@@ -767,20 +767,36 @@ exports.completeProject = async (req, res) => {
     const { projectId } = req.params;
     const { completionType } = req.body;
 
-    const project = await Project.findById(projectId);
+    const project = await Project.findById(projectId).select("tasks").populate({
+      path: "tasks",
+      select:
+        "_id taskName taskDescription deadline status completionDate completionType", // Populate the required fields
+    });
 
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
 
+    const currentDate = new Date();
+    project.tasks.forEach((task) => {
+      let taskCompletionType = "On-Time";
+      if (task.deadline < currentDate) {
+        taskCompletionType = "Delayed";
+      }
+
+      task.status = "Completed";
+      task.completionDate = currentDate;
+      task.completionType = taskCompletionType;
+    });
+
     project.status = "Completed";
-    project.completionDate = new Date();
+    project.completionDate = currentDate;
     project.completionType = completionType;
 
     await project.save();
 
     res.status(200).json({
-      message: "Project completed successfully",
+      message: "Project and all tasks completed successfully",
     });
   } catch (error) {
     console.error(error);

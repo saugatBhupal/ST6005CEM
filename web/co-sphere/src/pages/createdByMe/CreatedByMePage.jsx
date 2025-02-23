@@ -5,7 +5,7 @@ import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
 import SplitLayout from "../common/SplitLayout";
 import ActiveTaskDetails from "./ActiveTaskDetails";
-import CompletedTasks from "./CompletedTasks";
+import CompletedTaskDetails from "./CompletedTaskDetails";
 import HiringTaskDetails from "./HiringTaskDetails";
 import TabbedPanel from "./TabbedPanel";
 
@@ -62,9 +62,12 @@ function CreatedByMePage() {
         <>
           <RightWrapper>
             {currentProject && currentProject.type === "completed" ? (
-              <CompletedTasks />
+              <CompletedTaskDetails projectId={currentProject.project} />
             ) : currentProject.type === "active" ? (
-              <ActiveTaskDetails projectId={currentProject.project} updateState={(state) => setUpdateState(state)}/>
+              <ActiveTaskDetails
+                projectId={currentProject.project}
+                updateState={(state) => setUpdateState(state)}
+              />
             ) : currentProject.type === "hiring" ? (
               <HiringTaskDetails
                 projectId={currentProject.project}

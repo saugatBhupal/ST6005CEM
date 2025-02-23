@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useToast } from "../../common/manager/contextManager/ToastContextManager";
 import { manageGetProjectById } from "../../common/manager/projectManager/ProjectManager";
-import DeleteButton from "../../components/buttons/DeleteButton";
-import FilledButton from "../../components/buttons/FilledButton";
 import ClockIcon from "../../components/icon/ClockIcon";
 import PriceChip from "../../components/widget/chip/PriceChip";
 import SkillChip from "../../components/widget/chip/SkillChip";
@@ -11,12 +9,10 @@ import TypeChip from "../../components/widget/chip/TypeChip";
 import DeadlineWidget from "../../components/widget/duration/DeadlineWidget";
 import DurationWidget from "../../components/widget/duration/DurationWidget";
 import ProfileWidget from "../../components/widget/profile/ProfileWidget";
-import ProjectCompletionReview from "../../components/widget/review/ProjectCompletionReview";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
 import { calculateTimeDifference } from "../../utils/date/CalculateTimeDifference";
 import { convertToTime } from "../../utils/date/ConvertToTime";
-import EditTaskDetails from "./EditTaskDetails";
 import TaskDetailsTabbedPanel from "./TaskDetailsTabbedPanel";
 
 const Wrapper = styled.div`
@@ -120,9 +116,7 @@ const OverlayContent = styled.div`
   background-color: white;
 `;
 
-function ActiveTaskDetails({ projectId, updateState }) {
-  const [overlay, setOverlay] = useState(false);
-  const [overlayType, setOverlayType] = useState();
+function ActiveTaskDetails({ projectId }) {
   const [project, setProject] = useState();
   const [reload, setReload] = useState();
   const { showToast } = useToast();
@@ -132,9 +126,8 @@ function ActiveTaskDetails({ projectId, updateState }) {
       await manageGetProjectById(
         projectId,
         (project) => {
-          if (project.status === "Active") {
+          if (project.status === "Completed") {
             setProject(project);
-            updateState(Math.random());
           } else {
             showToast("The project could not be found under Active.");
           }
@@ -149,39 +142,6 @@ function ActiveTaskDetails({ projectId, updateState }) {
   }, [projectId, reload]);
   return (
     <Wrapper>
-      {overlay && (
-        <Overlay
-          onClick={() => {
-            setOverlay(!overlay);
-            setOverlayType();
-          }}
-        >
-          <OverlayContent
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            {overlayType && overlayType === "finish" ? (
-              <ProjectCompletionReview
-                project_id={project._id}
-                members={project.members}
-                setReload={(val) => {
-                  setReload(val);
-                }}
-              />
-            ) : (
-              <EditTaskDetails
-                project_id={project._id}
-                members={project.members}
-                setReload={(val) => {
-                  setReload(val);
-                }}
-              />
-            )}
-          </OverlayContent>
-        </Overlay>
-      )}
-
       <Container>
         {project && project != null ? (
           <Content>
@@ -191,19 +151,11 @@ function ActiveTaskDetails({ projectId, updateState }) {
                 <Row>
                   <PostedDate>
                     <ClockIcon />
-                    <div>{calculateTimeDifference(project.created)}</div>
+                    <div>{calculateTimeDifference(project.createdAt)}</div>
                   </PostedDate>
                   <TypeChip type={project.status} />
                 </Row>
-                <Row>
-                  <FilledButton
-                    placeholder={"Finish Project"}
-                    onClick={() => {
-                      setOverlay(true);
-                      setOverlayType("finish");
-                    }}
-                  />
-                </Row>
+                <Row></Row>
               </Flex>
               <Box>
                 <Flex>
@@ -236,17 +188,16 @@ function ActiveTaskDetails({ projectId, updateState }) {
                 </SkillsRow>
                 <Flex>
                   <span>*This project is only visible to project members</span>
-                  <Row>
-                    <DeleteButton />
-                  </Row>
+                  <Row></Row>
                 </Flex>
               </Box>
             </Fixed>
             <Gap />
             <TaskDetailsTabbedPanel
-              setOverlay={setOverlay}
+              setOverlay={null}
               project={project}
               reload={setReload}
+              showReviews={true}
             />
           </Content>
         ) : (

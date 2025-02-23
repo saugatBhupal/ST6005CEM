@@ -1,6 +1,7 @@
 import { getUserIdFromLocalStorage } from "../../../service/LocalStorageService";
 import {
   addTaskService,
+  completeProjectService,
   completeTaskService,
   finishHiringService,
   getActiveProjectsByUserService,
@@ -180,6 +181,19 @@ export async function manageCompleteTask(details, onSuccess, onFailure) {
 export async function manageAddTask(details, onSuccess, onFailure) {
   try {
     await addTaskService(details, async (response) => {
+      if (response.status === 200) {
+        onSuccess(response.data);
+      } else {
+        onFailure(response.data.message);
+      }
+    });
+  } catch (e) {
+    onFailure("Error connecting to network.");
+  }
+}
+export async function manageCompleteProject(projectId, onSuccess, onFailure) {
+  try {
+    await completeProjectService(projectId, async (response) => {
       if (response.status === 200) {
         onSuccess(response.data);
       } else {
