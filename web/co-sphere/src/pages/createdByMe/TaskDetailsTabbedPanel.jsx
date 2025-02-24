@@ -117,13 +117,15 @@ function TaskDetailsTabbedPanel({ setOverlay, project, reload, showReviews }) {
 
       {
         <Content>
-          <Button>
-            <CreateTaskButton
-              onClick={() => {
-                setOverlay(true);
-              }}
-            />
-          </Button>
+          {project.status === "Active" ?? (
+            <Button>
+              <CreateTaskButton
+                onClick={() => {
+                  setOverlay(true);
+                }}
+              />
+            </Button>
+          )}
           {currentPanel === "Tasks" ? (
             <>
               {project.activeTasks &&
@@ -150,7 +152,7 @@ function TaskDetailsTabbedPanel({ setOverlay, project, reload, showReviews }) {
             <>
               {project.reviews.map((review, key) => (
                 <Box>
-                  <ReviewCard reviewId={review} key={key} />
+                  <ReviewCard reviewId={review} key={key} showUser={true} />
                 </Box>
               ))}
             </>

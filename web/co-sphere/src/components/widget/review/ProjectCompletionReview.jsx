@@ -74,7 +74,7 @@ function ProjectCompletionReview({ project_id, members, setReload }) {
 
   const completeProject = async () => {
     await manageCompleteProject(
-      project_id,
+      { projectId: project_id, completionType: completionType },
       () => {
         showToast("Project has been moved to completed section.");
         navigate(`/created-by-me/completed/${project_id}`);
@@ -86,7 +86,10 @@ function ProjectCompletionReview({ project_id, members, setReload }) {
   };
 
   const handleSubmit = async () => {
-    const details = { projectId: project_id, reviews: reviews };
+    const details = {
+      projectId: project_id,
+      reviews: reviews,
+    };
     await manageAddReview(
       details,
       () => {

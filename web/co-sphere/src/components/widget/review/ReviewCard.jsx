@@ -73,7 +73,12 @@ function ReviewCard({ reviewId, showUser }) {
   return (
     review && (
       <Wrapper>
-        {showUser && <ProfileWidget name={review.user.fullname} />}
+        {showUser && (
+          <ProfileWidget
+            image={review.user.profileImage}
+            name={review.user.fullname}
+          />
+        )}
 
         <Container>
           <Flex>

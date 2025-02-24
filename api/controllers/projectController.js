@@ -766,7 +766,17 @@ exports.completeProject = async (req, res) => {
   try {
     const { projectId } = req.params;
     const { completionType } = req.body;
-
+    if (
+      !projectId ||
+      !completionType ||
+      projectId == null ||
+      completionType == null
+    ) {
+      return res.status(400).json({
+        message:
+          "Completion type must be specified. Eg. On-Time, Delayed, Early",
+      });
+    }
     const project = await Project.findById(projectId).select("tasks").populate({
       path: "tasks",
       select:
@@ -794,7 +804,7 @@ exports.completeProject = async (req, res) => {
     project.completionType = completionType;
 
     await project.save();
-
+    console.log(project);
     res.status(200).json({
       message: "Project and all tasks completed successfully",
     });

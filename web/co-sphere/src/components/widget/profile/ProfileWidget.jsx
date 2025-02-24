@@ -26,11 +26,11 @@ const Right = styled.div`
     color: ${Colors.greyOutline};
   }
 `;
-function ProfileWidget({ name, address }) {
+function ProfileWidget({ url, name, address }) {
   return (
     <Wrapper>
       <Container>
-        <ProfileIcon height={"50px"} />
+        <ProfileIcon url={(url && url) || null} height={"50px"} />
         <Right>
           <b>{name}</b>
           <a>{address}</a>

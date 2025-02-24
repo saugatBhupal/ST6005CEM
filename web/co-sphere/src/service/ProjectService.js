@@ -137,9 +137,9 @@ export async function addTaskService(details, callback) {
       callback(response);
     });
 }
-export async function completeProjectService(projectId, callback) {
+export async function completeProjectService(details, callback) {
   await request
-    .post(`/project/${projectId}/complete/`, {
+    .post(`/project/${details.projectId}/complete/`, details, {
       headers: {},
     })
     .then((response) => {

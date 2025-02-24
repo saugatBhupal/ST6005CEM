@@ -191,9 +191,9 @@ export async function manageAddTask(details, onSuccess, onFailure) {
     onFailure("Error connecting to network.");
   }
 }
-export async function manageCompleteProject(projectId, onSuccess, onFailure) {
+export async function manageCompleteProject(details, onSuccess, onFailure) {
   try {
-    await completeProjectService(projectId, async (response) => {
+    await completeProjectService(details, async (response) => {
       if (response.status === 200) {
         onSuccess(response.data);
       } else {
@@ -204,4 +204,3 @@ export async function manageCompleteProject(projectId, onSuccess, onFailure) {
     onFailure("Error connecting to network.");
   }
 }
-
