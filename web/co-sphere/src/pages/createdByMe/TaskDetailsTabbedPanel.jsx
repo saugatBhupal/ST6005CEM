@@ -117,7 +117,8 @@ function TaskDetailsTabbedPanel({ setOverlay, project, reload, showReviews }) {
 
       {
         <Content>
-          {project.status === "Active" ?? (
+          {console.log(project.status === "Active")}
+          {project.status === "Active" ? (
             <Button>
               <CreateTaskButton
                 onClick={() => {
@@ -125,6 +126,8 @@ function TaskDetailsTabbedPanel({ setOverlay, project, reload, showReviews }) {
                 }}
               />
             </Button>
+          ) : (
+            <></>
           )}
           {currentPanel === "Tasks" ? (
             <>
