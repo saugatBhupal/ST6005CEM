@@ -13,19 +13,27 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-size: 75px;
   a {
-    font-size: 75px;
     font-weight: 200;
     color: ${Colors.mainBlue};
     width: fit-content;
     margin: auto;
   }
 `;
-function GenerateProfileIconFromWord({ name }) {
+function GenerateProfileIconFromWord({ name, height, fontSize }) {
   return (
     <Wrapper>
       {name && (
-        <Container>
+        <Container
+          style={
+            height && {
+              height: height,
+              width: height,
+              fontSize: fontSize || "75px",
+            }
+          }
+        >
           <a>{name}</a>
         </Container>
       )}

@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useToast } from "../../common/manager/contextManager/ToastContextManager";
+import { manageGetEducationByUserId } from "../../common/manager/userManager/UserManager";
 import ActionChip from "../../components/widget/chip/ActionChip";
 import EducationCard from "../../components/widget/education/EducationCard";
 import { Colors } from "../../constants/Colors";
@@ -21,11 +23,27 @@ const Center = styled.div`
   margin: 10px auto;
 `;
 function EducationSection({ setOverlay, setOverlayWidget, user, isUser }) {
+  const [education, setEducation] = useState();
+  const { showToast } = useToast();
+  useEffect(() => {
+    async function getExperience() {
+      await manageGetEducationByUserId(
+        user._id,
+        (education) => setEducation(education),
+        (err) => {
+          showToast(err);
+          setEducation(null);
+        }
+      );
+    }
+    getExperience();
+  }, []);
   return (
     <Wrapper>
       <Title>Education</Title>
       <Column>
-        {user.education && user.education.map((education) => <EducationCard />)}
+        {education &&
+          education.map((education) => <EducationCard education={education} />)}
         <Center>
           {isUser && (
             <ActionChip

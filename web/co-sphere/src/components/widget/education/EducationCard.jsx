@@ -2,7 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
-import ProfileIcon from "../../icon/ProfileIcon";
+import { calculateTimeBetween } from "../../../utils/date/CalculateTimeBetween";
+import { convertToDate } from "../../../utils/date/ConvertToDate";
+import { getFirstLetter } from "../../../utils/GetFirstWord";
+import GenerateProfileIconFromWord from "../../icon/GenerateProfileIconFromWord";
 
 const Wrapper = styled.div`
   display: flex;
@@ -46,22 +49,29 @@ const Tiny = styled.div`
     color: ${Colors.mainBlue};
   }
 `;
-function EducationCard() {
+function EducationCard({ education }) {
   return (
     <Wrapper>
       <Flex>
         <Left>
-          <ProfileIcon height={"70px"} />
+          <GenerateProfileIconFromWord
+            name={getFirstLetter(education.organization)}
+            height={"60px"}
+            fontSize={"35px"}
+          />
         </Left>
         <Center>
           <Column>
             <div>
-              <Title>UI | UX Developer</Title>
-              <SubTitle>Odama Studios</SubTitle>
+              <Title>{education.degree}</Title>
+              <SubTitle>{education.organization}</SubTitle>
             </div>
 
             <Tiny>
-              2023 - 2024 <span>(1 Year)</span>
+              {convertToDate(education.from)} - {convertToDate(education.to)}{" "}
+              <span>
+                ({calculateTimeBetween(education.from, education.to)})
+              </span>
             </Tiny>
           </Column>
         </Center>

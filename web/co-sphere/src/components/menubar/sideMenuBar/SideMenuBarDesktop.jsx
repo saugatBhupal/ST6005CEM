@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
+import { getUserIdFromLocalStorage } from "../../../service/LocalStorageService";
 import LogoMenu from "../../logo/LogoMenu";
 
 const Wrapper = styled.div`
@@ -96,7 +97,16 @@ const EndContainer = styled.div`
 `;
 
 function SideMenuBarDesktop(props) {
+  const [userId, setUserId] = useState();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function getUserId() {
+      const userId = await getUserIdFromLocalStorage();
+      setUserId(userId);
+    }
+    getUserId();
+  }, []);
   return (
     <Wrapper>
       <Logo>
@@ -137,7 +147,7 @@ function SideMenuBarDesktop(props) {
                   strokeLinejoin="round"
                 />
               </svg>
-              <a href="/profile">Profile</a>
+              <a href={userId && `/profile/${userId}`}>Profile</a>
             </MenuItem>
             <MenuItem selected={props.current === "jobs"}>
               <svg

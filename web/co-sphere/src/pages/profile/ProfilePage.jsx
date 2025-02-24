@@ -175,7 +175,7 @@ function ProfilePage() {
   }, []);
   useEffect(() => {
     async function isUser() {
-      const localUserId = getUserIdFromLocalStorage();
+      const localUserId = await getUserIdFromLocalStorage();
       setIsUser(localUserId === userId);
     }
     isUser();

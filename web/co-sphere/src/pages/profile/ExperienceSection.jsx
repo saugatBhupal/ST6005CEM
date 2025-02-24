@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useToast } from "../../common/manager/contextManager/ToastContextManager";
+import { manageGetExperienceByUserId } from "../../common/manager/userManager/UserManager";
 import TextAreaWithActions from "../../components/input/textarea/TextAreaWithActions";
 import ActionChip from "../../components/widget/chip/ActionChip";
 import ExperienceCard from "../../components/widget/experience/ExperienceCard";
@@ -30,8 +32,24 @@ const Center = styled.div`
   margin: 10px auto;
 `;
 function ExperienceSection({ setOverlay, setOverlayWidget, user, isUser }) {
+  const [experience, setExperience] = useState();
+  const { showToast } = useToast();
+  useEffect(() => {
+    async function getExperience() {
+      await manageGetExperienceByUserId(
+        user._id,
+        (experience) => setExperience(experience),
+        (err) => {
+          showToast(err);
+          setExperience(null);
+        }
+      );
+    }
+    getExperience();
+  }, []);
   return (
     <Wrapper>
+      {showToast(isUser)}
       <Title>Professional Overview</Title>
       {isUser ? (
         <TextAreaWithActions
@@ -47,8 +65,10 @@ function ExperienceSection({ setOverlay, setOverlayWidget, user, isUser }) {
       <Margin />
       <Title>Experience</Title>
       <Column>
-        {user.experience &&
-          user.experience.map((experience, key) => <ExperienceCard />)}
+        {experience &&
+          experience.map((experience, key) => (
+            <ExperienceCard experience={experience} key={key} />
+          ))}
         <Center>
           {isUser && (
             <ActionChip

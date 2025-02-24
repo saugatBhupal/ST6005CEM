@@ -2,7 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
-import ProfileIcon from "../../icon/ProfileIcon";
+import { calculateTimeBetween } from "../../../utils/date/CalculateTimeBetween";
+import { convertToDate } from "../../../utils/date/ConvertToDate";
+import { getFirstLetter } from "../../../utils/GetFirstWord";
+import GenerateProfileIconFromWord from "../../icon/GenerateProfileIconFromWord";
 import TypeChip from "../chip/TypeChip";
 
 const Wrapper = styled.div`
@@ -47,29 +50,36 @@ const Tiny = styled.div`
     color: ${Colors.mainBlue};
   }
 `;
-function ExperienceCard() {
+function ExperienceCard({ experience }) {
   return (
     <Wrapper>
       <Flex>
         <Left>
-          <ProfileIcon height={"70px"} />
+          <GenerateProfileIconFromWord
+            name={getFirstLetter(experience.organization)}
+            height={"60px"}
+            fontSize={"35px"}
+          />
         </Left>
         <Center>
           <Column>
             <div>
-              <Title>UI | UX Developer</Title>
-              <SubTitle>Odama Studios</SubTitle>
+              <Title>{experience.position}</Title>
+              <SubTitle>{experience.organization}</SubTitle>
             </div>
 
             <Tiny>
-              2023 - 2024 <span>(1 Year)</span>
+              {convertToDate(experience.from)} - {convertToDate(experience.to)}{" "}
+              <span>
+                ({calculateTimeBetween(experience.from, experience.to)})
+              </span>
             </Tiny>
           </Column>
         </Center>
       </Flex>
 
       <Right>
-        <TypeChip type={"Junior"} />
+        <TypeChip type={experience.status} />
       </Right>
     </Wrapper>
   );
