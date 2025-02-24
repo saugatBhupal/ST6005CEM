@@ -397,7 +397,7 @@ exports.getAppliedProjects = async (req, res) => {
     const user = await User.findById(userId).populate({
       path: "appliedProjects",
       select:
-        "projectName position companyName site applicants postedBy address salary",
+        "projectName position companyName site applicants postedBy address salary createdAt",
       populate: [
         {
           path: "postedBy",
@@ -427,6 +427,7 @@ exports.getAppliedProjects = async (req, res) => {
         site: project.site,
         address: project.address,
         salary: project.salary,
+        createdAt: project.createdAt,
       };
     });
 
