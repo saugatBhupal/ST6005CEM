@@ -268,6 +268,7 @@ function HiringTaskDetails({ projectId, updateState }) {
                     project.acceptedApplicants.map((applicant, key) => (
                       <SelectedApplicantProfileWidget
                         name={applicant.user.fullname}
+                        applicant={applicant.user}
                         profileImage={applicant.user.profileImage}
                         postedTime={convertToTime(applicant.date)}
                         key={key}

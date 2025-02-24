@@ -101,7 +101,11 @@ function ProfileDetailsWidget({ user, userId }) {
   };
   return (
     user && (
-      <Wrapper>
+      <Wrapper
+        onClick={() => {
+          navigate(`/profile/${user._id}`);
+        }}
+      >
         <Container>
           <Flex>
             <Column>
@@ -121,7 +125,8 @@ function ProfileDetailsWidget({ user, userId }) {
                     </div>
                   </Flex>
                   <ChatButton
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       handleStartChat();
                     }}
                   />

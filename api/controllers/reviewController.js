@@ -25,8 +25,10 @@ exports.addReview = async (req, res) => {
       }))
     );
 
-    for (const review of reviews) {
-      await User.findByIdAndUpdate(review._id, { $push: { reviews: review } });
+    for (const review of reviewDocs) {
+      await User.findByIdAndUpdate(review.user, {
+        $push: { reviews: review._id },
+      });
     }
 
     await Project.findByIdAndUpdate(projectId, {

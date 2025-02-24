@@ -60,7 +60,6 @@ function ReviewCard({ reviewId, showUser }) {
       await manageGetReviewById(
         reviewId,
         (review) => {
-          console.log(review);
           setReview(review);
         },
         (err) => {
@@ -74,7 +73,8 @@ function ReviewCard({ reviewId, showUser }) {
   return (
     review && (
       <Wrapper>
-        <ProfileWidget name={review.user.fullname} />
+        {showUser && <ProfileWidget name={review.user.fullname} />}
+
         <Container>
           <Flex>
             <Left>
@@ -87,7 +87,7 @@ function ReviewCard({ reviewId, showUser }) {
                     <Star>★</Star>
                   ))}
                 </Flex>
-                <SubTitle>eSewa</SubTitle>
+                <SubTitle>{review.reviewedBy.fullname}</SubTitle>
               </Column>
             </Right>
           </Flex>

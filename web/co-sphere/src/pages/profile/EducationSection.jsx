@@ -20,21 +20,22 @@ const Center = styled.div`
   width: fit-content;
   margin: 10px auto;
 `;
-function EducationSection({ setOverlay, setOverlayWidget }) {
+function EducationSection({ setOverlay, setOverlayWidget, user, isUser }) {
   return (
     <Wrapper>
       <Title>Education</Title>
       <Column>
-        <EducationCard />
-        <EducationCard />
+        {user.education && user.education.map((education) => <EducationCard />)}
         <Center>
-          <ActionChip
-            title={"Add More"}
-            onClick={() => {
-              setOverlay(true);
-              setOverlayWidget();
-            }}
-          />
+          {isUser && (
+            <ActionChip
+              title={"Add More"}
+              onClick={() => {
+                setOverlay(true);
+                setOverlayWidget();
+              }}
+            />
+          )}
         </Center>
       </Column>
     </Wrapper>

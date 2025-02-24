@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
@@ -47,26 +48,27 @@ const Column = styled.div`
     font-size: ${FontSize.small};
   }
 `;
-function SelectedApplicantProfileWidget({
-  name,
-  profileImage,
-  postedTime,
-  onReject,
-}) {
+function SelectedApplicantProfileWidget({ applicant, postedTime, onReject }) {
+  const navigate = useNavigate();
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        navigate(`/profile/${applicant._id}`);
+      }}
+    >
       <Container>
         <Flex>
-          <ProfileIcon url={profileImage} height={"50px"} />
+          <ProfileIcon url={applicant.profileImage} height={"50px"} />
           <Right>
-            <b>{name}</b>
+            <b>{applicant.fullname}</b>
             <a>{postedTime}</a>
           </Right>
         </Flex>
         <Column>
           {onReject && (
             <CancelButtonRound
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 onReject();
               }}
             />

@@ -10,11 +10,11 @@ const Wrapper = styled.div``;
 const Title = styled.div`
   font-size: ${FontSize.small};
   font-weight: 500;
-  color: ${Colors.subtitleBlack};
+  color: ${Colors.justBlack};
   margin-bottom: 10px;
 `;
 const Description = styled.div`
-  font-size: 16px;
+  font-size: ${FontSize.small};
   color: ${Colors.subtitleBlack};
   margin: 10px auto;
 `;
@@ -29,40 +29,36 @@ const Center = styled.div`
   width: fit-content;
   margin: 10px auto;
 `;
-function ExperienceSection({ setOverlay, setOverlayWidget }) {
-  const isUser = true;
+function ExperienceSection({ setOverlay, setOverlayWidget, user, isUser }) {
   return (
     <Wrapper>
       <Title>Professional Overview</Title>
       {isUser ? (
         <TextAreaWithActions
           placeholder="Write a summary of your work experience..."
-          value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
-          viverra pharetra ligula, nec mattis quam porta vitae. Nullam a congue
-          neque, nec volutpat justo."
+          value={user.overview}
         />
       ) : (
         <Description>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
-          viverra pharetra ligula, nec mattis quam porta vitae. Nullam a congue
-          neque, nec volutpat justo.
+          {user.overview || "User has not added this information."}
         </Description>
       )}
 
       <Margin />
       <Title>Experience</Title>
       <Column>
-        <ExperienceCard />
-        <ExperienceCard />
-        <ExperienceCard />
+        {user.experience &&
+          user.experience.map((experience, key) => <ExperienceCard />)}
         <Center>
-          <ActionChip
-            title={"Add More"}
-            onClick={() => {
-              setOverlay(true);
-              setOverlayWidget();
-            }}
-          />
+          {isUser && (
+            <ActionChip
+              title={"Add More"}
+              onClick={() => {
+                setOverlay(true);
+                setOverlayWidget();
+              }}
+            />
+          )}
         </Center>
       </Column>
     </Wrapper>

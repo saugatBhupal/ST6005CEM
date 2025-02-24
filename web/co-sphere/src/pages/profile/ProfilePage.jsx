@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useToast } from "../../common/manager/contextManager/ToastContextManager";
+import { manageGetUserById } from "../../common/manager/userManager/UserManager";
 import LikeIcon from "../../components/icon/LikeIcon";
 import LinkIcon from "../../components/icon/LinkIcon";
 import MessageIcon from "../../components/icon/MessageIcon";
@@ -12,6 +15,7 @@ import EditEducation from "../../components/widget/education/EditEducation";
 import EditExperience from "../../components/widget/experience/EditExperience";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
+import { getUserIdFromLocalStorage } from "../../service/LocalStorageService";
 import LoggedInUserLayout from "../common/LoggedInUserLayout";
 import AboutSection from "./AboutSection";
 import EditLinks from "./EditLinks";
@@ -149,179 +153,215 @@ const EditController = styled.div`
   overflow-y: scroll;
 `;
 function ProfilePage() {
+  const { userId } = useParams();
   const [currentTab, setCurrentTab] = useState("about");
   const [overlay, setOverlay] = useState(false);
   const [overlayWidget, setOverlayWidget] = useState(null);
+  const [isUser, setIsUser] = useState();
+  const [user, setUser] = useState();
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    async function getUser() {
+      manageGetUserById(
+        userId,
+        (user) => setUser(user),
+        (err) => {
+          showToast(err);
+        }
+      );
+    }
+    getUser();
+  }, []);
+  useEffect(() => {
+    async function isUser() {
+      const localUserId = getUserIdFromLocalStorage();
+      setIsUser(localUserId === userId);
+    }
+    isUser();
+  }, [userId]);
   return (
-    <>
-      <LoggedInUserLayout
-        page={"profile"}
-        body={
-          <>
-            {overlay && (
-              <Overlay
-                onClick={() => {
-                  setOverlay(!overlay);
-                }}
-              >
-                <EditController
-                  onClick={(e) => {
-                    e.stopPropagation();
+    user && (
+      <>
+        <LoggedInUserLayout
+          page={"profile"}
+          body={
+            <>
+              {overlay && (
+                <Overlay
+                  onClick={() => {
+                    setOverlay(!overlay);
                   }}
                 >
-                  {overlayWidget && overlayWidget === "EditLinks" ? (
-                    <EditLinks />
-                  ) : overlayWidget === "EditSkills" ? (
-                    <EditSkills />
-                  ) : overlayWidget === "EditExperience" ? (
-                    <EditExperience />
-                  ) : (
-                    <EditEducation />
-                  )}
-                </EditController>
-              </Overlay>
-            )}
+                  <EditController
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    {overlayWidget && overlayWidget === "EditLinks" ? (
+                      <EditLinks />
+                    ) : overlayWidget === "EditSkills" ? (
+                      <EditSkills />
+                    ) : overlayWidget === "EditExperience" ? (
+                      <EditExperience />
+                    ) : (
+                      <EditEducation />
+                    )}
+                  </EditController>
+                </Overlay>
+              )}
 
-            <Wrapper>
-              <Container>
-                <Left>
-                  <Profile>
-                    <ProfileIcon height={"180px"} />
-                    <a>John Cena</a>
-                    <Address>Kathmandu, Nepal</Address>
-                  </Profile>
-                  <SuccesssChip percent={"100%"} />
-                  <ActionsFlex>
-                    <ul>
-                      <li>
-                        <div>
-                          <LinkIcon />
-                        </div>
-                        Links
-                      </li>
-                      <li>
-                        <div>
-                          <LikeIcon />
-                        </div>
-                        121
-                      </li>
-                      <li>
-                        <div>
-                          <MessageIcon />
-                        </div>
-                        Chat
-                      </li>
-                      <li
-                        onClick={() => {
-                          setOverlayWidget("EditLinks");
-                          setOverlay(!overlay);
-                        }}
-                      >
-                        <div>
-                          <SettingIcon />
-                        </div>
-                        Edit
-                      </li>
-                    </ul>
-                  </ActionsFlex>
-                  <SkillsWidget>
-                    <a>
-                      Skills (<span>5</span>)
-                    </a>
-                    <SkillsContainer>
-                      <SkillChip title={"Mobile Development"} />
-                      <SkillChip title={"Mongo DB"} />
-                      <SkillChip title={"Figma"} />
-                      <SkillChip title={"React"} />
-                      <ActionChip
-                        title={"Add More"}
-                        onClick={() => {
-                          setOverlayWidget("EditSkills");
-                          setOverlay(!overlay);
-                        }}
-                      />
-                    </SkillsContainer>
-                  </SkillsWidget>
-                </Left>
-                <Right>
-                  <TabContainer>
-                    <ul>
-                      <Li
-                        current={currentTab === "about"}
-                        onClick={() => {
-                          setCurrentTab("about");
-                        }}
-                      >
-                        About
-                      </Li>
-                      <Li
-                        current={currentTab === "experience"}
-                        onClick={() => {
-                          setCurrentTab("experience");
-                        }}
-                      >
-                        Experience
-                      </Li>
-                      <Li
-                        current={currentTab === "education"}
-                        onClick={() => {
-                          setCurrentTab("education");
-                        }}
-                      >
-                        Education
-                      </Li>
-                      <Li
-                        current={currentTab === "history"}
-                        onClick={() => {
-                          setCurrentTab("history");
-                        }}
-                      >
-                        History
-                      </Li>
-                      <Li
-                        current={currentTab === "reviews"}
-                        onClick={() => {
-                          setCurrentTab("reviews");
-                        }}
-                      >
-                        Reviews
-                      </Li>
-                    </ul>
-                  </TabContainer>
-                  <ContentContainer>
-                    <Padding>
-                      {currentTab && currentTab === "about" ? (
-                        <AboutSection />
-                      ) : currentTab === "experience" ? (
-                        <ExperienceSection
-                          setOverlay={setOverlay}
-                          setOverlayWidget={() => {
-                            setOverlayWidget("EditExperience");
+              <Wrapper>
+                <Container>
+                  <Left>
+                    <Profile>
+                      <ProfileIcon url={user.profileImage} height={"180px"} />
+                      <a>{user.fullname}</a>
+                      <Address>
+                        {user.city}, {user.country}
+                      </Address>
+                    </Profile>
+                    <SuccesssChip percent={"100%"} />
+                    <ActionsFlex>
+                      <ul>
+                        <li>
+                          <div>
+                            <LinkIcon />
+                          </div>
+                          Links
+                        </li>
+                        <li>
+                          <div>
+                            <LikeIcon />
+                          </div>
+                          121
+                        </li>
+                        <li>
+                          <div>
+                            <MessageIcon />
+                          </div>
+                          Chat
+                        </li>
+                        {isUser && (
+                          <li
+                            onClick={() => {
+                              setOverlayWidget("EditLinks");
+                              setOverlay(!overlay);
+                            }}
+                          >
+                            <div>
+                              <SettingIcon />
+                            </div>
+                            Edit
+                          </li>
+                        )}
+                      </ul>
+                    </ActionsFlex>
+                    <SkillsWidget>
+                      <a>
+                        Skills (<span>{user.skills.length}</span>)
+                      </a>
+                      {console.log(user)}
+                      <SkillsContainer>
+                        {user.skills.map((skill) => (
+                          <SkillChip title={skill.name} />
+                        ))}
+                        {isUser && (
+                          <ActionChip
+                            title={"Add More"}
+                            onClick={() => {
+                              setOverlayWidget("EditSkills");
+                              setOverlay(!overlay);
+                            }}
+                          />
+                        )}
+                      </SkillsContainer>
+                    </SkillsWidget>
+                  </Left>
+                  <Right>
+                    <TabContainer>
+                      <ul>
+                        <Li
+                          current={currentTab === "about"}
+                          onClick={() => {
+                            setCurrentTab("about");
                           }}
-                        />
-                      ) : currentTab === "education" ? (
-                        <EducationSection
-                          setOverlay={setOverlay}
-                          setOverlayWidget={() => {
-                            setOverlayWidget("EditEducation");
+                        >
+                          About
+                        </Li>
+                        <Li
+                          current={currentTab === "experience"}
+                          onClick={() => {
+                            setCurrentTab("experience");
                           }}
-                        />
-                      ) : currentTab === "history" ? (
-                        <HistorySection />
-                      ) : currentTab === "reviews" ? (
-                        <ReviewSection />
-                      ) : (
-                        <AboutSection />
-                      )}
-                    </Padding>
-                  </ContentContainer>
-                </Right>
-              </Container>
-            </Wrapper>
-          </>
-        }
-      />
-    </>
+                        >
+                          Experience
+                        </Li>
+                        <Li
+                          current={currentTab === "education"}
+                          onClick={() => {
+                            setCurrentTab("education");
+                          }}
+                        >
+                          Education
+                        </Li>
+                        <Li
+                          current={currentTab === "history"}
+                          onClick={() => {
+                            setCurrentTab("history");
+                          }}
+                        >
+                          History
+                        </Li>
+                        <Li
+                          current={currentTab === "reviews"}
+                          onClick={() => {
+                            setCurrentTab("reviews");
+                          }}
+                        >
+                          Reviews
+                        </Li>
+                      </ul>
+                    </TabContainer>
+                    <ContentContainer>
+                      <Padding>
+                        {currentTab && currentTab === "about" ? (
+                          <AboutSection user={user} isUser={isUser} />
+                        ) : currentTab === "experience" ? (
+                          <ExperienceSection
+                            user={user}
+                            isUser={isUser}
+                            setOverlay={setOverlay}
+                            setOverlayWidget={() => {
+                              setOverlayWidget("EditExperience");
+                            }}
+                          />
+                        ) : currentTab === "education" ? (
+                          <EducationSection
+                            user={user}
+                            isUser={isUser}
+                            setOverlay={setOverlay}
+                            setOverlayWidget={() => {
+                              setOverlayWidget("EditEducation");
+                            }}
+                          />
+                        ) : currentTab === "history" ? (
+                          <HistorySection userId={user._id} />
+                        ) : currentTab === "reviews" ? (
+                          <ReviewSection userId={user._id} />
+                        ) : (
+                          <AboutSection />
+                        )}
+                      </Padding>
+                    </ContentContainer>
+                  </Right>
+                </Container>
+              </Wrapper>
+            </>
+          }
+        />
+      </>
+    )
   );
 }
 

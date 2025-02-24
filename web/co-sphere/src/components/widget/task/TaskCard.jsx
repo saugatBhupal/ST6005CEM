@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
+import { calculateTimeBetween } from "../../../utils/date/CalculateTimeBetween";
+import { convertToDate } from "../../../utils/date/ConvertToDate";
 import ProfileIcon from "../../icon/ProfileIcon";
 import TypeChip from "../chip/TypeChip";
 
@@ -18,7 +20,11 @@ const Center = styled.div`
   margin: 10px 0px;
   margin-left: 10px;
 `;
-const Right = styled.div``;
+const Right = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
 const Column = styled.div`
   height: 100%;
   display: flex;
@@ -46,31 +52,45 @@ const Tiny = styled.div`
     color: ${Colors.mainBlue};
   }
 `;
-function TaskCard({ type }) {
+function TaskCard({ project }) {
   return (
-    <Wrapper>
-      <Flex>
-        <Left>
-          <ProfileIcon height={"70px"} />
-        </Left>
-        <Center>
-          <Column>
-            <div>
-              <Title>UI | UX Developer</Title>
-              <SubTitle>Odama Studios</SubTitle>
-            </div>
+    project && (
+      <Wrapper>
+        <Flex>
+          <Left>
+            <ProfileIcon url={project.postedBy.profileImage} height={"70px"} />
+          </Left>
+          <Center>
+            <Column>
+              <div>
+                <Title>{project.projectName}</Title>
+                <SubTitle>
+                  {project.companyName || project.postedBy.fullname}
+                </SubTitle>
+              </div>
 
-            <Tiny>
-              2023 - 2024 <span>(1 Year)</span>
-            </Tiny>
-          </Column>
-        </Center>
-      </Flex>
+              <Tiny>
+                {convertToDate(project.createdAt)} -{" "}
+                {convertToDate(project.completionDate)}{" "}
+                <span>
+                  (
+                  {calculateTimeBetween(
+                    project.createdAt,
+                    project.completionDate
+                  )}
+                  )
+                </span>
+              </Tiny>
+            </Column>
+          </Center>
+        </Flex>
 
-      <Right>
-        <TypeChip type={type} />
-      </Right>
-    </Wrapper>
+        <Right>
+          <TypeChip type={project.position} />
+          <TypeChip type={project.completionType} />
+        </Right>
+      </Wrapper>
+    )
   );
 }
 

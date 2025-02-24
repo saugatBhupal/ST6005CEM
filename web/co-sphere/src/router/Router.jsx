@@ -21,7 +21,7 @@ function Router({ auth }) {
         <Route path="/search/:query" element={<SearchResultsPage />} />
         <Route element={<ProtectedRoute auth={auth} />}>
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/:userId" element={<ProfilePage />} />
           <Route path="/chat/:conversationId" element={<ChatPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/my-applications" element={<MyApplicationsPage />} />

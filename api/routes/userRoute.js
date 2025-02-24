@@ -8,6 +8,8 @@ const {
   addSearchHistory,
   getSearchHistory,
   getUsersByName,
+  getReviewsByUser,
+  getHistoryByUserId,
 } = require("../controllers/userController");
 
 const { addSkillByUserID } = require("../controllers/skillController");
@@ -35,5 +37,7 @@ router.put("/update-intro/:userID", updateIntro);
 router.put("/update-details/:userID", updateDetails);
 router.get("/search-history/:userID", getSearchHistory);
 router.post("/search-history", addSearchHistory);
+router.get("/:userId/reviews", getReviewsByUser);
+router.get("/:userId/history", getHistoryByUserId);
 
 module.exports = router;

@@ -47,3 +47,4 @@ export async function loginService(details, callback) {
       callback(response);
     });
 }
+

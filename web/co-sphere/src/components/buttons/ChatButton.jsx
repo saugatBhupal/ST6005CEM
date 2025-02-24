@@ -40,8 +40,8 @@ const Icon = styled.div`
 function ChatButton({ onClick }) {
   return (
     <Wrapper
-      onClick={() => {
-        onClick();
+      onClick={(e) => {
+        onClick(e);
       }}
     >
       <Container>

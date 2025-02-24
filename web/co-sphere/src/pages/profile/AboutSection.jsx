@@ -3,6 +3,7 @@ import styled from "styled-components";
 import TextAreaWithActions from "../../components/input/textarea/TextAreaWithActions";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
+import { convertToDate } from "../../utils/date/ConvertToDate";
 
 const Wrapper = styled.div``;
 const Title = styled.div`
@@ -22,47 +23,38 @@ const Flex = styled.div`
   justify-content: space-between;
   margin: 20px auto;
 `;
-function AboutSection() {
-  const isUser = true;
+function AboutSection({ user, isUser }) {
   return (
     <Wrapper>
-      <Title>John Cena</Title>
+      <Title>{user.fullname}</Title>
       {isUser ? (
         <TextAreaWithActions
-          value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
-          viverra pharetra ligula, nec mattis quam porta vitae. Nullam a congue
-          neque, nec volutpat justo. Nullam et est condimentum, bibendum neque
-          id, congue quam. Lorem ipsum dolor sit amet, consectetur adipiscing
-          elit. Vestibulum magna lacus, aliquam ut sapien quis, dignissim mattis
-          lectus. Fusce facilisis diam magna, sit amet feugiat metus hendrerit."
+          value={user.about}
           placeholder="Tell us about yourself..."
         />
       ) : (
         <Description>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
-          viverra pharetra ligula, nec mattis quam porta vitae. Nullam a congue
-          neque, nec volutpat justo. Nullam et est condimentum, bibendum neque
-          id, congue quam. Lorem ipsum dolor sit amet, consectetur adipiscing
-          elit. Vestibulum magna lacus, aliquam ut sapien quis, dignissim mattis
-          lectus. Fusce facilisis diam magna, sit amet feugiat metus hendrerit.
+          {user.about || "User has not added any information about themselves."}
         </Description>
       )}
 
       <Flex>
         <div>
           <Title>Address</Title>
-          <Description>Kathmandu, Nepal</Description>
+          <Description>
+            {user.city}, {user.country}
+          </Description>
         </div>
         <div>
           <Title>Joined</Title>
-          <Description>May 23, 2024</Description>
+          <Description>{convertToDate(user.createdAt)}</Description>
         </div>
       </Flex>
       <Title>Contact</Title>
       {isUser ? (
-        <Description>You have decided not to disclose this data.</Description>
+        <Description>{user.email}</Description>
       ) : (
-        <Description>User has decided not to disclose this data.</Description>
+        <Description>{user.email}</Description>
       )}
     </Wrapper>
   );

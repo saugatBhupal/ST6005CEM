@@ -7,36 +7,43 @@ const UserResponseDto = require("../dto/userResonseDto");
 const { getSkillByID } = require("./skillController");
 
 exports.getUserByID = asyncHandler(async (req, res, next) => {
-  const user = await User.findOne({ _id: req.params.userID });
-  if (!user) {
-    return res.status(404).send({ message: "User not found" });
+  try {
+    const user = await User.findOne({ _id: req.params.userID });
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+    let skills = [];
+    if (user.skills && user.skills.length > 0) {
+      skills = await Promise.all(user.skills.map((id) => getSkillByID(id)));
+    }
+    const userResponseDto = new UserResponseDto({
+      _id: user._id,
+      fullname: user.fullname,
+      profileImage: user.profileImage,
+      email: user.email,
+      phone: user.phone,
+      dob: user.dob,
+      verified: user.verified,
+      country: user.country,
+      province: user.province,
+      city: user.city,
+      about: user.about,
+      overview: user.overview,
+      interests: user.interests,
+      skills: skills,
+      createdAt: user.createdAt,
+    });
+    res.status(200).json({
+      success: true,
+      message: `Fetched user`,
+      data: userResponseDto,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `Internal Server Error`,
+    });
   }
-  let skills = [];
-  if (user.skills && user.skills.length > 0) {
-    skills = await Promise.all(user.skills.map((id) => getSkillByID(id)));
-  }
-  const userResponseDto = new UserResponseDto({
-    _id: user._id,
-    fullname: user.fullname,
-    profileImage: user.profileImage,
-    email: user.email,
-    phone: user.phone,
-    dob: user.dob,
-    verified: user.verified,
-    country: user.country,
-    province: user.province,
-    city: user.city,
-    about: user.about,
-    overview: user.overview,
-    interests: user.interests,
-    skills: skills,
-    createdAt: user.createdAt,
-  });
-  res.status(200).json({
-    success: true,
-    message: `Fetched user`,
-    data: userResponseDto,
-  });
 });
 
 exports.updateProfileImage = asyncHandler(async (req, res, next) => {
@@ -261,6 +268,46 @@ exports.getUsersByName = async (req, res) => {
     ]);
 
     res.status(200).json(populatedUsers);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+exports.getReviewsByUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId).select("reviews").populate({
+      path: "reviews",
+      select: "*",
+    });
+    if (!user || user == null) {
+      res.status(404).json({ message: "User not found." });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+exports.getHistoryByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const userWithAppliedProjects = await User.findById(userId)
+      .select("appliedProjects")
+      .populate({
+        path: "appliedProjects",
+        select:
+          "_id status completionType createdAt completionDate projectName position postedBy companyName completionType",
+        populate: {
+          path: "postedBy",
+          select: "_id fullname profileImage",
+        },
+      });
+    const completedProjects = userWithAppliedProjects.appliedProjects.filter(
+      (project) => project.status === "Completed"
+    );
+    if (!user || user == null) {
+      res.status(404).json({ message: "User not found." });
+    }
+    res.status(200).json(completedProjects);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }

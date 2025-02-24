@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useToast } from "../../common/manager/contextManager/ToastContextManager";
 import { manageGetProjectById } from "../../common/manager/projectManager/ProjectManager";
+
 import DeleteButton from "../../components/buttons/DeleteButton";
 import FilledButton from "../../components/buttons/FilledButton";
 import ClockIcon from "../../components/icon/ClockIcon";
@@ -243,6 +244,7 @@ function ActiveTaskDetails({ projectId, updateState }) {
               </Box>
             </Fixed>
             <Gap />
+            
             <TaskDetailsTabbedPanel
               setOverlay={setOverlay}
               project={project}

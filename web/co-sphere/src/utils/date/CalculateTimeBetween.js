@@ -2,7 +2,7 @@ export function calculateTimeBetween(t1, t2) {
   const from = new Date(t1);
   const to = new Date(t2);
 
-  const timeDifferenceInMilliseconds = from - to;
+  const timeDifferenceInMilliseconds = Math.abs(from - to);
 
   const seconds = Math.floor(timeDifferenceInMilliseconds / 1000);
   const minutes = Math.floor(seconds / 60);

@@ -22,3 +22,14 @@ export async function getReviewByIdService(reviewId, callback) {
       callback(response);
     });
 }
+export async function getReviewsByUserIdService(userId, callback) {
+  await request
+    .get(`/user/${userId}/reviews`, { headers: {} })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      callback(response);
+    });
+}

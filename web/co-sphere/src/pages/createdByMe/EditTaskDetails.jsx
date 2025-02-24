@@ -125,11 +125,10 @@ function EditTaskDetails({ project_id, members, setReload }) {
           onChange={handleAddMember}
         />
         <AssignedMembers>
-          {assignedMembersState.map((member) => (
+          {assignedMembersState.map((member, key) => (
             <SelectedApplicantProfileWidget
-              key={member._id}
-              name={member.fullname}
-              profileImage={member.profileImage}
+              key={key}
+              applicant={member}
               onReject={() => handleRemoveMember(member._id)}
             />
           ))}

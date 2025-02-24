@@ -21,8 +21,8 @@ const Container = styled.div`
 function CancelButtonRound({ onClick }) {
   return (
     <Wrapper
-      onClick={() => {
-        onClick && onClick();
+      onClick={(e) => {
+        onClick && onClick(e);
       }}
     >
       <Container>

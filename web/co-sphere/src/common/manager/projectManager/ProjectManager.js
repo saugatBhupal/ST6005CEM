@@ -204,3 +204,4 @@ export async function manageCompleteProject(projectId, onSuccess, onFailure) {
     onFailure("Error connecting to network.");
   }
 }
+

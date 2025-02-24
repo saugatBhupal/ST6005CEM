@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useToast } from "../../common/manager/contextManager/ToastContextManager";
+import CreateTaskButton from "../../components/buttons/CreateTaskButton";
 import SelectedApplicantProfileWidget from "../../components/widget/profile/SelectedApplicantWidget";
 import ReviewCard from "../../components/widget/review/ReviewCard";
 import TaskDetailsCard from "../../components/widget/task/TaskDetailsCard";
@@ -116,6 +117,13 @@ function TaskDetailsTabbedPanel({ setOverlay, project, reload, showReviews }) {
 
       {
         <Content>
+          <Button>
+            <CreateTaskButton
+              onClick={() => {
+                setOverlay(true);
+              }}
+            />
+          </Button>
           {currentPanel === "Tasks" ? (
             <>
               {project.activeTasks &&
@@ -142,7 +150,7 @@ function TaskDetailsTabbedPanel({ setOverlay, project, reload, showReviews }) {
             <>
               {project.reviews.map((review, key) => (
                 <Box>
-                  <ReviewCard reviewId={review} showUser={true} key={key} />
+                  <ReviewCard reviewId={review} key={key} />
                 </Box>
               ))}
             </>
@@ -151,6 +159,7 @@ function TaskDetailsTabbedPanel({ setOverlay, project, reload, showReviews }) {
               {project &&
                 project.members.map((member, key) => (
                   <SelectedApplicantProfileWidget
+                    applicant={member}
                     key={key}
                     name={member.fullname}
                     profileImage={member.profileImage}

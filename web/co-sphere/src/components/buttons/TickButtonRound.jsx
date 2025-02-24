@@ -21,8 +21,8 @@ const Container = styled.div`
 function TickButtonRound({ onClick }) {
   return (
     <Wrapper
-      onClick={() => {
-        onClick && onClick();
+      onClick={(e) => {
+        onClick && onClick(e);
       }}
     >
       <Container>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
@@ -50,11 +51,12 @@ const Column = styled.div`
   }
 `;
 function UnselectedApplicantProfileWidget({ applicant, onAccept }) {
+  const navigate = useNavigate();
   return (
-    <Wrapper>
+    <Wrapper onClick={() => navigate(`/profile/${applicant.user._id}`)}>
       <Container>
         <Flex>
-          <ProfileIcon height={"50px"} />
+          <ProfileIcon url={applicant.user.profileImage} height={"50px"} />
           <Right>
             <b>{applicant.user.fullname}</b>
             <a>{calculateTimeDifference(applicant.date)}</a>
@@ -63,7 +65,8 @@ function UnselectedApplicantProfileWidget({ applicant, onAccept }) {
         <Column>
           <Flex>
             <TickButtonRound
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 onAccept();
               }}
             />

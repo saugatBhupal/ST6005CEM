@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useToast } from "../../common/manager/contextManager/ToastContextManager";
+import { manageGetReviewByUserId } from "../../common/manager/reviewManager/ReviewManager";
 import ReviewCard from "../../components/widget/review/ReviewCard";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
@@ -15,15 +17,33 @@ const Column = styled.div`
   display: flex;
   flex-direction: column;
 `;
-function ReviewSection() {
+function ReviewSection({ userId }) {
+  const [reviews, setReviews] = useState();
+  const { showToast } = useToast();
+  useEffect(() => {
+    async function getReviews() {
+      await manageGetReviewByUserId(
+        userId,
+        (reviews) => {
+          setReviews(reviews);
+          console.log(reviews.reviews);
+        },
+        (err) => {
+          showToast(err);
+          setReviews(null);
+        }
+      );
+    }
+    getReviews();
+  }, []);
   return (
     <Wrapper>
       <Title>Employer Review</Title>
       <Column>
-        <ReviewCard />
-        <ReviewCard />
-        <ReviewCard />
-        <ReviewCard />
+        {reviews &&
+          reviews.reviews.map((review, key) => (
+            <ReviewCard reviewId={review} key={key} />
+          ))}
       </Column>
     </Wrapper>
   );
