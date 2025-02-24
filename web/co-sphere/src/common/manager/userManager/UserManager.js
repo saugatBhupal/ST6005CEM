@@ -3,6 +3,7 @@ import {
   getExperienceByUserIdService,
   getHistoryByUserIdService,
   getUserByIdService,
+  uploadProfileImageService,
 } from "../../../service/UserService";
 
 export async function manageGetUserById(userId, onSuccess, onFailure) {
@@ -53,6 +54,19 @@ export async function manageGetEducationByUserId(userId, onSuccess, onFailure) {
     await getEducationByUserIdService(userId, async (response) => {
       if (response.status === 200) {
         onSuccess(response.data.data.education);
+      } else {
+        onFailure(response.data.message);
+      }
+    });
+  } catch (e) {
+    onFailure("Error connecting to network.");
+  }
+}
+export async function manageUploadProfileImage(formdata, onSuccess, onFailure) {
+  try {
+    await uploadProfileImageService(formdata, async (response) => {
+      if (response.status === 200) {
+        onSuccess(response.data);
       } else {
         onFailure(response.data.message);
       }

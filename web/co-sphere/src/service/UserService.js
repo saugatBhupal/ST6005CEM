@@ -48,3 +48,15 @@ export async function getEducationByUserIdService(userId, callback) {
       callback(response);
     });
 }
+export async function uploadProfileImageService(formdata, callback) {
+  await request
+    .post(`/user/profile-image/`, formdata, { headers: {} })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      console.log(e);
+      callback(response);
+    });
+}

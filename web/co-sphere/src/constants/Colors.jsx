@@ -22,4 +22,5 @@ export class Colors {
   static lightRed = "#FB3C1A20";
   static lightGreen = "#76DFAE20";
   static deepGreen = "#0D6722";
+  static overlayGrey = "#63626279";
 }

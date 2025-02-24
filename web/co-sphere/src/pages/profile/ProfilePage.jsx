@@ -13,6 +13,7 @@ import SkillChip from "../../components/widget/chip/SkillChip";
 import SuccesssChip from "../../components/widget/chip/SuccesssChip";
 import EditEducation from "../../components/widget/education/EditEducation";
 import EditExperience from "../../components/widget/experience/EditExperience";
+import UpdateProfileImageWidget from "../../components/widget/profile/UpdateProfileImageWidget";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
 import { getUserIdFromLocalStorage } from "../../service/LocalStorageService";
@@ -215,7 +216,16 @@ function ProfilePage() {
                 <Container>
                   <Left>
                     <Profile>
-                      <ProfileIcon url={user.profileImage} height={"180px"} />
+                      {isUser && isUser ? (
+                        <UpdateProfileImageWidget
+                          url={user.profileImage}
+                          height={"180px"}
+                          userId={user._id}
+                        />
+                      ) : (
+                        <ProfileIcon url={user.profileImage} height={"180px"} />
+                      )}
+
                       <a>{user.fullname}</a>
                       <Address>
                         {user.city}, {user.country}
@@ -261,7 +271,6 @@ function ProfilePage() {
                       <a>
                         Skills (<span>{user.skills.length}</span>)
                       </a>
-                      {console.log(user)}
                       <SkillsContainer>
                         {user.skills.map((skill) => (
                           <SkillChip title={skill.name} />

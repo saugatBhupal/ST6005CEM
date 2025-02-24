@@ -5,6 +5,7 @@ import ProfileImage from "../../assets/images/icon/profile_icon/profile_icon.png
 const Wrapper = styled.div`
   img {
     border-radius: 50%;
+    object-fit: cover;
   }
 `;
 function ProfileIcon({ url, height }) {
