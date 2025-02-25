@@ -1,8 +1,11 @@
 import {
+  addEducationService,
+  addExperienceService,
   getEducationByUserIdService,
   getExperienceByUserIdService,
   getHistoryByUserIdService,
   getUserByIdService,
+  updateProfileIntroService,
   uploadProfileImageService,
 } from "../../../service/UserService";
 
@@ -65,6 +68,45 @@ export async function manageGetEducationByUserId(userId, onSuccess, onFailure) {
 export async function manageUploadProfileImage(formdata, onSuccess, onFailure) {
   try {
     await uploadProfileImageService(formdata, async (response) => {
+      if (response.status === 200) {
+        onSuccess(response.data);
+      } else {
+        onFailure(response.data.message);
+      }
+    });
+  } catch (e) {
+    onFailure("Error connecting to network.");
+  }
+}
+export async function manageUpdateIntro(details, onSuccess, onFailure) {
+  try {
+    await updateProfileIntroService(details, async (response) => {
+      if (response.status === 200) {
+        onSuccess(response.data);
+      } else {
+        onFailure(response.data.message);
+      }
+    });
+  } catch (e) {
+    onFailure("Error connecting to network.");
+  }
+}
+export async function manageAddExperience(details, onSuccess, onFailure) {
+  try {
+    await addExperienceService(details, async (response) => {
+      if (response.status === 200) {
+        onSuccess(response.data);
+      } else {
+        onFailure(response.data.message);
+      }
+    });
+  } catch (e) {
+    onFailure("Error connecting to network.");
+  }
+}
+export async function manageAddEducation(details, onSuccess, onFailure) {
+  try {
+    await addEducationService(details, async (response) => {
       if (response.status === 200) {
         onSuccess(response.data);
       } else {

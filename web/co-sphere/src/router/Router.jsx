@@ -26,6 +26,10 @@ function Router({ auth }) {
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/my-applications" element={<MyApplicationsPage />} />
           <Route
+            path="/my-applications/:type/:project"
+            element={<MyApplicationsPage />}
+          />
+          <Route
             path="/created-by-me/:type/:project"
             element={<CreatedByMePage />}
           />

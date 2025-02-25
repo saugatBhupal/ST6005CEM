@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useToast } from "../../common/manager/contextManager/ToastContextManager";
+import { manageUpdateIntro } from "../../common/manager/userManager/UserManager";
 import TextAreaWithActions from "../../components/input/textarea/TextAreaWithActions";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
@@ -24,6 +26,26 @@ const Flex = styled.div`
   margin: 20px auto;
 `;
 function AboutSection({ user, isUser }) {
+  const [about, setAbout] = useState();
+  const { showToast } = useToast();
+  useEffect(() => {
+    setAbout(user.about);
+  }, [user]);
+  async function handleSubmit() {
+    if (about.trim() === null || about.trim() === "") {
+      showToast("About section cannot be empty.");
+      return;
+    }
+    await manageUpdateIntro(
+      { userId: user._id, about: about },
+      () => {
+        showToast("About section updated.");
+      },
+      (err) => {
+        showToast(err);
+      }
+    );
+  }
   return (
     <Wrapper>
       <Title>{user.fullname}</Title>
@@ -31,6 +53,12 @@ function AboutSection({ user, isUser }) {
         <TextAreaWithActions
           value={user.about}
           placeholder="Tell us about yourself..."
+          onClick={() => {
+            handleSubmit();
+          }}
+          onChange={(val) => {
+            setAbout(val);
+          }}
         />
       ) : (
         <Description>

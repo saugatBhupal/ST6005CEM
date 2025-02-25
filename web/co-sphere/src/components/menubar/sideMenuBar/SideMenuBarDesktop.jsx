@@ -270,7 +270,7 @@ function SideMenuBarDesktop(props) {
                   strokeWidth="0.5"
                 />
               </svg>
-              <a>Created By Me</a>
+              <a href="/created-by-me">Created By Me</a>
             </MenuItem>
             <MenuItem selected={props.current === "my applications"}>
               <svg

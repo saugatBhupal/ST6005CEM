@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { manageGetHiringProjectsCreatedByUser } from "../../common/manager/projectManager/ProjectManager";
 import ApplicationsCreatedByMeWidget from "../../components/widget/application/ApplicationsCreatedByMeWidget";
 
-function HiringTasks({ onClick, reload }) {
+function HiringTasks({ onClick, reload, type }) {
   const [projects, setProjects] = useState();
+  const navigate = useNavigate();
   useEffect(() => {
     async function getHiringProjects() {
       await manageGetHiringProjectsCreatedByUser(

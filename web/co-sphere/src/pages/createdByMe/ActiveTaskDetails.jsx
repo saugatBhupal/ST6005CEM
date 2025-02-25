@@ -211,6 +211,7 @@ function ActiveTaskDetails({ projectId, updateState }) {
                   <Row>
                     <ProfileWidget
                       name={project.companyName || project.postedBy.fullname}
+                      url={project.postedBy.profileImage}
                       address={project.address}
                     />
                     <PriceChip
@@ -244,7 +245,7 @@ function ActiveTaskDetails({ projectId, updateState }) {
               </Box>
             </Fixed>
             <Gap />
-            
+
             <TaskDetailsTabbedPanel
               setOverlay={setOverlay}
               project={project}

@@ -1,4 +1,7 @@
 export function convertToDate(time) {
+  if (time == null) {
+    return "Present";
+  }
   const date = new Date(time);
 
   const day = date.getUTCDate();

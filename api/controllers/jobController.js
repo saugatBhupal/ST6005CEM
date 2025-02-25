@@ -7,17 +7,17 @@ exports.getAllJobs = async (req, res) => {
     const jobs = await Job.find()
       .populate({
         path: "postedBy",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate("skills")
       .populate("likes")
       .populate({
         path: "applicants.user",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate({
         path: "hired",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       });
     res.status(200).json(jobs);
   } catch (error) {
@@ -30,17 +30,17 @@ exports.getJobById = async (req, res) => {
     const job = await Job.findById(req.params.id)
       .populate({
         path: "postedBy",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate("skills")
       .populate("likes")
       .populate({
         path: "applicants.user",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate({
         path: "hired",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       });
     if (!job) return res.status(404).json({ message: "Job not found" });
     res.status(200).json(job);
@@ -88,17 +88,17 @@ exports.getJobsBySkills = async (req, res) => {
     const populatedJobs = await Job.populate(jobs, [
       {
         path: "postedBy",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       },
       { path: "skills" },
       { path: "likes", select: "_id" },
       {
         path: "applicants.user",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       },
       {
         path: "hired",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       },
     ]);
 
@@ -119,17 +119,17 @@ exports.getJobsByUser = async (req, res) => {
     const jobs = await Job.find({ _id: { $in: user.createdJobs } })
       .populate({
         path: "postedBy",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate("skills")
       .populate("likes")
       .populate({
         path: "applicants.user",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate({
         path: "hired",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       });
 
     res.status(200).json(jobs);
@@ -149,17 +149,17 @@ exports.getJobsByMember = async (req, res) => {
     const jobs = await Job.find({ _id: { $in: user.appliedJobs } })
       .populate({
         path: "postedBy",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate("skills")
       .populate("likes")
       .populate({
         path: "applicants.user",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate({
         path: "hired",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       });
 
     res.status(200).json(jobs);

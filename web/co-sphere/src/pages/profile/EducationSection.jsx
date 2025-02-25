@@ -22,11 +22,17 @@ const Center = styled.div`
   width: fit-content;
   margin: 10px auto;
 `;
-function EducationSection({ setOverlay, setOverlayWidget, user, isUser }) {
+function EducationSection({
+  setOverlay,
+  setOverlayWidget,
+  user,
+  isUser,
+  reload,
+}) {
   const [education, setEducation] = useState();
   const { showToast } = useToast();
   useEffect(() => {
-    async function getExperience() {
+    async function getEducation() {
       await manageGetEducationByUserId(
         user._id,
         (education) => setEducation(education),
@@ -36,8 +42,8 @@ function EducationSection({ setOverlay, setOverlayWidget, user, isUser }) {
         }
       );
     }
-    getExperience();
-  }, []);
+    getEducation();
+  }, [reload]);
   return (
     <Wrapper>
       <Title>Education</Title>

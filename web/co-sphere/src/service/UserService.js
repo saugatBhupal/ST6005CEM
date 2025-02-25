@@ -60,3 +60,39 @@ export async function uploadProfileImageService(formdata, callback) {
       callback(response);
     });
 }
+export async function updateProfileIntroService(details, callback) {
+  await request
+    .put(`/user/update-intro/${details.userId}`, details, { headers: {} })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      console.log(e);
+      callback(response);
+    });
+}
+export async function addExperienceService(details, callback) {
+  await request
+    .post(`/user/experience`, details, { headers: {} })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      console.log(e);
+      callback(response);
+    });
+}
+export async function addEducationService(details, callback) {
+  await request
+    .post(`/user/education`, details, { headers: {} })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      console.log(e);
+      callback(response);
+    });
+}

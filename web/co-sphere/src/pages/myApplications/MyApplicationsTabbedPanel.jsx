@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
-import ActiveTasks from "./ActiveTasks";
-import CompletedTasks from "./CompletedTasks";
-import HiringTasks from "./HiringTasks";
+
+import CompletedTasks from "../createdByMe/CompletedTasks";
+import AcceptedApplications from "./AcceptedApplications";
+import PendingApplications from "./PendingApplications";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -34,8 +35,8 @@ const Content = styled.div`
   height: 100%;
   overflow-y: scroll;
 `;
-function TabbedPanel({ onSelect, reload, defaultPanel }) {
-  const [currentPanel, setCurrentPanel] = useState("hiring");
+function MyApplicationsTabbedPannel({ onSelect, reload, defaultPanel }) {
+  const [currentPanel, setCurrentPanel] = useState("pending");
   useEffect(() => {
     if (defaultPanel != null) {
       setCurrentPanel(defaultPanel);
@@ -47,15 +48,15 @@ function TabbedPanel({ onSelect, reload, defaultPanel }) {
         <ul>
           <li
             style={
-              currentPanel === "hiring"
+              currentPanel === "pending"
                 ? { color: "#000000", fontWeight: 400 }
                 : {}
             }
             onClick={() => {
-              setCurrentPanel("hiring");
+              setCurrentPanel("pending");
             }}
           >
-            Hiring
+            Pending/Rejected
           </li>
           <li
             style={
@@ -85,8 +86,8 @@ function TabbedPanel({ onSelect, reload, defaultPanel }) {
       </Switch>
       {
         <Content>
-          {currentPanel === "hiring" ? (
-            <HiringTasks
+          {currentPanel === "pending" ? (
+            <PendingApplications
               onClick={(project) => onSelect({ project, type: "hiring" })}
               reload={reload}
             />
@@ -95,7 +96,7 @@ function TabbedPanel({ onSelect, reload, defaultPanel }) {
               onClick={(project) => onSelect({ project, type: "completed" })}
             />
           ) : (
-            <ActiveTasks reload={reload} />
+            <AcceptedApplications reload={reload} />
           )}
           <Padding />
         </Content>
@@ -104,4 +105,4 @@ function TabbedPanel({ onSelect, reload, defaultPanel }) {
   );
 }
 
-export default TabbedPanel;
+export default MyApplicationsTabbedPannel;

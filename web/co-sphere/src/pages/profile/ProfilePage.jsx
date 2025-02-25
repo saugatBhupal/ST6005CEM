@@ -160,6 +160,7 @@ function ProfilePage() {
   const [overlayWidget, setOverlayWidget] = useState(null);
   const [isUser, setIsUser] = useState();
   const [user, setUser] = useState();
+  const [reload, setReload] = useState();
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -204,9 +205,15 @@ function ProfilePage() {
                     ) : overlayWidget === "EditSkills" ? (
                       <EditSkills />
                     ) : overlayWidget === "EditExperience" ? (
-                      <EditExperience />
+                      <EditExperience
+                        userId={userId}
+                        setReload={(reload) => setReload(reload)}
+                      />
                     ) : (
-                      <EditEducation />
+                      <EditEducation
+                        userId={userId}
+                        setReload={(reload) => setReload(reload)}
+                      />
                     )}
                   </EditController>
                 </Overlay>
@@ -344,6 +351,7 @@ function ProfilePage() {
                             setOverlayWidget={() => {
                               setOverlayWidget("EditExperience");
                             }}
+                            reload={reload}
                           />
                         ) : currentTab === "education" ? (
                           <EducationSection
@@ -353,6 +361,7 @@ function ProfilePage() {
                             setOverlayWidget={() => {
                               setOverlayWidget("EditEducation");
                             }}
+                            reload={reload}
                           />
                         ) : currentTab === "history" ? (
                           <HistorySection userId={user._id} />

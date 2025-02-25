@@ -13,17 +13,17 @@ exports.getAllProjects = async (req, res) => {
     const projects = await Project.find()
       .populate({
         path: "postedBy",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate("skills")
       .populate("likes")
       .populate({
         path: "applicants.user",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate({
         path: "members",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       });
     res.status(200).json(projects);
   } catch (error) {
@@ -103,17 +103,17 @@ exports.getProjectsBySkills = async (req, res) => {
     const populatedProjects = await Project.populate(projects, [
       {
         path: "postedBy",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       },
       { path: "skills" },
       { path: "likes", select: "_id" },
       {
         path: "applicants.user",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       },
       {
         path: "members",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       },
     ]);
 
@@ -136,17 +136,17 @@ exports.getProjectsByMember = async (req, res) => {
     const projects = await Project.find({ _id: { $in: user.appliedProjects } })
       .populate({
         path: "postedBy",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate("skills")
       .populate("likes")
       .populate({
         path: "applicants.user",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate({
         path: "hired",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       });
 
     res.status(200).json(projects);
@@ -168,17 +168,17 @@ exports.getProjectsByUser = async (req, res) => {
     const projects = await Project.find({ _id: { $in: user.createdProjects } })
       .populate({
         path: "postedBy",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate("skills")
       .populate("likes")
       .populate({
         path: "applicants.user",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate({
         path: "members",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       });
 
     const projectsWithStatus = populateApplicantsWithStatusFromList(projects);
@@ -243,11 +243,11 @@ exports.getProjectsByName = async (req, res) => {
       { path: "likes", select: "_id" },
       // {
       //   path: "applicants.user",
-      //   select: "_id name profilePicture email phone country city",
+      //   select: "_id name profileImage email phone country city",
       // },
       // {
       //   path: "members",
-      //   select: "_id name profilePicture email phone country city",
+      //   select: "_id name profileImage email phone country city",
       // },
     ]);
 
@@ -452,7 +452,7 @@ exports.getHiringProjectsByUser = async (req, res) => {
     })
       .populate({
         path: "postedBy",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate("skills")
       .populate({
@@ -462,7 +462,7 @@ exports.getHiringProjectsByUser = async (req, res) => {
       .populate("likes")
       .populate({
         path: "members",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       });
 
     const projectsWithStatus = populateApplicantsWithStatusFromList(projects);
@@ -488,17 +488,17 @@ exports.getActiveProjectsByUser = async (req, res) => {
     })
       .populate({
         path: "postedBy",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate("skills")
       .populate("likes")
       .populate({
         path: "applicants.user",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate({
         path: "members",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       });
 
     const projectsWithStatus = populateApplicantsWithStatusFromList(projects);
@@ -524,17 +524,17 @@ exports.getCompletedProjectsByUser = async (req, res) => {
     })
       .populate({
         path: "postedBy",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate("skills")
       .populate("likes")
       .populate({
         path: "applicants.user",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       })
       .populate({
         path: "members",
-        select: "_id name profilePicture email phone country city",
+        select: "_id name profileImage email phone country city",
       });
 
     const projectsWithStatus = populateApplicantsWithStatusFromList(projects);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { manageGetCompletedProjectsCreatedByUser } from "../../common/manager/projectManager/ProjectManager";
 import TaskCompletedCard from "../../components/widget/task/TaskCompletedCard";
 
-function CompletedTasks() {
+function CompletedTasks({ onClick }) {
   const [projects, setProjects] = useState();
   useEffect(() => {
     async function getHiringProjects() {
@@ -22,7 +22,7 @@ function CompletedTasks() {
     <div>
       {projects &&
         projects.map((project, key) => (
-          <TaskCompletedCard project={project} key={key} />
+          <TaskCompletedCard onClick={onClick} project={project} key={key} />
         ))}
     </div>
   );

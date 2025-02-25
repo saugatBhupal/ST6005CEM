@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useToast } from "../../common/manager/contextManager/ToastContextManager";
-import { manageGetExperienceByUserId } from "../../common/manager/userManager/UserManager";
+import {
+  manageGetExperienceByUserId,
+  manageUpdateIntro,
+} from "../../common/manager/userManager/UserManager";
 import TextAreaWithActions from "../../components/input/textarea/TextAreaWithActions";
 import ActionChip from "../../components/widget/chip/ActionChip";
 import ExperienceCard from "../../components/widget/experience/ExperienceCard";
@@ -31,9 +34,36 @@ const Center = styled.div`
   width: fit-content;
   margin: 10px auto;
 `;
-function ExperienceSection({ setOverlay, setOverlayWidget, user, isUser }) {
+function ExperienceSection({
+  setOverlay,
+  setOverlayWidget,
+  user,
+  isUser,
+  reload,
+}) {
   const [experience, setExperience] = useState();
+  const [overview, setOverview] = useState();
   const { showToast } = useToast();
+
+  useEffect(() => {
+    setOverview(user.overview);
+  }, [user]);
+
+  async function handleSubmit() {
+    if (overview.trim() === null || overview.trim() === "") {
+      showToast("Overview section cannot be empty.");
+      return;
+    }
+    await manageUpdateIntro(
+      { userId: user._id, overview: overview },
+      () => {
+        showToast("Overview section updated.");
+      },
+      (err) => {
+        showToast(err);
+      }
+    );
+  }
   useEffect(() => {
     async function getExperience() {
       await manageGetExperienceByUserId(
@@ -46,15 +76,20 @@ function ExperienceSection({ setOverlay, setOverlayWidget, user, isUser }) {
       );
     }
     getExperience();
-  }, []);
+  }, [reload]);
   return (
     <Wrapper>
-      {showToast(isUser)}
       <Title>Professional Overview</Title>
       {isUser ? (
         <TextAreaWithActions
           placeholder="Write a summary of your work experience..."
           value={user.overview}
+          onClick={() => {
+            handleSubmit();
+          }}
+          onChange={(val) => {
+            setOverview(val);
+          }}
         />
       ) : (
         <Description>

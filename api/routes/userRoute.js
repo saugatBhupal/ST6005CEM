@@ -10,6 +10,7 @@ const {
   getUsersByName,
   getReviewsByUser,
   getHistoryByUserId,
+  updateAbout,
 } = require("../controllers/userController");
 
 const { addSkillByUserID } = require("../controllers/skillController");

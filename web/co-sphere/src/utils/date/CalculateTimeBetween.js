@@ -1,7 +1,6 @@
 export function calculateTimeBetween(t1, t2) {
   const from = new Date(t1);
-  const to = new Date(t2);
-
+  const to = t2 == null ? new Date() : new Date(t2);
   const timeDifferenceInMilliseconds = Math.abs(from - to);
 
   const seconds = Math.floor(timeDifferenceInMilliseconds / 1000);

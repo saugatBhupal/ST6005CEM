@@ -117,7 +117,6 @@ function TaskDetailsTabbedPanel({ setOverlay, project, reload, showReviews }) {
 
       {
         <Content>
-          {console.log(project.status === "Active")}
           {project.status === "Active" ? (
             <Button>
               <CreateTaskButton

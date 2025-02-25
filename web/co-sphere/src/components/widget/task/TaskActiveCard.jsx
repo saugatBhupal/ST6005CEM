@@ -101,6 +101,7 @@ function TaskActiveCard({ project }) {
   return (
     <Wrapper onClick={() => navigate(`/created-by-me/active/${project._id}`)}>
       <Container>
+        {console.log(project)}
         <Column>
           <Top>
             <Flex>

@@ -79,7 +79,7 @@ function CreatedByMePage() {
           </RightWrapper>
         </>
       }
-      page={"my applications"}
+      page={"created by me"}
     />
   );
 }

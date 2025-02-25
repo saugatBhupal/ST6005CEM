@@ -115,7 +115,6 @@ const userSchema = new mongoose.Schema(
         },
         to: {
           type: Date,
-          required: true,
         },
       },
     ],
@@ -151,7 +150,6 @@ const userSchema = new mongoose.Schema(
         },
         to: {
           type: Date,
-          required: true,
         },
       },
     ],

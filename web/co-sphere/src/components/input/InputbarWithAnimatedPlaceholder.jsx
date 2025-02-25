@@ -80,9 +80,9 @@ function InputbarWithAnimatedPlaceholder(props) {
         value={props.value ? props.value : input}
         onChange={(e) => {
           props.onChange && props.onChange(e.target.value);
-          getValdiationMessage(e.target.value);
+          props.validationType && getValdiationMessage(e.target.value);
         }}
-        validationMessage={validationMessage}
+        validationMessage={props.validationType && validationMessage}
       />
       <Label htmlFor="input-bar">{props.placeholder}</Label>
       <Hidden>{validationMessage && <>{validationMessage}</>}</Hidden>

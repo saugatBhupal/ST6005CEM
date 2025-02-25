@@ -116,7 +116,7 @@ const OverlayContent = styled.div`
   background-color: white;
 `;
 
-function ActiveTaskDetails({ projectId }) {
+function CompletedTaskDetails({ projectId }) {
   const [project, setProject] = useState();
   const [reload, setReload] = useState();
   const { showToast } = useToast();
@@ -162,6 +162,7 @@ function ActiveTaskDetails({ projectId }) {
                   <Row>
                     <ProfileWidget
                       name={project.companyName || project.postedBy.fullname}
+                      url={project.postedBy.profileImage}
                       address={project.address}
                     />
                     <PriceChip
@@ -208,4 +209,4 @@ function ActiveTaskDetails({ projectId }) {
   );
 }
 
-export default ActiveTaskDetails;
+export default CompletedTaskDetails;

@@ -106,7 +106,6 @@ function DashboardPage() {
     async function getProjectCreatedByUser() {
       await manageGetProjectsCreatedByUser(
         (projects) => {
-          console.log(projects);
           setCreatedProjects(projects);
         },
         (err) => {
@@ -157,8 +156,11 @@ function DashboardPage() {
                   onClick={() => {}}
                 />
                 {creatredProjects &&
-                  creatredProjects.map((project) => (
-                    <ApplicationsCreatedByMeWidget project={project} />
+                  creatredProjects.map((project, key) => (
+                    <ApplicationsCreatedByMeWidget
+                      project={project}
+                      key={key}
+                    />
                   ))}
                 <Gap />
                 <BasicWidgetTitleBlock

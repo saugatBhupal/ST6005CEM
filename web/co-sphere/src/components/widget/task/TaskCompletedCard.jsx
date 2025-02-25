@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
@@ -97,12 +96,9 @@ const Column = styled.div`
   justify-content: space-between;
 `;
 
-function TaskCompletedCard({ project }) {
-  const navigate = useNavigate();
+function TaskCompletedCard({ onClick, project }) {
   return (
-    <Wrapper
-      onClick={() => navigate(`/created-by-me/completed/${project._id}`)}
-    >
+    <Wrapper onClick={() => onClick && onClick(project._id)}>
       <Container>
         <Column>
           <Top>

@@ -68,7 +68,7 @@ function DateInput({ placeholder, validationType, isValid, value, onChange }) {
 
     let input = e.target.value.replace(/\D/g, "");
     if (input.length > 8) input = input.slice(0, 8);
- 
+
     if (input.length <= 2) {
       formattedValue = input;
     } else if (input.length <= 4) {
@@ -79,9 +79,11 @@ function DateInput({ placeholder, validationType, isValid, value, onChange }) {
       )}`;
     }
     setDob(formattedValue);
-    let message = handleValidation(formattedValue, validationType);
-    setValidationMessage(message);
-    isValid(message == null);
+    if (validationType) {
+      let message = handleValidation(formattedValue, validationType);
+      setValidationMessage(message);
+      isValid(message == null);
+    }
   };
   useEffect(() => {
     onChange && onChange(dob);

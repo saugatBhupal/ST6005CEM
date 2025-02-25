@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useToast } from "../../../common/manager/contextManager/ToastContextManager";
+import { manageAddEducation } from "../../../common/manager/userManager/UserManager";
 import { Colors } from "../../../constants/Colors";
 import { getFirstLetter } from "../../../utils/GetFirstWord";
 import FilledButton from "../../buttons/FilledButton";
@@ -51,9 +53,48 @@ const Right = styled.div`
   gap: 12px;
 `;
 
-function EditEducation() {
+function EditEducation({ userId, setReload }) {
   const [institutionName, setinstitutionName] = useState("");
+  const [degree, setDegree] = useState("");
+  const { showToast } = useToast();
+  const [from, setFrom] = useState();
+  const [to, setTo] = useState();
+  async function handleSubmit() {
+    if (!institutionName.trim()) {
+      showToast("Position Name is required.");
+      return;
+    }
+    if (!degree || degree.trim() === "") {
+      showToast("Role is required.");
+      return;
+    }
+    if (!from) {
+      showToast("Start date (From) is required.");
+      return;
+    }
+    if (from && to && new Date(from) > new Date(to)) {
+      showToast("Start date cannot be later than the end date.");
+      return;
+    }
+    const details = {
+      userID: userId,
+      degree: degree,
+      organization: institutionName,
+      from: from,
+      to: to,
+    };
 
+    await manageAddEducation(
+      details,
+      () => {
+        showToast("Added new Education History");
+        setReload(Math.random());
+      },
+      (err) => {
+        showToast(err);
+      }
+    );
+  }
   return (
     <Wrapper>
       <Container>
@@ -73,18 +114,29 @@ function EditEducation() {
             />
             <InputbarWithAnimatedPlaceholder
               placeholder="Education Level"
-              value=""
+              value={degree}
               type="text"
+              onChange={(value) => setDegree(value)}
             />
             <Row>
-              <DateInput placeholder={"Start"} />
-              <DateInput placeholder={"End"} />
+              <DateInput
+                placeholder={"Start"}
+                onChange={(val) => {
+                  setFrom(val);
+                }}
+              />
+              <DateInput
+                placeholder={"End"}
+                onChange={(val) => {
+                  setTo(val);
+                }}
+              />
             </Row>
 
             <Button>
               <FilledButton
                 placeholder={"Save"}
-                onClick={() => alert("Saved")}
+                onClick={() => handleSubmit()}
               />
             </Button>
           </Right>
