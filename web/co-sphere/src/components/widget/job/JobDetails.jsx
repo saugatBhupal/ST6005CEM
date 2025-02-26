@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useToast } from "../../../common/manager/contextManager/ToastContextManager";
+import {
+  manageApplyToProject,
+  manageGetProjectById,
+} from "../../../common/manager/projectManager/ProjectManager";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
+import { getUserIdFromLocalStorage } from "../../../service/LocalStorageService";
+import { calculateTimeDifference } from "../../../utils/date/CalculateTimeDifference";
+import { convertToDate } from "../../../utils/date/ConvertToDate";
 import FilledButton from "../../buttons/FilledButton";
 import LikeButton from "../../buttons/LikeButton";
 import ShareButton from "../../buttons/ShareButton";
 import ClockIcon from "../../icon/ClockIcon";
 import PriceChip from "../chip/PriceChip";
 import SkillChip from "../chip/SkillChip";
+import DeadlineWidget from "../duration/DeadlineWidget";
 import DurationWidget from "../duration/DurationWidget";
 import ProfileWidget from "../profile/ProfileWidget";
 import JobDetailContentWidget from "./widget/JobDetailContentWidget";
@@ -91,50 +100,132 @@ const Bottom = styled.div`
   }
 `;
 
-function JobDetails() {
+function JobDetails({ projectId }) {
+  const [project, setProject] = useState();
+  const { showToast } = useToast();
+  const [userId, setuserId] = useState();
+  const [hasApplied, setHasApplied] = useState();
+
+  useEffect(() => {
+    async function getUserId() {
+      const userId = await getUserIdFromLocalStorage();
+      setuserId(userId);
+    }
+    getUserId();
+  }, []);
+
+  useEffect(() => {
+    async function getProject() {
+      await manageGetProjectById(
+        projectId,
+        (project) => {
+          setProject(project);
+        },
+        (err) => {
+          showToast(err);
+          setProject(null);
+        }
+      );
+    }
+    getProject();
+  }, []);
+
+  useEffect(() => {
+    function updateHasApplied() {
+      if (project && userId) {
+        project.applicants.map((applicant) => {
+          applicant.user._id === userId
+            ? setHasApplied(true)
+            : setHasApplied(false);
+        });
+      }
+      return;
+    }
+    updateHasApplied();
+  }, [userId, project]);
+
+  async function handleApply() {
+    const details = { userId: userId, projectId: projectId };
+    manageApplyToProject(
+      details,
+      () => {
+        setHasApplied(true);
+        showToast(
+          "Applied to project. Go to your applications page for more details."
+        );
+      },
+      (err) => {
+        showToast(err);
+        setHasApplied(false);
+      }
+    );
+  }
   return (
     <Wrapper>
       <Container>
-        <Content>
-          <Fixed>
-            <Title>Develop a Mobile App for Food Delivery</Title>
-            <Flex>
-              <Row>
-                <PostedDate>
-                  <ClockIcon />
-                  <div>Posted 6 hours ago</div>
-                </PostedDate>
-                <PriceChip min={"2000"} max={"7000"} />
-              </Row>
-              <Row>
-                <ShareButton />
-                <LikeButton />
-              </Row>
-            </Flex>
-            <Flex>
-              <ProfileWidget
-                name={"Harry Potter"}
-                address={"Kathmandu, Nepal"}
-              />
-              <DurationWidget from={"3"} to={"6"} />
-            </Flex>
-            <SkillsRow>
-              <SkillChip title={"Mobile Development"} />
-              <SkillChip title={"ReactJS"} />
-              <SkillChip title={"NodeJS"} />
-              <SkillChip title={"MySQL"} />
-              <SkillChip title={"MongoDB"} />
-              <SkillChip title={"Agile"} />
-              <SkillChip title={"Dancing"} />
-            </SkillsRow>
-          </Fixed>
-          <Scroll>
-            <JobDetailContentWidget />
-          </Scroll>
-        </Content>
-        <Bottom>
-          <FilledButton placeholder={"Apply Now"} />
-        </Bottom>
+        {project && (
+          <>
+            <Content>
+              <Fixed>
+                <Title>{project.projectName}</Title>
+                <Flex>
+                  <Row>
+                    <PostedDate>
+                      <ClockIcon />
+                      <div>
+                        Posted {calculateTimeDifference(project.createdAt)}
+                      </div>
+                    </PostedDate>
+                    <PriceChip
+                      min={project.salary.min}
+                      max={project.salary.max}
+                    />
+                  </Row>
+                  <Row>
+                    <ShareButton />
+                    <LikeButton />
+                  </Row>
+                </Flex>
+                <Flex>
+                  <ProfileWidget
+                    url={project.postedBy.profileImage}
+                    name={project.companyName || project.postedBy.fullname}
+                    address={project.address}
+                  />
+                  {project.duration ? (
+                    <DurationWidget
+                      from={project.duration.from}
+                      to={project.duration.to}
+                    />
+                  ) : (
+                    <DeadlineWidget date={convertToDate(project.createdAt)} />
+                  )}
+                </Flex>
+                <SkillsRow>
+                  {project.skills.map((skill, key) => (
+                    <SkillChip title={skill.name} key={key} />
+                  ))}
+                </SkillsRow>
+              </Fixed>
+              <Scroll>
+                <JobDetailContentWidget />
+              </Scroll>
+            </Content>
+            <Bottom>
+              {hasApplied && hasApplied ? (
+                <>
+                  Already Applied {project.applicants.length - 1} more
+                  applicants.
+                </>
+              ) : (
+                <FilledButton
+                  placeholder={"Apply Now"}
+                  onClick={() => handleApply()}
+                />
+              )}
+            </Bottom>
+          </>
+        )}
       </Container>
     </Wrapper>
   );

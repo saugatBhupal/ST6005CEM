@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ApplicationFullCard from "../../components/widget/application/ApplicationFullCard";
 import JobFullCard from "../../components/widget/job/JobFullCard";
@@ -19,6 +20,7 @@ const Container = styled.div`
 
 function SearchResultsSection({ type, query, userId }) {
   const [results, setResults] = useState();
+  const navigate = useNavigate();
   useEffect(() => {
     async function search() {
       manageSearch(
@@ -38,7 +40,6 @@ function SearchResultsSection({ type, query, userId }) {
     if (results.length === 0) {
       return <NoResultsFound query={query} type={type} />;
     }
-    console.log(type, results);
     switch (type) {
       case "user":
         return results.map((result, key) => (
@@ -48,13 +49,27 @@ function SearchResultsSection({ type, query, userId }) {
         return results.map(
           (result, key) =>
             result.projectName && (
-              <ApplicationFullCard key={key} project={result} />
+              <ApplicationFullCard
+                key={key}
+                project={result}
+                onClick={(id) => {
+                  navigate(`/project/${id}`);
+                }}
+              />
             )
         );
       default:
         return results.map(
           (result, key) =>
-            result.jobName && <JobFullCard key={key} job={result} />
+            result.jobName && (
+              <JobFullCard
+                key={key}
+                job={result}
+                onClick={(id) => {
+                  navigate(`/project/${id}`);
+                }}
+              />
+            )
         );
     }
   };

@@ -14,7 +14,7 @@ function HiringTasks({ onClick, reload, type }) {
         },
         (err) => {
           console.log(err);
-          setProjects(null);
+          setProjects(null)
         }
       );
     }

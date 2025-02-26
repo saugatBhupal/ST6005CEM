@@ -10,7 +10,7 @@ export function calculateTimeDifference(time) {
   const days = Math.floor(hours / 24);
 
   if (days > 0) {
-    return `${days} days ago`;
+    return `${days} day ago`;
   } else if (hours > 0) {
     return `${hours} hour ago`;
   } else if ((minutes > 0) & minutes) {

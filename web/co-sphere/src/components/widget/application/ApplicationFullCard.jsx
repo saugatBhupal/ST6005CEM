@@ -79,9 +79,13 @@ const Content = styled.div`
   font-weight: 300;
   color: ${Colors.subtitleBlack};
 `;
-function ApplicationFullCard({ project }) {
+function ApplicationFullCard({ project, onClick }) {
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        onClick(project._id);
+      }}
+    >
       <Container>
         <Flex>
           <Column>

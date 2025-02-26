@@ -143,8 +143,17 @@ function DashboardPage() {
                       <MyApplicationWidget application={application} />
                     ))}
                   {appliedProjects &&
-                    appliedProjects.map((application) => (
-                      <AppliedTaskWidget application={application} />
+                    appliedProjects.map((application, key) => (
+                      <AppliedTaskWidget
+                        key={key}
+                        application={application}
+                        onClick={(applicationId) => {
+                          navigate(
+                            `/my-applications/${application.status}/${applicationId}`
+                          );
+                          console.log(application);
+                        }}
+                      />
                     ))}
                   <Gap />
                 </MyApplications>
@@ -153,13 +162,20 @@ function DashboardPage() {
                 <Gap />
                 <BasicWidgetTitleBlock
                   title={"Created By Me"}
-                  onClick={() => {}}
+                  onClick={() => {
+                    navigate("/created-by-me");
+                  }}
                 />
                 {creatredProjects &&
                   creatredProjects.map((project, key) => (
                     <ApplicationsCreatedByMeWidget
                       project={project}
                       key={key}
+                      onClick={(projectId) => {
+                        navigate(
+                          `/created-by-me/${project.status}/${projectId}`
+                        );
+                      }}
                     />
                   ))}
                 <Gap />

@@ -150,3 +150,16 @@ export async function completeProjectService(details, callback) {
       callback(response);
     });
 }
+export async function applyProjectService(details, callback) {
+  await request
+    .post(`/project/apply/`, details, {
+      headers: {},
+    })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      callback(response);
+    });
+}

@@ -74,9 +74,13 @@ const Column = styled.div`
   justify-content: space-between;
   gap: 10px;
 `;
-function AppliedTaskWidget({ application }) {
+function AppliedTaskWidget({ application, onClick }) {
   return (
-    <Wrapper>
+  <Wrapper
+      onClick={() => {
+        onClick && onClick(application._id);
+      }}
+    >
       <Container>
         <Flex>
           <Column>

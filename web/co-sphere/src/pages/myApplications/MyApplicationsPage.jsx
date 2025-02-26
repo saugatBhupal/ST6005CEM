@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import JobDetails from "../../components/widget/job/JobDetails";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
 import SplitLayout from "../common/SplitLayout";
 import ActiveTaskDetails from "../createdByMe/ActiveTaskDetails";
 import CompletedTaskDetails from "../createdByMe/CompletedTaskDetails";
 import MyApplicationsTabbedPannel from "./MyApplicationsTabbedPanel";
-import PendingApplications from "./PendingApplications";
 
 const LeftWrapper = styled.div`
   height: inherit;
@@ -37,7 +37,7 @@ function MyApplicationsPage() {
 
   useEffect(() => {
     type != null && project != null
-      ? setCurrentProject({ project, type: type })
+      ? setCurrentProject({ project, type: type.toLowerCase() })
       : (() => {})();
   }, [project, type]);
   return (
@@ -62,7 +62,7 @@ function MyApplicationsPage() {
       }
       right={
         <>
-          <RightWrapper>
+          <RightWrapper key={currentProject.project}>
             {currentProject && currentProject.type === "completed" ? (
               <CompletedTaskDetails projectId={currentProject.project} />
             ) : currentProject.type === "active" ? (
@@ -71,10 +71,7 @@ function MyApplicationsPage() {
                 updateState={(state) => setUpdateState(state)}
               />
             ) : currentProject.type === "pending" ? (
-              <PendingApplications
-                projectId={currentProject.project}
-                updateState={(state) => setUpdateState(state)}
-              />
+              <JobDetails projectId={currentProject.project} />
             ) : (
               <>Empty</>
             )}

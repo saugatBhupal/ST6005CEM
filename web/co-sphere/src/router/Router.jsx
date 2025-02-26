@@ -6,6 +6,7 @@ import DashboardPage from "../pages/dashboard/DashboardPage";
 import LandingPage from "../pages/LandingPage";
 import MyApplicationsPage from "../pages/myApplications/MyApplicationsPage";
 import ProfilePage from "../pages/profile/ProfilePage";
+import ProjectPage from "../pages/project/ProjectPage";
 import SearchResultsPage from "../pages/search/SearchResultsPage";
 import SigninPage from "../pages/signin/SigninPage";
 import SignupPage from "../pages/signup/SignupPage";
@@ -19,6 +20,7 @@ function Router({ auth }) {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/signin" element={<SigninPage />} />
         <Route path="/search/:query" element={<SearchResultsPage />} />
+        <Route path="/project/:projectId" element={<ProjectPage />} />
         <Route element={<ProtectedRoute auth={auth} />}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/profile/:userId" element={<ProfilePage />} />

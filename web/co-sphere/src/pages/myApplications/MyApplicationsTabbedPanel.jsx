@@ -88,7 +88,7 @@ function MyApplicationsTabbedPannel({ onSelect, reload, defaultPanel }) {
         <Content>
           {currentPanel === "pending" ? (
             <PendingApplications
-              onClick={(project) => onSelect({ project, type: "hiring" })}
+              onClick={(project) => onSelect({ project, type: "pending" })}
               reload={reload}
             />
           ) : currentPanel === "completed" ? (

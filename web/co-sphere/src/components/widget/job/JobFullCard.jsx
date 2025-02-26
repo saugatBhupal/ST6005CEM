@@ -79,9 +79,13 @@ const Content = styled.div`
   font-weight: 300;
   color: ${Colors.subtitleBlack};
 `;
-function JobFullCard({ job }) {
+function JobFullCard({ job, onClick }) {
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        onClick && onClick(job._id);
+      }}
+    >
       <Container>
         <Flex>
           <Column>

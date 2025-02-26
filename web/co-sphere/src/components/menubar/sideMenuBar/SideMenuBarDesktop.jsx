@@ -289,7 +289,7 @@ function SideMenuBarDesktop(props) {
                 />
               </svg>
 
-              <a>My Applications</a>
+              <a href="/my-applications">My Applications</a>
             </MenuItem>
           </ul>
         </Menu>

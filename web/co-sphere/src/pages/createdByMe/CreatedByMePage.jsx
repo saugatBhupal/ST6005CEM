@@ -37,7 +37,7 @@ function CreatedByMePage() {
 
   useEffect(() => {
     type != null && project != null
-      ? setCurrentProject({ project, type: type })
+      ? setCurrentProject({ project, type: type.toLowerCase() })
       : (() => {})();
   }, [project, type]);
   return (
