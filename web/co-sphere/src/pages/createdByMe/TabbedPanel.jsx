@@ -38,7 +38,7 @@ function TabbedPanel({ onSelect, reload, defaultPanel }) {
   const [currentPanel, setCurrentPanel] = useState("hiring");
   useEffect(() => {
     if (defaultPanel != null) {
-      setCurrentPanel(defaultPanel);
+      setCurrentPanel(defaultPanel.toLowerCase());
     }
   }, [defaultPanel]);
   return (

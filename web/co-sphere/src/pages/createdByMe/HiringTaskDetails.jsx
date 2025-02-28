@@ -13,6 +13,7 @@ import EditJobDetailsButton from "../../components/buttons/EditJobDetailsButton"
 import FilledButton from "../../components/buttons/FilledButton";
 import ShareButton from "../../components/buttons/ShareButton";
 import ClockIcon from "../../components/icon/ClockIcon";
+import SpinnerWidget from "../../components/loading/SpinnerWidget";
 import BasicWidgetTitleBlock from "../../components/textBlocks/BasicWidgetTitleBlock";
 import PriceChip from "../../components/widget/chip/PriceChip";
 import SkillChip from "../../components/widget/chip/SkillChip";
@@ -117,6 +118,7 @@ function HiringTaskDetails({ projectId, updateState }) {
   const { showToast } = useToast();
   const [reload, setReload] = useState();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function getProjectById() {
       await manageGetProjectById(
@@ -133,6 +135,7 @@ function HiringTaskDetails({ projectId, updateState }) {
           setProject(null);
         }
       );
+      setLoading(false);
     }
     getProjectById();
   }, [projectId, reload]);
@@ -180,6 +183,7 @@ function HiringTaskDetails({ projectId, updateState }) {
   return (
     <Wrapper>
       <Container>
+        {loading && <SpinnerWidget />}
         {project && project != null ? (
           <>
             <Content>

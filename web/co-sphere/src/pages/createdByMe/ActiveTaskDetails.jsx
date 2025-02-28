@@ -6,6 +6,7 @@ import { manageGetProjectById } from "../../common/manager/projectManager/Projec
 import DeleteButton from "../../components/buttons/DeleteButton";
 import FilledButton from "../../components/buttons/FilledButton";
 import ClockIcon from "../../components/icon/ClockIcon";
+import SpinnerWidget from "../../components/loading/SpinnerWidget";
 import PriceChip from "../../components/widget/chip/PriceChip";
 import SkillChip from "../../components/widget/chip/SkillChip";
 import TypeChip from "../../components/widget/chip/TypeChip";
@@ -15,6 +16,7 @@ import ProfileWidget from "../../components/widget/profile/ProfileWidget";
 import ProjectCompletionReview from "../../components/widget/review/ProjectCompletionReview";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
+import { getUserIdFromLocalStorage } from "../../service/LocalStorageService";
 import { calculateTimeDifference } from "../../utils/date/CalculateTimeDifference";
 import { convertToTime } from "../../utils/date/ConvertToTime";
 import EditTaskDetails from "./EditTaskDetails";
@@ -127,6 +129,8 @@ function ActiveTaskDetails({ projectId, updateState }) {
   const [project, setProject] = useState();
   const [reload, setReload] = useState();
   const { showToast } = useToast();
+  const [userId, setUserId] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getProject() {
@@ -145,9 +149,18 @@ function ActiveTaskDetails({ projectId, updateState }) {
           setProject(null);
         }
       );
+      setLoading(false);
     }
     getProject();
   }, [projectId, reload]);
+
+  useEffect(() => {
+    async function getUserId() {
+      const userId = await getUserIdFromLocalStorage();
+      setUserId(userId);
+    }
+    getUserId();
+  }, []);
   return (
     <Wrapper>
       {overlay && (
@@ -184,6 +197,7 @@ function ActiveTaskDetails({ projectId, updateState }) {
       )}
 
       <Container>
+        {loading && <SpinnerWidget />}
         {project && project != null ? (
           <Content>
             <Fixed>
@@ -197,13 +211,17 @@ function ActiveTaskDetails({ projectId, updateState }) {
                   <TypeChip type={project.status} />
                 </Row>
                 <Row>
-                  <FilledButton
-                    placeholder={"Finish Project"}
-                    onClick={() => {
-                      setOverlay(true);
-                      setOverlayType("finish");
-                    }}
-                  />
+                  {userId && userId === project.postedBy._id ? (
+                    <FilledButton
+                      placeholder={"Finish Project"}
+                      onClick={() => {
+                        setOverlay(true);
+                        setOverlayType("finish");
+                      }}
+                    />
+                  ) : (
+                    <> </>
+                  )}
                 </Row>
               </Flex>
               <Box>
@@ -250,6 +268,7 @@ function ActiveTaskDetails({ projectId, updateState }) {
               setOverlay={setOverlay}
               project={project}
               reload={setReload}
+              userId={userId}
             />
           </Content>
         ) : (

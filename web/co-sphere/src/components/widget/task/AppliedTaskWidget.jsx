@@ -74,12 +74,20 @@ const Column = styled.div`
   justify-content: space-between;
   gap: 10px;
 `;
-function AppliedTaskWidget({ application, onClick }) {
+function AppliedTaskWidget({ application, onClick, isSelected }) {
   return (
-  <Wrapper
+    <Wrapper
       onClick={() => {
         onClick && onClick(application._id);
       }}
+      style={
+        isSelected
+          ? {
+              backgroundColor: `${Colors.menuSelected}`,
+              boxShadow: "1px 5px 40px -20px rgba(49, 49, 49, 0.354)",
+            }
+          : {}
+      }
     >
       <Container>
         <Flex>

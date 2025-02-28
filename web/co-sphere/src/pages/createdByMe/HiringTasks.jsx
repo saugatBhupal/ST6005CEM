@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { manageGetHiringProjectsCreatedByUser } from "../../common/manager/projectManager/ProjectManager";
+import SpinnerWidget from "../../components/loading/SpinnerWidget";
 import ApplicationsCreatedByMeWidget from "../../components/widget/application/ApplicationsCreatedByMeWidget";
 
 function HiringTasks({ onClick, reload, type }) {
   const [projects, setProjects] = useState();
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
     async function getHiringProjects() {
@@ -14,14 +16,16 @@ function HiringTasks({ onClick, reload, type }) {
         },
         (err) => {
           console.log(err);
-          setProjects(null)
+          setProjects(null);
         }
       );
+      setLoading(false);
     }
     getHiringProjects();
   }, [reload]);
   return (
     <div>
+      {loading && <SpinnerWidget />}
       {projects &&
         projects.map((project, key) => (
           <ApplicationsCreatedByMeWidget

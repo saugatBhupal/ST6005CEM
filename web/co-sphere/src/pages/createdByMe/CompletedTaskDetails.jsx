@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useToast } from "../../common/manager/contextManager/ToastContextManager";
 import { manageGetProjectById } from "../../common/manager/projectManager/ProjectManager";
 import ClockIcon from "../../components/icon/ClockIcon";
+import SpinnerWidget from "../../components/loading/SpinnerWidget";
 import PriceChip from "../../components/widget/chip/PriceChip";
 import SkillChip from "../../components/widget/chip/SkillChip";
 import TypeChip from "../../components/widget/chip/TypeChip";
@@ -119,6 +120,7 @@ const OverlayContent = styled.div`
 function CompletedTaskDetails({ projectId }) {
   const [project, setProject] = useState();
   const [reload, setReload] = useState();
+  const [loading, setLoading] = useState(true);
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -137,11 +139,13 @@ function CompletedTaskDetails({ projectId }) {
           setProject(null);
         }
       );
+      setLoading(false);
     }
     getProject();
   }, [projectId, reload]);
   return (
     <Wrapper>
+      {loading && <SpinnerWidget />}
       <Container>
         {project && project != null ? (
           <Content>

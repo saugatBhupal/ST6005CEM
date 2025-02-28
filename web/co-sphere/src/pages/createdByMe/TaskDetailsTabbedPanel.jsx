@@ -50,10 +50,20 @@ const Box = styled.div`
   padding: 12px;
   border: 0.5px solid ${Colors.greyOutlineShadow};
 `;
-function TaskDetailsTabbedPanel({ setOverlay, project, reload, showReviews }) {
+function TaskDetailsTabbedPanel({
+  setOverlay,
+  project,
+  reload,
+  showReviews,
+  userId,
+}) {
   const [currentPanel, setCurrentPanel] = useState("Members");
   const { showToast } = useToast();
 
+  function isMember(userId, task) {
+    const member = task.members.filter((member) => member._id === userId);
+    return member.length === 1;
+  }
   return (
     <Wrapper>
       <Switch>
@@ -117,7 +127,7 @@ function TaskDetailsTabbedPanel({ setOverlay, project, reload, showReviews }) {
 
       {
         <Content>
-          {project.status === "Active" ? (
+          {project.status === "Active" && userId === project.postedBy._id ? (
             <Button>
               <CreateTaskButton
                 onClick={() => {
@@ -130,6 +140,7 @@ function TaskDetailsTabbedPanel({ setOverlay, project, reload, showReviews }) {
           )}
           {currentPanel === "Tasks" ? (
             <>
+              {console.log(project)}
               {project.activeTasks &&
                 project.activeTasks.map((task, key) => (
                   <TaskDetailsCard
@@ -137,6 +148,9 @@ function TaskDetailsTabbedPanel({ setOverlay, project, reload, showReviews }) {
                     task={task}
                     projectId={project._id}
                     reload={reload}
+                    canComplete={
+                      userId === project.postedBy._id || isMember(userId, task)
+                    }
                   />
                 ))}
             </>

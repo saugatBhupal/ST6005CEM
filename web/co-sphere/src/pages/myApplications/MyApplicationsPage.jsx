@@ -55,6 +55,7 @@ function MyApplicationsPage() {
                 }}
                 reload={updateState}
                 defaultPanel={type ?? null}
+                projectId={project}
               />
             </LeftContainer>
           </LeftWrapper>
@@ -65,7 +66,8 @@ function MyApplicationsPage() {
           <RightWrapper key={currentProject.project}>
             {currentProject && currentProject.type === "completed" ? (
               <CompletedTaskDetails projectId={currentProject.project} />
-            ) : currentProject.type === "active" ? (
+            ) : currentProject.type === "active" ||
+              currentProject.type === "accepted" ? (
               <ActiveTaskDetails
                 projectId={currentProject.project}
                 updateState={(state) => setUpdateState(state)}

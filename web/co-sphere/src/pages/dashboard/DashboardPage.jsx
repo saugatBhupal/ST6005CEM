@@ -6,6 +6,7 @@ import {
   manageGetAppliedProjects,
   manageGetProjectsCreatedByUser,
 } from "../../common/manager/projectManager/ProjectManager";
+import SpinnerWidget from "../../components/loading/SpinnerWidget";
 import MenubarDashboard from "../../components/menubar/MenubarDashboard";
 import SideMenuBarDesktop from "../../components/menubar/sideMenuBar/SideMenuBarDesktop";
 import MenubarSpacerDashboard from "../../components/spacer/MenubarSpacerDashboard";
@@ -68,11 +69,18 @@ const Body = styled.div`
 const Gap = styled.div`
   height: 30px;
 `;
+const Loading = styled.div`
+  width: fit-content;
+  margin: auto;
+  padding: 70px;
+`;
 function DashboardPage() {
   const navigate = useNavigate();
   const [appliedJobs, setAppliedJobs] = useState();
   const [appliedProjects, setAppliedProjects] = useState();
   const [creatredProjects, setCreatedProjects] = useState();
+  const [loadingApplications, setLoadingApplications] = useState(true);
+  const [loadingMyProjects, setLoadingMyProjects] = useState(true);
 
   useEffect(() => {
     async function getAppliedJobs() {
@@ -99,6 +107,7 @@ function DashboardPage() {
           setAppliedJobs(null);
         }
       );
+      setLoadingApplications(false);
     }
     getAppliedProjects();
   }, []);
@@ -113,6 +122,7 @@ function DashboardPage() {
           setCreatedProjects(null);
         }
       );
+      setLoadingMyProjects(false);
     }
     getProjectCreatedByUser();
   }, []);
@@ -137,24 +147,30 @@ function DashboardPage() {
                       navigate("/my-applications");
                     }}
                   />
-
+                  {loadingApplications && (
+                    <Loading>
+                      <SpinnerWidget />
+                    </Loading>
+                  )}
                   {appliedJobs &&
                     appliedJobs.map((application) => (
                       <MyApplicationWidget application={application} />
                     ))}
                   {appliedProjects &&
-                    appliedProjects.map((application, key) => (
-                      <AppliedTaskWidget
-                        key={key}
-                        application={application}
-                        onClick={(applicationId) => {
-                          navigate(
-                            `/my-applications/${application.status}/${applicationId}`
-                          );
-                          console.log(application);
-                        }}
-                      />
-                    ))}
+                    appliedProjects.map(
+                      (application, key) =>
+                        application.projectStatus !== "Completed" && (
+                          <AppliedTaskWidget
+                            key={key}
+                            application={application}
+                            onClick={(applicationId) => {
+                              navigate(
+                                `/my-applications/${application.status}/${applicationId}`
+                              );
+                            }}
+                          />
+                        )
+                    )}
                   <Gap />
                 </MyApplications>
               </Left>
@@ -166,6 +182,11 @@ function DashboardPage() {
                     navigate("/created-by-me");
                   }}
                 />
+                {loadingMyProjects && (
+                  <Loading>
+                    <SpinnerWidget />
+                  </Loading>
+                )}
                 {creatredProjects &&
                   creatredProjects.map((project, key) => (
                     <ApplicationsCreatedByMeWidget

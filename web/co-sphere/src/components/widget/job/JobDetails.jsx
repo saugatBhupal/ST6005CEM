@@ -14,6 +14,7 @@ import FilledButton from "../../buttons/FilledButton";
 import LikeButton from "../../buttons/LikeButton";
 import ShareButton from "../../buttons/ShareButton";
 import ClockIcon from "../../icon/ClockIcon";
+import SpinnerWidget from "../../loading/SpinnerWidget";
 import PriceChip from "../chip/PriceChip";
 import SkillChip from "../chip/SkillChip";
 import DeadlineWidget from "../duration/DeadlineWidget";
@@ -99,12 +100,18 @@ const Bottom = styled.div`
     width: 300px;
   }
 `;
-
+const Profile = styled.div`
+  background-color: ${Colors.chatBackground};
+  border: 0.5px solid ${Colors.greyOutlineShadow};
+  padding: 8px 15px;
+  border-radius: 12px;
+`;
 function JobDetails({ projectId }) {
   const [project, setProject] = useState();
   const { showToast } = useToast();
   const [userId, setuserId] = useState();
   const [hasApplied, setHasApplied] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getUserId() {
@@ -126,6 +133,7 @@ function JobDetails({ projectId }) {
           setProject(null);
         }
       );
+      setLoading(false);
     }
     getProject();
   }, []);
@@ -163,6 +171,7 @@ function JobDetails({ projectId }) {
   return (
     <Wrapper>
       <Container>
+        {loading && <SpinnerWidget />}
         {project && (
           <>
             <Content>
@@ -187,11 +196,14 @@ function JobDetails({ projectId }) {
                   </Row>
                 </Flex>
                 <Flex>
-                  <ProfileWidget
-                    url={project.postedBy.profileImage}
-                    name={project.companyName || project.postedBy.fullname}
-                    address={project.address}
-                  />
+                  <Profile>
+                    <ProfileWidget
+                      url={project.postedBy.profileImage}
+                      name={project.companyName || project.postedBy.fullname}
+                      address={project.address}
+                    />
+                  </Profile>
+
                   {project.duration ? (
                     <DurationWidget
                       from={project.duration.from}

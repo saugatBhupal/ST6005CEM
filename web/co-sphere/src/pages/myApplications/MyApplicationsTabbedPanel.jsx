@@ -35,11 +35,16 @@ const Content = styled.div`
   height: 100%;
   overflow-y: scroll;
 `;
-function MyApplicationsTabbedPannel({ onSelect, reload, defaultPanel }) {
+function MyApplicationsTabbedPannel({
+  onSelect,
+  reload,
+  defaultPanel,
+  projectId,
+}) {
   const [currentPanel, setCurrentPanel] = useState("pending");
   useEffect(() => {
     if (defaultPanel != null) {
-      setCurrentPanel(defaultPanel);
+      setCurrentPanel(defaultPanel.toLowerCase());
     }
   }, [defaultPanel]);
   return (
@@ -60,7 +65,7 @@ function MyApplicationsTabbedPannel({ onSelect, reload, defaultPanel }) {
           </li>
           <li
             style={
-              currentPanel === "active"
+              currentPanel === "active" || currentPanel === "accepted"
                 ? { color: "#000000", fontWeight: 400 }
                 : {}
             }
@@ -90,13 +95,19 @@ function MyApplicationsTabbedPannel({ onSelect, reload, defaultPanel }) {
             <PendingApplications
               onClick={(project) => onSelect({ project, type: "pending" })}
               reload={reload}
+              selectedProject={projectId}
             />
           ) : currentPanel === "completed" ? (
             <CompletedTasks
               onClick={(project) => onSelect({ project, type: "completed" })}
+              selectedProject={projectId}
             />
           ) : (
-            <AcceptedApplications reload={reload} />
+            <AcceptedApplications
+              reload={reload}
+              onClick={(project) => onSelect({ project, type: "active" })}
+              selectedProject={projectId}
+            />
           )}
           <Padding />
         </Content>
