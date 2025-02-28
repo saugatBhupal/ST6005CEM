@@ -22,9 +22,13 @@ const Icon = styled.div`
     stroke: none;
   }
 `;
-function ShareButton() {
+function ShareButton({ onClick }) {
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        onClick && onClick();
+      }}
+    >
       <Container>
         <Icon>
           <ShareIcon />

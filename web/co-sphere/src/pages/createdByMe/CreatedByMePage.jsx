@@ -53,6 +53,7 @@ function CreatedByMePage() {
                 }}
                 reload={updateState}
                 defaultPanel={type ?? null}
+                selectedProject={currentProject && currentProject.project}
               />
             </LeftContainer>
           </LeftWrapper>

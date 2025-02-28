@@ -95,9 +95,17 @@ const Column = styled.div`
   justify-content: space-between;
 `;
 
-function ApplicationsCreatedByMeWidget({ project, onClick }) {
+function ApplicationsCreatedByMeWidget({ project, onClick, isSelected }) {
   return (
     <Wrapper
+      style={
+        isSelected
+          ? {
+              backgroundColor: `${Colors.menuSelected}`,
+              boxShadow: "1px 5px 40px -20px rgba(49, 49, 49, 0.354)",
+            }
+          : {}
+      }
       onClick={() => {
         onClick(project._id);
       }}

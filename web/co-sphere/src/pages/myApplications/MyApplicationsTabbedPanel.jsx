@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
 
-import CompletedTasks from "../createdByMe/CompletedTasks";
 import AcceptedApplications from "./AcceptedApplications";
+import CompletedApplications from "./CompletedApplications";
 import PendingApplications from "./PendingApplications";
 
 const Wrapper = styled.div`
@@ -53,7 +53,7 @@ function MyApplicationsTabbedPannel({
         <ul>
           <li
             style={
-              currentPanel === "pending"
+              currentPanel === "pending" || currentPanel === "rejected"
                 ? { color: "#000000", fontWeight: 400 }
                 : {}
             }
@@ -91,14 +91,14 @@ function MyApplicationsTabbedPannel({
       </Switch>
       {
         <Content>
-          {currentPanel === "pending" ? (
+          {currentPanel === "pending" || currentPanel === "rejected" ? (
             <PendingApplications
               onClick={(project) => onSelect({ project, type: "pending" })}
               reload={reload}
               selectedProject={projectId}
             />
           ) : currentPanel === "completed" ? (
-            <CompletedTasks
+            <CompletedApplications
               onClick={(project) => onSelect({ project, type: "completed" })}
               selectedProject={projectId}
             />

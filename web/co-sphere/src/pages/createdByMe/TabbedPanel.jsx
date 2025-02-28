@@ -34,7 +34,7 @@ const Content = styled.div`
   height: 100%;
   overflow-y: scroll;
 `;
-function TabbedPanel({ onSelect, reload, defaultPanel }) {
+function TabbedPanel({ onSelect, reload, defaultPanel, selectedProject }) {
   const [currentPanel, setCurrentPanel] = useState("hiring");
   useEffect(() => {
     if (defaultPanel != null) {
@@ -87,15 +87,17 @@ function TabbedPanel({ onSelect, reload, defaultPanel }) {
         <Content>
           {currentPanel === "hiring" ? (
             <HiringTasks
+              selectedProject={selectedProject}
               onClick={(project) => onSelect({ project, type: "hiring" })}
               reload={reload}
             />
           ) : currentPanel === "completed" ? (
             <CompletedTasks
               onClick={(project) => onSelect({ project, type: "completed" })}
+              selectedProject={selectedProject}
             />
           ) : (
-            <ActiveTasks reload={reload} />
+            <ActiveTasks reload={reload} selectedProject={selectedProject} />
           )}
           <Padding />
         </Content>

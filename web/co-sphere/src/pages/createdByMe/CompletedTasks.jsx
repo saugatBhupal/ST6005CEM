@@ -26,7 +26,12 @@ function CompletedTasks({ onClick, selectedProject }) {
       {loading && <SpinnerWidget />}
       {projects &&
         projects.map((project, key) => (
-          <TaskCompletedCard onClick={onClick} project={project} key={key} />
+          <TaskCompletedCard
+            onClick={onClick}
+            project={project}
+            key={key}
+            isSelected={selectedProject === project._id}
+          />
         ))}
     </div>
   );

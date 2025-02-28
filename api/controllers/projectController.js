@@ -250,8 +250,10 @@ exports.getProjectsByName = async (req, res) => {
       //   select: "_id name profileImage email phone country city",
       // },
     ]);
-
-    res.status(200).json(populatedProjects);
+    const hiringProjects = populatedProjects.filter(
+      (project) => project.status === "Hiring"
+    );
+    res.status(200).json(hiringProjects);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
@@ -431,7 +433,7 @@ exports.getAppliedProjects = async (req, res) => {
         createdAt: project.createdAt,
       };
     });
-
+    console.log(appliedProjects);
     res.status(200).json(appliedProjects);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });

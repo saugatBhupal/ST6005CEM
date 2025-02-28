@@ -96,9 +96,19 @@ const Column = styled.div`
   justify-content: space-between;
 `;
 
-function TaskCompletedCard({ onClick, project }) {
+function TaskCompletedCard({ onClick, project, isSelected }) {
   return (
-    <Wrapper onClick={() => onClick && onClick(project._id)}>
+    <Wrapper
+      onClick={() => onClick && onClick(project._id)}
+      style={
+        isSelected
+          ? {
+              backgroundColor: `${Colors.menuSelected}`,
+              boxShadow: "1px 5px 40px -20px rgba(49, 49, 49, 0.354)",
+            }
+          : {}
+      }
+    >
       <Container>
         <Column>
           <Top>

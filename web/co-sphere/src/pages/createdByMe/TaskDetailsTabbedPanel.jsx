@@ -148,9 +148,8 @@ function TaskDetailsTabbedPanel({
                     task={task}
                     projectId={project._id}
                     reload={reload}
-                    canComplete={
-                      userId === project.postedBy._id || isMember(userId, task)
-                    }
+                    isMember={isMember(userId, task)}
+                    isOwner={userId === project.postedBy._id}
                   />
                 ))}
             </>

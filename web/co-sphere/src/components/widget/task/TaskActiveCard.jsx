@@ -96,10 +96,20 @@ const Column = styled.div`
   justify-content: space-between;
 `;
 
-function TaskActiveCard({ project }) {
+function TaskActiveCard({ project, isSelected }) {
   const navigate = useNavigate();
   return (
-    <Wrapper onClick={() => navigate(`/created-by-me/active/${project._id}`)}>
+    <Wrapper
+      onClick={() => navigate(`/created-by-me/active/${project._id}`)}
+      style={
+        isSelected
+          ? {
+              backgroundColor: `${Colors.menuSelected}`,
+              boxShadow: "1px 5px 40px -20px rgba(49, 49, 49, 0.354)",
+            }
+          : {}
+      }
+    >
       <Container>
         <Column>
           <Top>

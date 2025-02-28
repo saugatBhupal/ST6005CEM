@@ -3,7 +3,7 @@ import { manageGetActiveProjectsCreatedByUser } from "../../common/manager/proje
 import SpinnerWidget from "../../components/loading/SpinnerWidget";
 import TaskActiveCard from "../../components/widget/task/TaskActiveCard";
 
-function ActiveTasks({ reload }) {
+function ActiveTasks({ reload, selectedProject }) {
   const [projects, setProjects] = useState();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -26,7 +26,11 @@ function ActiveTasks({ reload }) {
       {loading && <SpinnerWidget />}
       {projects &&
         projects.map((project, key) => (
-          <TaskActiveCard project={project} key={key} />
+          <TaskActiveCard
+            project={project}
+            key={key}
+            isSelected={selectedProject === project._id}
+          />
         ))}
     </div>
   );

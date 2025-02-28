@@ -4,7 +4,7 @@ import { manageGetHiringProjectsCreatedByUser } from "../../common/manager/proje
 import SpinnerWidget from "../../components/loading/SpinnerWidget";
 import ApplicationsCreatedByMeWidget from "../../components/widget/application/ApplicationsCreatedByMeWidget";
 
-function HiringTasks({ onClick, reload, type }) {
+function HiringTasks({ onClick, reload, type, selectedProject }) {
   const [projects, setProjects] = useState();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -34,6 +34,7 @@ function HiringTasks({ onClick, reload, type }) {
             onClick={(projectId) => {
               onClick(projectId);
             }}
+            isSelected={selectedProject === project._id}
           />
         ))}
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import ProfileImage from "../../../assets/images/icon/profile_icon/profile_icon.png";
 import { useToast } from "../../../common/manager/contextManager/ToastContextManager";
@@ -55,7 +55,14 @@ const Icon = styled.div`
     object-fit: cover;
   }
 `;
-function TaskDetailsCard({ projectId, task, completed, reload, canComplete }) {
+function TaskDetailsCard({
+  projectId,
+  task,
+  completed,
+  reload,
+  isOwner,
+  isMember,
+}) {
   const { showToast } = useToast();
   async function handleCompleteTask() {
     await manageCompleteTask(
@@ -93,14 +100,14 @@ function TaskDetailsCard({ projectId, task, completed, reload, canComplete }) {
                 <TypeChip type={completed} />
               </>
             ) : (
-              canComplete && (
+              (isMember || isOwner) && (
                 <span>
-                  <DeleteButton />
                   <TickButtonRound
                     onClick={() => {
                       handleCompleteTask();
                     }}
                   />
+                  {isOwner && <DeleteButton />}
                 </span>
               )
             )}

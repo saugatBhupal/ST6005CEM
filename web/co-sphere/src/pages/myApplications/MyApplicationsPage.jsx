@@ -72,7 +72,8 @@ function MyApplicationsPage() {
                 projectId={currentProject.project}
                 updateState={(state) => setUpdateState(state)}
               />
-            ) : currentProject.type === "pending" ? (
+            ) : currentProject.type === "pending" ||
+              currentProject.type === "rejected" ? (
               <JobDetails projectId={currentProject.project} />
             ) : (
               <>Empty</>

@@ -110,7 +110,7 @@ function JobDetails({ projectId }) {
   const [project, setProject] = useState();
   const { showToast } = useToast();
   const [userId, setuserId] = useState();
-  const [hasApplied, setHasApplied] = useState();
+  const [hasApplied, setHasApplied] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -141,10 +141,10 @@ function JobDetails({ projectId }) {
   useEffect(() => {
     function updateHasApplied() {
       if (project && userId) {
-        project.applicants.map((applicant) => {
-          applicant.user._id === userId
-            ? setHasApplied(true)
-            : setHasApplied(false);
+        project.applicants.some((applicant) => {
+          if (applicant.user._id === userId) {
+            setHasApplied(true);
+          }
         });
       }
       return;
@@ -191,7 +191,14 @@ function JobDetails({ projectId }) {
                     />
                   </Row>
                   <Row>
-                    <ShareButton />
+                    <ShareButton
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          `localhost:3006/project/${projectId}`
+                        );
+                        showToast("Link has been copied to clipboard");
+                      }}
+                    />
                     <LikeButton />
                   </Row>
                 </Flex>

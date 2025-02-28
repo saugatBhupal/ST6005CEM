@@ -257,7 +257,7 @@ function ActiveTaskDetails({ projectId, updateState }) {
                 <Flex>
                   <span>*This project is only visible to project members</span>
                   <Row>
-                    <DeleteButton />
+                    {userId === project.postedBy._id && <DeleteButton />}
                   </Row>
                 </Flex>
               </Box>
