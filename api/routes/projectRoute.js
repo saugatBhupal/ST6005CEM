@@ -20,6 +20,7 @@ const {
   getTask,
   completeTask,
   completeProject,
+  getExploreProjects,
 } = require("../controllers/projectController");
 
 const router = express.Router();
@@ -44,4 +45,6 @@ router.post("/:projectId/task", createTask);
 router.get("/:projectId/task", getTask);
 router.post("/:projectId/task/:taskId", completeTask);
 router.post("/:projectId/complete", completeProject);
+router.post("/:projectId/complete", completeProject);
+router.get("/explore/:userId", getExploreProjects);
 module.exports = router;

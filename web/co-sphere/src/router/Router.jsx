@@ -1,8 +1,10 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ChatPage from "../pages/chat/ChatPage";
+import CreateProjectPage from "../pages/create/CreateProjectPage";
 import CreatedByMePage from "../pages/createdByMe/CreatedByMePage";
 import DashboardPage from "../pages/dashboard/DashboardPage";
+import ExplorePage from "../pages/explore/ExplorePage";
 import LandingPage from "../pages/LandingPage";
 import MyApplicationsPage from "../pages/myApplications/MyApplicationsPage";
 import ProfilePage from "../pages/profile/ProfilePage";
@@ -23,9 +25,11 @@ function Router({ auth }) {
         <Route path="/project/:projectId" element={<ProjectPage />} />
         <Route element={<ProtectedRoute auth={auth} />}>
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/explore" element={<ExplorePage />} />
           <Route path="/profile/:userId" element={<ProfilePage />} />
           <Route path="/chat/:conversationId" element={<ChatPage />} />
           <Route path="/chat" element={<ChatPage />} />
+          <Route path="/create" element={<CreateProjectPage />} />
           <Route path="/my-applications" element={<MyApplicationsPage />} />
           <Route
             path="/my-applications/:type/:project"

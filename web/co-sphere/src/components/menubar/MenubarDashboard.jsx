@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
+import { useSocket } from "../../common/manager/contextManager/SocketContextManager";
+import { useToast } from "../../common/manager/contextManager/ToastContextManager";
 import { manageGetRecentSearches } from "../../common/manager/searchManager/SearchManager";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
@@ -150,9 +152,21 @@ const BrowseIcon = styled.div`
 `;
 export default function MenubarDashboard() {
   const navigate = useNavigate();
+  const socket = useSocket();
   const [showOverlay, setShowOverlay] = useState(false);
   const [searches, setSearches] = useState([]);
   const [user, setUser] = useState();
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.on("receiveNotification", (message) => {
+      showToast(message);
+    });
+    return () => {
+      socket.off("receiveNotification");
+    };
+  }, [socket]);
 
   useEffect(() => {
     async function getCurrentUser() {

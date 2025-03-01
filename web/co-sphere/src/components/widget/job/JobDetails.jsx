@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useToast } from "../../../common/manager/contextManager/ToastContextManager";
 import {
@@ -112,6 +113,7 @@ function JobDetails({ projectId }) {
   const [userId, setuserId] = useState();
   const [hasApplied, setHasApplied] = useState(false);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getUserId() {
@@ -236,6 +238,11 @@ function JobDetails({ projectId }) {
                   Already Applied {project.applicants.length - 1} more
                   applicants.
                 </>
+              ) : userId === null ? (
+                <FilledButton
+                  placeholder={"Log in to apply"}
+                  onClick={() => navigate("/signin")}
+                />
               ) : (
                 <FilledButton
                   placeholder={"Apply Now"}

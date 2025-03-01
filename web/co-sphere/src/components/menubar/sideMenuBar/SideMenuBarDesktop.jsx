@@ -149,7 +149,10 @@ function SideMenuBarDesktop(props) {
               </svg>
               <a href={userId && `/profile/${userId}`}>Profile</a>
             </MenuItem>
-            <MenuItem selected={props.current === "jobs"}>
+            <MenuItem
+              selected={props.current === "explore"}
+              onClick={() => navigate("/explore")}
+            >
               <svg
                 width="23"
                 height="23"
@@ -164,9 +167,12 @@ function SideMenuBarDesktop(props) {
                   strokeLinejoin="round"
                 />
               </svg>
-              <a>Browse Jobs</a>
+              <a>Explore</a>
             </MenuItem>
-            <MenuItem selected={props.current === "create"}>
+            <MenuItem
+              selected={props.current === "create"}
+              onClick={() => navigate("/create")}
+            >
               <svg
                 width="23"
                 height="23"

@@ -163,3 +163,16 @@ export async function applyProjectService(details, callback) {
       callback(response);
     });
 }
+export async function getExploreProjectsService(userId, callback) {
+  await request
+    .get(`/project/explore/${userId}`, {
+      headers: {},
+    })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      callback(response);
+    });
+}

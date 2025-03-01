@@ -7,6 +7,7 @@ const {
   populateApplicantsWithStatusFromList,
   populateTasksWithStatus,
 } = require("../utils/project/projectApiUtils");
+const { io, getSocketIdfromUserId } = require("../config/socketConfig");
 
 exports.getAllProjects = async (req, res) => {
   try {
@@ -578,7 +579,10 @@ exports.hireUser = async (req, res) => {
     }
 
     await project.save();
-
+    const socketId = getSocketIdfromUserId(userId);
+    if (socketId != "undefined" || socketId != null) {
+      io.to(socketId).emit("receiveNotification", `You have a been hired.`);
+    }
     res
       .status(200)
       .json({ message: "User hired successfully", applicant: hiredApplicant });
@@ -618,11 +622,17 @@ exports.rejectUser = async (req, res) => {
 
     await project.save();
 
+    const socketId = getSocketIdfromUserId(userId);
+    if (socketId != "undefined" || socketId != null) {
+      io.to(socketId).emit("receiveNotification", `You have a been rejected.`);
+    }
+
     res.status(200).json({
       message: "User rejected successfully",
       applicant: rejectedApplicant,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
@@ -815,5 +825,34 @@ exports.completeProject = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+exports.getExploreProjects = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const projects = await Project.find({
+      postedBy: { $ne: userId },
+      "applicants.user": { $ne: userId },
+      status: "Hiring",
+    })
+      .populate({
+        path: "postedBy",
+        select: "_id fullname profileImage email phone country city",
+      })
+      .populate("skills")
+      .populate("likes")
+      .populate({
+        path: "applicants.user",
+        select: "_id fullname profileImage email phone country city",
+      })
+      .populate({
+        path: "members",
+        select: "_id fullname profileImage email phone country city",
+      });
+
+    res.status(200).json(projects);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error });
   }
 };

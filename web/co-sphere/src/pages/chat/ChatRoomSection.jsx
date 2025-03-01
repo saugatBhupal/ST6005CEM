@@ -81,7 +81,7 @@ function ChatRoomSection({ conversationId, userId, onNewMessage, username }) {
     return () => {
       socket.off("receiveMessage");
     };
-  }, [socket, onNewMessage, conversationId]);
+  }, [socket, onNewMessage, conversationId]);       
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });

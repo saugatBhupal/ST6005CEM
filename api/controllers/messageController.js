@@ -49,6 +49,7 @@ exports.sendMessage = async (req, res) => {
       const socketId = getSocketIdfromUserId(member);
       if (socketId != "undefined" || socketId != null) {
         io.to(socketId).emit("receiveMessage", newMessage);
+        io.to(socketId).emit("receiveNotification", `You have a new message.`);
       }
     });
     res.status(200).json(newMessage);

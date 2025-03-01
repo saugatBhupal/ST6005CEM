@@ -21,7 +21,9 @@ const Wrapper = styled.div`
     background-color: ${Colors.menuSelected};
   }
 `;
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+`;
 const Top = styled.div`
   a {
     font-size: ${FontSize.extraSmall};
@@ -70,6 +72,7 @@ const Flex = styled.div`
 const Column = styled.div`
   height: 100%;
   display: flex;
+  width: 100%;
   flex-direction: column;
   justify-content: space-between;
   gap: 15px;

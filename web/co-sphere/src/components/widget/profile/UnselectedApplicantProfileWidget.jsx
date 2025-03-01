@@ -50,7 +50,7 @@ const Column = styled.div`
     font-size: ${FontSize.small};
   }
 `;
-function UnselectedApplicantProfileWidget({ applicant, onAccept }) {
+function UnselectedApplicantProfileWidget({ applicant, onAccept, onReject }) {
   const navigate = useNavigate();
   return (
     <Wrapper onClick={() => navigate(`/profile/${applicant.user._id}`)}>

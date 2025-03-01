@@ -8,6 +8,7 @@ import {
   getActiveProjectsByUserService,
   getAppliedProjectService,
   getCompletedProjectsByUserService,
+  getExploreProjectsService,
   getHiringProjectsByUserService,
   getProjectByIdService,
   getProjectCreatedByUserService,
@@ -217,4 +218,19 @@ export async function manageApplyToProject(details, onSuccess, onFailure) {
   } catch (e) {
     onFailure("Error connecting to network.");
   }
+}
+export async function manageGetExploreProjects(onSuccess, onFailure) {
+  const userId = await getUserIdFromLocalStorage();
+  if (userId)
+    try {
+      await getExploreProjectsService(userId, async (response) => {
+        if (response.status === 200) {
+          onSuccess(response.data);
+        } else {
+          onFailure(response.data.message);
+        }
+      });
+    } catch (e) {
+      onFailure("Error connecting to network.");
+    }
 }
