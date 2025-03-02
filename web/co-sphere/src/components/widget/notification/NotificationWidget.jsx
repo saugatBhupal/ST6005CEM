@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { manageGetNotifications } from "../../../common/manager/userManager/UserManager";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
-import ContentNotification from "./ContentNotification";
-import JobNotification from "./JobNotification";
+import SpinnerWidget from "../../loading/SpinnerWidget";
 import MessageNotification from "./MessageNotification";
 import NotificationBottomSection from "./NotificationBottomSection";
 
@@ -45,6 +45,24 @@ const Container = styled.div`
   overflow: hidden;
 `;
 function NotificationWidget() {
+  const [notifications, setNotifications] = useState();
+  const [loading, setLoading] = useState(true);
+  const [reload, setReload] = useState();
+
+  useEffect(() => {
+    async function getNotfications() {
+      await manageGetNotifications(
+        (notifications) => {
+          setNotifications(notifications.notifications);
+        },
+        () => {
+          setNotifications(null);
+        }
+      );
+      setLoading(false);
+    }
+    getNotfications();
+  }, [reload]);
   return (
     <Wrapper>
       <Container>
@@ -54,14 +72,23 @@ function NotificationWidget() {
           </Flex>
         </TopBar>
         <Content>
-          <ContentNotification />
+          {loading && <SpinnerWidget />}
+          {notifications &&
+            notifications.map((notification) => {
+              if (notification.notificationType === "Chat") {
+                return <MessageNotification notification={notification} />;
+              } else if (notification.notificationType === "Project") {
+              }
+            })}
+          {notifications === null && <>No Notifications</>}
+          {/* <ContentNotification />
           <MessageNotification />
           <JobNotification />
           <ContentNotification />
-          <MessageNotification />
+          <MessageNotification /> */}
         </Content>
         <Bottom>
-          <NotificationBottomSection />
+          <NotificationBottomSection setReload={setReload} />
         </Bottom>
       </Container>
     </Wrapper>

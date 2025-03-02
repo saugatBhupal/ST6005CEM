@@ -108,3 +108,27 @@ export async function getActiveTasksService(userId, callback) {
       callback(response);
     });
 }
+export async function getNotificationsService(userId, callback) {
+  await request
+    .get(`/user/${userId}/notification`, { headers: {} })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      console.log(e);
+      callback(response);
+    });
+}
+export async function deleteNotificationsService(userId, callback) {
+  await request
+    .delete(`/user/${userId}/notification`, { headers: {} })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      console.log(e);
+      callback(response);
+    });
+}

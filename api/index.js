@@ -58,3 +58,4 @@ server.listen(
 process.on("unhandlesRejection", (err, promise) => {
   console.log(`Unhandles Rejection at:, promise, "Reason", err`.red);
 });
+module.exports = { app, server };

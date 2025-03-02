@@ -29,9 +29,13 @@ const Text = styled.div`
   font-size: ${FontSize.small};
   color: ${Colors.subtitleBlack};
 `;
-function MarkAllAsReadButton() {
+function MarkAllAsReadButton({ onClick }) {
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        onClick && onClick();
+      }}
+    >
       <Container>
         <Icon>
           <MarkAsReadIcon />

@@ -2,10 +2,12 @@ import { getUserIdFromLocalStorage } from "../../../service/LocalStorageService"
 import {
   addEducationService,
   addExperienceService,
+  deleteNotificationsService,
   getActiveTasksService,
   getEducationByUserIdService,
   getExperienceByUserIdService,
   getHistoryByUserIdService,
+  getNotificationsService,
   getUserByIdService,
   updateProfileIntroService,
   uploadProfileImageService,
@@ -124,6 +126,36 @@ export async function manageGetActiveTasks(onSuccess, onFailure) {
   if (userId)
     try {
       await getActiveTasksService(userId, async (response) => {
+        if (response.status === 200) {
+          onSuccess(response.data);
+        } else {
+          onFailure(response.data.message);
+        }
+      });
+    } catch (e) {
+      onFailure("Error connecting to network.");
+    }
+}
+export async function manageGetNotifications(onSuccess, onFailure) {
+  const userId = await getUserIdFromLocalStorage();
+  if (userId)
+    try {
+      await getNotificationsService(userId, async (response) => {
+        if (response.status === 200) {
+          onSuccess(response.data);
+        } else {
+          onFailure(response.data.message);
+        }
+      });
+    } catch (e) {
+      onFailure("Error connecting to network.");
+    }
+}
+export async function manageDeleteNotifications(onSuccess, onFailure) {
+  const userId = await getUserIdFromLocalStorage();
+  if (userId)
+    try {
+      await deleteNotificationsService(userId, async (response) => {
         if (response.status === 200) {
           onSuccess(response.data);
         } else {

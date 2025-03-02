@@ -511,6 +511,13 @@ function InterestsWidget(pageNumber, setPageNumber, navigate) {
       <Form>
         <>
           <InterestChip text="Mobile Development" />
+          <InterestChip text="Web Development" />
+          <InterestChip text="Photography" />
+          <InterestChip text="React JS" />
+          <InterestChip text="Node JS" />
+          <InterestChip text="Flutter" />
+          <InterestChip text="Video Editing" />
+          <InterestChip text="Content Writing" />
         </>
         <div style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
           <FilledButton

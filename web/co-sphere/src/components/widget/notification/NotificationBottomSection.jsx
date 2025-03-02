@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { useToast } from "../../../common/manager/contextManager/ToastContextManager";
+import { manageDeleteNotifications } from "../../../common/manager/userManager/UserManager";
 import { Colors } from "../../../constants/Colors";
 import MarkAllAsReadButton from "./buttons/MarkAllAsReadButton";
 
@@ -19,11 +21,22 @@ const Container = styled.div`
   justify-content: center;
   align-items: flex-end;
 `;
-function NotificationBottomSection() {
+function NotificationBottomSection({ setReload }) {
+  const { showToast } = useToast();
+  async function handleMarkAsRead() {
+    await manageDeleteNotifications(
+      () => {
+        setReload(Math.random());
+      },
+      () => {
+        showToast("Error marking as read.");
+      }
+    );
+  }
   return (
     <Wrapper>
       <Container>
-        <MarkAllAsReadButton />
+        <MarkAllAsReadButton onClick={() => handleMarkAsRead()} />
       </Container>
     </Wrapper>
   );

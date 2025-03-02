@@ -99,6 +99,24 @@ const userSchema = new mongoose.Schema(
         ref: "Skill",
       },
     ],
+    notification: [
+      {
+        notificationType: {
+          type: String,
+          enum: ["Chat", "Recommendation", "Project"],
+        },
+        data: {
+          type: String,
+        },
+        chatData: {
+          type: String,
+        },
+        date: {
+          type: Date,
+          default: Date.now(),
+        },
+      },
+    ],
     education: [
       {
         organization: {

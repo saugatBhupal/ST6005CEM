@@ -5,6 +5,7 @@ import { useToast } from "../../../common/manager/contextManager/ToastContextMan
 import { manageUploadProfileImage } from "../../../common/manager/userManager/UserManager";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
+import { updateLocalProfileImage } from "../../../service/LocalStorageService";
 import EditIcon from "../../icon/EditIcon";
 
 const Wrapper = styled.div`
@@ -85,7 +86,10 @@ function UpdateProfileImageWidget({ url, height, userId }) {
     try {
       await manageUploadProfileImage(
         formData,
-        () => showToast("Profile image updated."),
+        async () => {
+          showToast("Profile image updated.");
+          await updateLocalProfileImage();
+        },
         (err) => showToast(err)
       );
     } catch (error) {

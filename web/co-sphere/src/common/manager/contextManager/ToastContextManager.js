@@ -6,7 +6,9 @@ const Wrapper = styled.div`
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: ${Colors.lightMainBlue};
+  height: 80px;
+  width: 150px;
+  background-color: ${Colors.justWhite};
   color: ${Colors.mainBlue};
   border: 0.5px solid ${Colors.greyOutlineShadow};
   padding: 10px;

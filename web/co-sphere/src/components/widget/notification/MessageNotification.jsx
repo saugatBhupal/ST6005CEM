@@ -1,8 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
-import ProfileIcon from "../../icon/ProfileIcon";
+import { calculateTimeDifference } from "../../../utils/date/CalculateTimeDifference";
+import { convertToTime } from "../../../utils/date/ConvertToTime";
+import SendMessageIcon from "../../icon/SendMessageIcon";
 
 const Wrapper = styled.div`
   border-bottom: 1px solid ${Colors.greyOutlineShadow};
@@ -56,28 +59,30 @@ const MessageContainer = styled.div`
   margin-top: 10px;
   margin-left: calc(40px);
 `;
-function MessageNotification() {
+function MessageNotification({ notification }) {
+  const navigate = useNavigate();
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        navigate("/chat");
+      }}
+    >
       <Container>
         <Flex>
           <Left>
-            <ProfileIcon height={"40px"} />
+            <SendMessageIcon />
           </Left>
           <Right>
             <Row>
-              <b>Leslie Alexander </b> messaged you
+              <b>{notification.data} </b>
             </Row>
             <Time>
-              Friday 3:12 PM
-              <div>1h</div>
+              {convertToTime(notification.date)}
+              <div>{calculateTimeDifference(notification.date)}</div>
             </Time>
           </Right>
         </Flex>
-        <MessageContainer>
-          Really love the ideas that you provided. Hope to talk to you soon
-          again.
-        </MessageContainer>
+        <MessageContainer>{notification.chatData}</MessageContainer>
       </Container>
     </Wrapper>
   );

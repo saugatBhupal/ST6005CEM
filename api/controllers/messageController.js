@@ -1,5 +1,6 @@
 const { io, getSocketIdfromUserId } = require("../config/socketConfig");
 const Conversation = require("../models/conversation");
+const { addNotification } = require("./userController");
 
 exports.getMessagesFromConversation = async (req, res) => {
   try {
@@ -45,13 +46,27 @@ exports.sendMessage = async (req, res) => {
     conversation.messages.push(newMessage);
     await conversation.save();
 
-    members.map((member) => {
+    const notification = {
+      notificationType: "Chat",
+      data: "You have a new message!",
+      chatData: content,
+      reciever: members.filter((member) => member != senderID),
+    };
+
+    const savedNotification = await addNotification(notification);
+
+    members.forEach((member) => {
       const socketId = getSocketIdfromUserId(member);
-      if (socketId != "undefined" || socketId != null) {
+
+      if (socketId && socketId !== "undefined") {
         io.to(socketId).emit("receiveMessage", newMessage);
-        io.to(socketId).emit("receiveNotification", `You have a new message.`);
+
+        if (member !== senderID) {
+          io.to(socketId).emit("receiveNotification", notification);
+        }
       }
     });
+    
     res.status(200).json(newMessage);
   } catch (error) {
     res.status(500).json({ message: "Internal Servor Error" });

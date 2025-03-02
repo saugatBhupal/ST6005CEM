@@ -160,8 +160,8 @@ export default function MenubarDashboard() {
 
   useEffect(() => {
     if (!socket) return;
-    socket.on("receiveNotification", (message) => {
-      showToast(message);
+    socket.on("receiveNotification", (notification) => {
+      showToast(notification.data);
     });
     return () => {
       socket.off("receiveNotification");

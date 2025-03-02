@@ -359,3 +359,63 @@ exports.getActiveTasksByUserId = async (req, res) => {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
+
+exports.addNotification = async (notificationData) => {
+  try {
+    const { notificationType, data, chatData, reciever } = notificationData;
+
+    const notification = {
+      notificationType,
+      data,
+      chatData: chatData || null,
+      date: new Date(),
+    };
+
+    const user = await User.findByIdAndUpdate(
+      reciever,
+      { $push: { notification } },
+      { new: true, runValidators: true }
+    );
+    console.log("Notification added");
+  } catch (error) {
+    console.error("Error adding notification:", error);
+  }
+};
+
+exports.deleteAllNotificationsByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { $set: { notification: [] } },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res
+      .status(200)
+      .json({ message: "All notifications deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting notifications:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+exports.getNotificationsByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId).select("notification");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.status(200).json({ notifications: user.notification });
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
