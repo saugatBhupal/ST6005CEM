@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
+import { FontSize } from "../../../constants/FontSize";
 const Wrapper = styled.div`
   width: fit-content;
   height: fit-content;
   padding: 10px 20px;
+  font-size: ${FontSize.small};
   border-radius: 32px;
   cursor: pointer;
   background-color: ${({ isSelected }) =>

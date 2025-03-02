@@ -6,14 +6,41 @@ const Wrapper = styled.div`
   position: fixed;
   bottom: 20px;
   right: 20px;
-  height: 80px;
-  width: 150px;
+  width: 250px;
   background-color: ${Colors.justWhite};
   color: ${Colors.mainBlue};
   border: 0.5px solid ${Colors.greyOutlineShadow};
-  padding: 10px;
-  border-radius: 5px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: Arial, sans-serif;
+
+  border-left: 5px solid ${Colors.mainBlue};
+
+  &::before {
+    content: "";
+    height: 6px;
+    background-color: ${Colors.mainBlue};
+    border-radius: 5px 5px 0 0;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .message {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .close-button {
+    align-self: flex-end;
+    font-size: 12px;
+    color: ${Colors.mainBlue};
+    cursor: pointer;
+  }
 `;
 
 const ToastContext = createContext();
@@ -34,7 +61,12 @@ export function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      {isVisible && <Wrapper>{message}</Wrapper>}
+      {isVisible && (
+        <Wrapper>
+          <div className="message">{message}</div>
+          <div className="close-button">X</div>
+        </Wrapper>
+      )}
     </ToastContext.Provider>
   );
 }

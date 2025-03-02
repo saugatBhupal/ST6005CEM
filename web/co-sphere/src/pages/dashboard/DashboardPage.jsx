@@ -20,6 +20,7 @@ import StatsWidget from "../../components/widget/stats/StatsWidget";
 import AppliedTaskWidget from "../../components/widget/task/AppliedTaskWidget";
 import TasksAssignedToMeWidget from "../../components/widget/task/TasksAssignedToMeWidget";
 import { Colors } from "../../constants/Colors";
+import { FontSize } from "../../constants/FontSize";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -47,6 +48,13 @@ const Right = styled.div`
   flex: 1 1 0;
   height: 100%;
   overflow-y: scroll;
+`;
+const NotFound = styled.div`
+  text-align: center;
+  height: 200px;
+  padding-top: 100px;
+  font-size: ${FontSize.small};
+  color: ${Colors.subtitleBlack};
 `;
 const MyApplications = styled.div``;
 const Left = styled.div`
@@ -189,6 +197,8 @@ function DashboardPage() {
                           />
                         )
                     )}
+                  {appliedProjects && appliedProjects === null}
+                  {<NotFound>No applications found</NotFound>}
                   <Gap />
                 </MyApplications>
               </Left>
@@ -217,6 +227,8 @@ function DashboardPage() {
                       }}
                     />
                   ))}
+                {creatredProjects && creatredProjects === null}
+                {<NotFound>No projects found</NotFound>}
                 <Gap />
                 <BasicWidgetTitleBlock
                   title={"Assigned To Me"}
@@ -231,6 +243,8 @@ function DashboardPage() {
                   activeTasks.map((task, key) => (
                     <TasksAssignedToMeWidget key={key} task={task} />
                   ))}
+                {activeTasks && activeTasks === null}
+                {<NotFound>No active tasks found</NotFound>}
                 <Gap />
               </Right>
               <Notification>

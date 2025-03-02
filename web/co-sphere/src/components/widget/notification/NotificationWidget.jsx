@@ -44,6 +44,14 @@ const Container = styled.div`
   flex-direction: column;
   overflow: hidden;
 `;
+
+const NotFound = styled.div`
+  text-align: center;
+  height: 200px;
+  padding-top: 100px;
+  font-size: ${FontSize.small};
+  color: ${Colors.subtitleBlack};
+`;
 function NotificationWidget() {
   const [notifications, setNotifications] = useState();
   const [loading, setLoading] = useState(true);
@@ -80,7 +88,12 @@ function NotificationWidget() {
               } else if (notification.notificationType === "Project") {
               }
             })}
-          {notifications === null && <>No Notifications</>}
+
+          {notifications && notifications.length < 1 ? (
+            <NotFound>All clear here</NotFound>
+          ) : (
+            <></>
+          )}
           {/* <ContentNotification />
           <MessageNotification />
           <JobNotification />

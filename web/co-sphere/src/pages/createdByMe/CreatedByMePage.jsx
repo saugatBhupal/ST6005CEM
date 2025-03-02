@@ -23,6 +23,13 @@ const RightWrapper = styled.div`
   width: 100%;
   background-color: ${Colors.justWhite};
 `;
+const NotFound = styled.div`
+  text-align: center;
+  height: 200px;
+  padding-top: 100px;
+  font-size: ${FontSize.small};
+  color: ${Colors.subtitleBlack};
+`;
 const Title = styled.div`
   font-size: ${FontSize.small};
   font-weight: 500;
@@ -75,7 +82,9 @@ function CreatedByMePage() {
                 updateState={(state) => setUpdateState(state)}
               />
             ) : (
-              <>Empty</>
+              <>
+                <NotFound>Please select a card.</NotFound>
+              </>
             )}
           </RightWrapper>
         </>

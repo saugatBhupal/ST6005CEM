@@ -81,14 +81,14 @@ function StatsWidget() {
                 <Title>Success</Title>
                 <Content>
                   <span>
-                    <b>4</b>/5
+                    <b>0</b>/5
                   </span>
                 </Content>
               </div>
               <VerticalProgressBar
                 fillColor={`${Colors.strokeBlue}`}
                 max={5}
-                current={4}
+                current={0}
               />
             </Flex>
           </BoxContainer>
@@ -100,7 +100,7 @@ function StatsWidget() {
                 <Title>Rating</Title>
                 <Content>
                   <span>
-                    <b>3.2</b>
+                    <b>NA</b>
                   </span>
                 </Content>
               </div>
@@ -117,7 +117,7 @@ function StatsWidget() {
             <Title>Tasks</Title>
             <Content>
               <span>
-                <b>6</b>/8
+                <b>0</b>/0
               </span>
             </Content>
           </BoxContainer>

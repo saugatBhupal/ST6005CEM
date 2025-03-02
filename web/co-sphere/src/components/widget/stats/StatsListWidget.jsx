@@ -46,7 +46,7 @@ function StatsListWidget() {
           <Flex>
             <div>Unique Clients</div>
             <div>
-              6<span>/12</span>
+              0<span>/0</span>
             </div>
           </Flex>
         </Top>
@@ -54,7 +54,7 @@ function StatsListWidget() {
           <Flex>
             <div>Applicants</div>
             <div>
-              6<span>/12</span>
+              0<span>/0</span>
             </div>
           </Flex>
         </Bottom>

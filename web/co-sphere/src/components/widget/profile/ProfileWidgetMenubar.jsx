@@ -11,7 +11,8 @@ const Wrapper = styled.div`
 const Container = styled.div`
   display: flex;
   align-items: center;
-  width: 115px;
+  width: 125px;
+  gap: 5px;
   justify-content: space-between;
 `;
 const Right = styled.div`

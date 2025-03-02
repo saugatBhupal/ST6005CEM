@@ -251,7 +251,7 @@ function ProfilePage() {
                           <div>
                             <LikeIcon />
                           </div>
-                          121
+                          0
                         </li>
                         <li>
                           <div>

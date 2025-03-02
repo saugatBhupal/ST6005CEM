@@ -83,7 +83,9 @@ function ExperienceSection({
       {isUser ? (
         <TextAreaWithActions
           placeholder="Write a summary of your work experience..."
-          value={user.overview}
+          value={
+            user.overview || "Write a summary of your professional experience"
+          }
           onClick={() => {
             handleSubmit();
           }}

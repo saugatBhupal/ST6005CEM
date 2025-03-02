@@ -65,6 +65,13 @@ const Form = styled.div`
     width: 400px;
   }
 `;
+const Interests = styled.div`
+  width: 500px;
+  align-items: center;
+  gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+`;
 const Flex = styled.div`
   width: 500px;
   margin: auto;
@@ -509,7 +516,7 @@ function InterestsWidget(pageNumber, setPageNumber, navigate) {
         Help us know you better by picking any 4 of the topics below
       </SubTitle>
       <Form>
-        <>
+        <Interests>
           <InterestChip text="Mobile Development" />
           <InterestChip text="Web Development" />
           <InterestChip text="Photography" />
@@ -518,7 +525,7 @@ function InterestsWidget(pageNumber, setPageNumber, navigate) {
           <InterestChip text="Flutter" />
           <InterestChip text="Video Editing" />
           <InterestChip text="Content Writing" />
-        </>
+        </Interests>
         <div style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
           <FilledButton
             placeholder={"Complete"}
