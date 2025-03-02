@@ -312,4 +312,50 @@ exports.getHistoryByUserId = async (req, res) => {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
+exports.getActiveTasksByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
 
+    const userWithProjects = await User.findById(userId)
+      .select("appliedProjects")
+      .populate({
+        path: "appliedProjects",
+        match: { status: "Active" },
+        select: "_id projectName tasks postedBy createdAt",
+        populate: [
+          {
+            path: "postedBy",
+            select: "fullname profileImage",
+          },
+          {
+            path: "tasks",
+            match: { status: "Active" },
+            select: "taskName taskDescription deadline status",
+          },
+        ],
+      });
+
+    if (!userWithProjects) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Extract active tasks from active projects
+    const activeTasks = userWithProjects.appliedProjects.flatMap((project) =>
+      project.tasks.map((task) => ({
+        postedBy: project.postedBy,
+        createdAt: project.createdAt,
+        projectId: project._id,
+        projectName: project.projectName,
+        taskName: task.taskName,
+        taskDescription: task.taskDescription,
+        deadline: task.deadline,
+        status: task.status,
+      }))
+    );
+
+    res.status(200).json(activeTasks);
+  } catch (error) {
+    console.error("Error fetching active tasks:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};

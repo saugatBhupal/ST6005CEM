@@ -6,6 +6,7 @@ import {
   manageGetAppliedProjects,
   manageGetProjectsCreatedByUser,
 } from "../../common/manager/projectManager/ProjectManager";
+import { manageGetActiveTasks } from "../../common/manager/userManager/UserManager";
 import SpinnerWidget from "../../components/loading/SpinnerWidget";
 import MenubarDashboard from "../../components/menubar/MenubarDashboard";
 import SideMenuBarDesktop from "../../components/menubar/sideMenuBar/SideMenuBarDesktop";
@@ -78,9 +79,11 @@ function DashboardPage() {
   const navigate = useNavigate();
   const [appliedJobs, setAppliedJobs] = useState();
   const [appliedProjects, setAppliedProjects] = useState();
+  const [activeTasks, setActiveTasks] = useState();
   const [creatredProjects, setCreatedProjects] = useState();
   const [loadingApplications, setLoadingApplications] = useState(true);
   const [loadingMyProjects, setLoadingMyProjects] = useState(true);
+  const [loadingActiveTasks, setLoadingActiveTasks] = useState(true);
 
   useEffect(() => {
     async function getAppliedJobs() {
@@ -110,6 +113,21 @@ function DashboardPage() {
       setLoadingApplications(false);
     }
     getAppliedProjects();
+  }, []);
+  useEffect(() => {
+    async function getActiveTasks() {
+      await manageGetActiveTasks(
+        (tasks) => {
+          setActiveTasks(tasks);
+        },
+        (res) => {
+          console.log(res);
+          setActiveTasks(null);
+        }
+      );
+      setLoadingActiveTasks(false);
+    }
+    getActiveTasks();
   }, []);
   useEffect(() => {
     async function getProjectCreatedByUser() {
@@ -204,12 +222,15 @@ function DashboardPage() {
                   title={"Assigned To Me"}
                   onClick={() => {}}
                 />
-                <TasksAssignedToMeWidget />
-                <TasksAssignedToMeWidget />
-                <TasksAssignedToMeWidget />
-                <TasksAssignedToMeWidget />
-                <TasksAssignedToMeWidget />
-                <TasksAssignedToMeWidget />
+                {loadingActiveTasks && (
+                  <Loading>
+                    <SpinnerWidget />
+                  </Loading>
+                )}
+                {activeTasks &&
+                  activeTasks.map((task, key) => (
+                    <TasksAssignedToMeWidget key={key} task={task} />
+                  ))}
                 <Gap />
               </Right>
               <Notification>

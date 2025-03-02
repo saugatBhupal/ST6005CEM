@@ -11,6 +11,7 @@ const {
   getReviewsByUser,
   getHistoryByUserId,
   updateAbout,
+  getActiveTasksByUserId,
 } = require("../controllers/userController");
 
 const { addSkillByUserID } = require("../controllers/skillController");
@@ -40,5 +41,6 @@ router.get("/search-history/:userID", getSearchHistory);
 router.post("/search-history", addSearchHistory);
 router.get("/:userId/reviews", getReviewsByUser);
 router.get("/:userId/history", getHistoryByUserId);
+router.get("/:userId/task", getActiveTasksByUserId);
 
 module.exports = router;

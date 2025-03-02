@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import EsewaLogo from "../../../assets/images/logo/esewa-logo.png";
 import { Colors } from "../../../constants/Colors";
 import { FontSize } from "../../../constants/FontSize";
+import { calculateTimeBetween } from "../../../utils/date/CalculateTimeBetween";
 
 const Wrapper = styled.div`
   background-color: ${Colors.justWhite};
@@ -32,6 +32,9 @@ const Top = styled.div`
   }
   img {
     border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    object-fit: cover;
     margin-right: 5px;
   }
 `;
@@ -102,7 +105,7 @@ const Column = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `;
-function TasksAssignedToMeWidget() {
+function TasksAssignedToMeWidget({ task }) {
   return (
     <Wrapper>
       <Container>
@@ -123,11 +126,11 @@ function TasksAssignedToMeWidget() {
           <Top>
             <Flex>
               <div>
-                <img src={EsewaLogo} alt="" />
+                <img src={task.postedBy.profileImage} alt="" />
               </div>
               <div>
-                <div>Assignment Helper Needed</div>
-                <a>Posted on 10-11-2025</a>
+                <div>{task.taskName}</div>
+                <a>{task.createdAt}</a>
               </div>
             </Flex>
           </Top>
@@ -136,23 +139,23 @@ function TasksAssignedToMeWidget() {
             <ul>
               <li>
                 <Stat>
-                  <b>4 Days</b>
+                  <b>{calculateTimeBetween(task.createdAt, task.deadline)}</b>
                   <br />
                   <a>Remaining</a>
                 </Stat>
               </li>
               <li>
                 <Stat>
-                  <b>3.2 Hours</b>
+                  <b>{calculateTimeBetween(task.createdAt)}</b>
                   <br />
                   <a>Time spent</a>
                 </Stat>
               </li>
               <li>
                 <Stat>
-                  <b>13</b>
+                  <b>{task.status}</b>
                   <br />
-                  <a>Completion</a>
+                  <a>Status</a>
                 </Stat>
               </li>
             </ul>

@@ -96,3 +96,15 @@ export async function addEducationService(details, callback) {
       callback(response);
     });
 }
+export async function getActiveTasksService(userId, callback) {
+  await request
+    .get(`/user/${userId}/task`, { headers: {} })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      console.log(e);
+      callback(response);
+    });
+}
