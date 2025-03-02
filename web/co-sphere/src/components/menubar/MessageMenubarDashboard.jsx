@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../constants/Colors";
 import { FontSize } from "../../constants/FontSize";
@@ -31,16 +32,17 @@ const Button = styled.div`
   background-color: transparent;
 `;
 function MessageMenubarDashboard() {
+  const navigate = useNavigate();
   return (
     <Wrapper>
       <Container>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dolor
-        mauris, luctus in nisl at.
+        At Cosphere, you can discover the latest projects and jobs tailored
+        specifically for you, matching your unique skills and expertise.
         <Button>
           <FilledButton
-            placeholder="Browse"
+            placeholder="Explore"
             onClick={() => {
-              alert("hello");
+              navigate("/explore");
             }}
           />
         </Button>

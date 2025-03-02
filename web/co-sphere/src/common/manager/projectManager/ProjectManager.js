@@ -4,6 +4,7 @@ import {
   applyProjectService,
   completeProjectService,
   completeTaskService,
+  createProjectService,
   finishHiringService,
   getActiveProjectsByUserService,
   getAppliedProjectService,
@@ -233,4 +234,17 @@ export async function manageGetExploreProjects(onSuccess, onFailure) {
     } catch (e) {
       onFailure("Error connecting to network.");
     }
+}
+export async function manageCreateProject(details, onSuccess, onFailure) {
+  try {
+    await createProjectService(details, async (response) => {
+      if (response.status === 200) {
+        onSuccess(response.data);
+      } else {
+        onFailure(response.data.message);
+      }
+    });
+  } catch (e) {
+    onFailure("Error connecting to network.");
+  }
 }

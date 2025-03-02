@@ -271,20 +271,23 @@ exports.createProject = async (req, res) => {
       skills,
       site,
       status,
+      from,
+      to,
+      description,
       salary,
     } = req.body;
-
     if (
       !projectName ||
       !position ||
       !address ||
       !postedBy ||
       !skills ||
+      !site ||
+      !description ||
       skills.length === 0
     ) {
       return res.status(400).json({ message: "Missing required fields" });
     }
-
     const normalizedSkills = skills.map((skill) => skill.toLowerCase());
 
     const skillIds = await Promise.all(
@@ -304,6 +307,7 @@ exports.createProject = async (req, res) => {
       address,
       postedBy,
       companyName,
+      description,
       skills: skillIds,
       site,
       status,
@@ -311,7 +315,9 @@ exports.createProject = async (req, res) => {
       applicants: [],
       salary: salary || { min: 0, max: 0 },
     });
-
+    if (from && to) {
+      newProject.duration = { from, to };
+    }
     const savedProject = await newProject.save();
 
     const user = await User.findByIdAndUpdate(

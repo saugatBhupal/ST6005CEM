@@ -102,10 +102,11 @@ const Bottom = styled.div`
   }
 `;
 const Profile = styled.div`
-  background-color: ${Colors.chatBackground};
+  /* background-color: ${Colors.chatBackground};
   border: 0.5px solid ${Colors.greyOutlineShadow};
   padding: 8px 15px;
-  border-radius: 12px;
+  border-radius: 12px; */
+  cursor: pointer;
 `;
 function JobDetails({ projectId }) {
   const [project, setProject] = useState();
@@ -205,7 +206,9 @@ function JobDetails({ projectId }) {
                   </Row>
                 </Flex>
                 <Flex>
-                  <Profile>
+                  <Profile
+                    onClick={() => navigate(`/profile/${project.postedBy._id}`)}
+                  >
                     <ProfileWidget
                       url={project.postedBy.profileImage}
                       name={project.companyName || project.postedBy.fullname}
@@ -229,7 +232,11 @@ function JobDetails({ projectId }) {
                 </SkillsRow>
               </Fixed>
               <Scroll>
-                <JobDetailContentWidget />
+                {project.description && (
+                  <JobDetailContentWidget
+                    description={project.description && project.description}
+                  />
+                )}
               </Scroll>
             </Content>
             <Bottom>

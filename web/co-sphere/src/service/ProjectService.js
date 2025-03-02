@@ -176,3 +176,16 @@ export async function getExploreProjectsService(userId, callback) {
       callback(response);
     });
 }
+export async function createProjectService(details, callback) {
+  await request
+    .post(`/project/`, details, {
+      headers: {},
+    })
+    .then((response) => {
+      callback(response);
+    })
+    .catch((e) => {
+      var response = e.response;
+      callback(response);
+    });
+}

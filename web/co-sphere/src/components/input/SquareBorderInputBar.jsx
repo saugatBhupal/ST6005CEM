@@ -18,7 +18,7 @@ const Icon = styled.div`
 
 const Input = styled.input`
   width: 100%;
-  height: 55px;
+  height: 45px;
   padding: 10px 10px 10px 25px;
   font-size: ${FontSize.medium};
   border: 1px solid ${Colors.greyOutline};
@@ -50,12 +50,11 @@ const Hidden = styled.div`
 
 const Label = styled.label`
   position: absolute;
-  top: 18px;
+  top: 15px;
   left: 20px;
-  font-size: 16px;
+  font-size: ${FontSize.small};
   color: #4c4c4ca8;
   background-color: ${Colors.justWhite};
-  font-size: 16px;
   pointer-events: none;
   transition: all 0.3s ease;
 `;
